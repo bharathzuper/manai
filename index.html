@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manai — Design Requirements Brief</title>
+<meta name="description" content="Design requirements and reference brief for Manai, a Neo-Deccan Heritage Residence in Old Washermanpet, Chennai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:wght@400;500&family=Noto+Serif+Tamil:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   COLOR SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --ink: #0D0D0D;
+  --vellum: #F2E8D5;
+  --gold: #C6922A;
+  --gold-pale: #E8C97A;
+  --teal-deep: #0F3D3D;
+  --teal-mid: #1A5C5C;
+  --burgundy: #5C1A28;
+  --amber: #C4600A;
+  --smoke: #1A1A1A;
+  --muted: #7A6A55;
+  --glass-blue: rgba(30, 80, 140, 0.4);
+  --glass-amber: rgba(180, 90, 10, 0.35);
+  --glass-green: rgba(20, 90, 60, 0.35);
+  --glass-ruby: rgba(120, 15, 30, 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--vellum);
+  font-family: 'EB Garamond', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  overflow-x: hidden;
+  cursor: none;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: none; border: none; background: none; color: inherit; }
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════ */
+.font-cinzel { font-family: 'Cinzel Decorative', serif; font-weight: 700; }
+.font-cormorant { font-family: 'Cormorant Garamond', serif; }
+.font-eb { font-family: 'EB Garamond', serif; }
+.font-tamil { font-family: 'Noto Serif Tamil', serif; }
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM CURSOR
+   ═══════════════════════════════════════════════════════════ */
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  background: rgba(198, 146, 42, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 28px; height: 28px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+.cursor-hover .cursor-dot {
+  width: 18px; height: 18px;
+  background: rgba(198, 146, 42, 1);
+}
+.cursor-hover .cursor-ring {
+  width: 42px; height: 42px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+  body, button { cursor: auto; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ENTRY SCREEN
+   ═══════════════════════════════════════════════════════════ */
+.entry-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.entry-screen.dismissed {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.entry-jali {
+  position: absolute;
+  top: -20%; left: -20%;
+  width: 140%; height: 140%;
+  opacity: 0.04;
+  animation: jaliRotate 120s linear infinite;
+}
+@keyframes jaliRotate { to { transform: rotate(360deg); } }
+
+.entry-line {
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  animation: drawLine 1.2s ease-out forwards;
+}
+@keyframes drawLine { to { width: min(400px, 60vw); } }
+
+.entry-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  color: var(--gold);
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 0.6s;
+  margin-bottom: 16px;
+}
+.entry-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  color: var(--vellum);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  letter-spacing: 0.15em;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 1s;
+  margin-top: 16px;
+}
+.entry-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--vellum);
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 1.4s;
+  margin-top: 8px;
+}
+.entry-btn {
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 2.2s;
+  margin-top: 48px;
+  cursor: none;
+  background: none;
+  border: none;
+  padding: 0;
+  position: relative;
+}
+.entry-btn svg { transition: transform 0.3s ease, filter 0.3s ease; }
+.entry-btn:hover svg { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(198, 146, 42, 0.4)); }
+.entry-btn-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+}
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  transition: background 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(13, 13, 13, 0.95);
+  border-bottom-color: var(--gold);
+  backdrop-filter: blur(12px);
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-monogram { flex-shrink: 0; }
+.nav-brand-text {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-link {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: var(--vellum);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+.nav-link:hover { color: var(--gold); }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+.hamburger span {
+  width: 24px; height: 1px;
+  background: var(--gold);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-menu {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--ink);
+  z-index: 8999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.mobile-menu.open { opacity: 1; pointer-events: all; }
+.mobile-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: var(--vellum);
+  font-style: italic;
+}
+.mobile-menu a:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 24px 60px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.55) 40%, rgba(13,13,13,0.75) 100%),
+    radial-gradient(ellipse at 20% 15%, var(--glass-ruby) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 80%, var(--glass-amber) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 70%, var(--glass-blue) 0%, transparent 50%),
+    url('assets/hero-banner.png') center/cover no-repeat;
+  z-index: 0;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+.hero-location {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  letter-spacing: 0.15em;
+  color: var(--vellum);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: var(--vellum);
+  margin-bottom: 12px;
+}
+.hero-manifesto {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.15rem;
+  margin-bottom: 32px;
+}
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: var(--vellum);
+}
+.hero-stat-dot { color: var(--gold); font-size: 0.6rem; }
+.hero-bottom {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 1;
+}
+.hero-arches {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.hero-arch { opacity: 0.5; }
+.hero-scroll-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* Ornamental Divider */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+.ornament-divider svg { flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION HEADERS
+   ═══════════════════════════════════════════════════════════ */
+.section-header {
+  text-align: center;
+  padding: 80px 24px 32px;
+}
+.section-overline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--vellum);
+  margin-bottom: 20px;
+}
+.section-line {
+  width: 80px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto;
+}
+
+/* Frieze Strip */
+.frieze {
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  opacity: 0.3;
+}
+.frieze svg { width: 100%; height: 100%; }
+
+/* ═══════════════════════════════════════════════════════════
+   THE VISION SECTION
+   ═══════════════════════════════════════════════════════════ */
+.vision {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 48px;
+  align-items: start;
+}
+.vision-quote {
+  position: relative;
+  padding-top: 48px;
+}
+.vision-quote-mark {
+  position: absolute;
+  top: 0; left: 0;
+  color: var(--gold);
+  opacity: 0.4;
+}
+.vision-quote-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  line-height: 1.5;
+  color: var(--vellum);
+}
+.vision-quote-attr {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 24px;
+}
+.vision-body p {
+  margin-bottom: 24px;
+}
+.vision-body p:last-child { margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .vision {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 24px 60px;
+  }
+  .vision-quote-text { font-size: 1.6rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FLOOR PLANS & STRUCTURAL SECTIONS
+   ═══════════════════════════════════════════════════════════ */
+.plans-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  padding: 12px 24px;
+  background: var(--smoke);
+  color: var(--muted);
+  border: 1px solid rgba(198, 146, 42, 0.2);
+  transition: all 0.3s;
+}
+.tab-btn:first-child { border-radius: 4px 0 0 4px; }
+.tab-btn:last-child { border-radius: 0 4px 4px 0; }
+.tab-btn.active {
+  background: var(--teal-deep);
+  color: var(--vellum);
+  border-color: var(--gold);
+  border-bottom: 2px solid var(--gold);
+}
+.tab-btn:hover:not(.active) {
+  color: var(--vellum);
+  border-color: rgba(198, 146, 42, 0.4);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: grid; grid-template-columns: 3fr 2fr; gap: 48px; align-items: start; }
+
+.plan-frame {
+  position: relative;
+  padding: 16px;
+  border: 1px solid rgba(198, 146, 42, 0.2);
+  cursor: pointer;
+}
+.plan-frame:hover { border-color: var(--gold); }
+.plan-frame img, .plan-frame .plan-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: contain;
+  background: var(--smoke);
+}
+.plan-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+}
+.plan-corner {
+  position: absolute;
+  width: 24px; height: 24px;
+  color: var(--gold-pale);
+}
+.plan-corner.tl { top: 4px; left: 4px; }
+.plan-corner.tr { top: 4px; right: 4px; transform: scaleX(-1); }
+.plan-corner.bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
+.plan-corner.br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
+
+.room-list h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: var(--vellum);
+  margin-bottom: 24px;
+}
+.room-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(232, 201, 122, 0.12);
+}
+.room-name {
+  font-family: 'EB Garamond', serif;
+  color: var(--vellum);
+}
+.room-dim {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.pdf-download {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--gold);
+  padding: 12px 24px;
+  border: 1px solid var(--gold);
+  background: var(--teal-deep);
+  border-radius: 2px;
+  transition: all 0.3s;
+  text-align: center;
+}
+.pdf-download:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.specs-card {
+  margin-top: 32px;
+  background: var(--smoke);
+  border-top: 2px solid var(--gold);
+  padding: 28px;
+}
+.specs-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--vellum);
+  margin-bottom: 20px;
+}
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 32px;
+}
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(232, 201, 122, 0.08);
+}
+.spec-label { color: var(--muted); font-size: 0.95rem; }
+.spec-value { color: var(--vellum); font-size: 0.95rem; text-align: right; }
+.specs-footnote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .plans-section { padding: 0 20px 60px; }
+  .tab-content.active { grid-template-columns: 1fr; gap: 32px; }
+  .tabs { gap: 0; }
+  .tab-btn { font-size: 0.9rem; padding: 10px 14px; }
+  .specs-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   REFERENCE GALLERY
+   ═══════════════════════════════════════════════════════════ */
+.gallery-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+.gallery-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.filter-pill {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  background: var(--smoke);
+  border: 1px solid rgba(198, 146, 42, 0.2);
+  color: var(--muted);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+.filter-pill.active, .filter-pill:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.masonry {
+  columns: 3;
+  column-gap: 16px;
+}
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.4s;
+}
+.masonry-item:hover { border-color: var(--gold); }
+.masonry-item img, .masonry-item video {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.masonry-item:hover img, .masonry-item:hover video { transform: scale(1.03); }
+.masonry-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 16px 16px;
+  background: linear-gradient(to top, rgba(13, 13, 13, 0.85) 0%, transparent 100%);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+.masonry-item:hover .masonry-caption { transform: translateY(0); }
+.masonry-caption span {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--vellum);
+}
+.video-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  transition: background 0.3s;
+}
+.masonry-item:hover .video-play-overlay { background: rgba(0,0,0,0.3); }
+
+.gallery-empty {
+  text-align: center;
+  padding: 80px 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1024px) { .masonry { columns: 2; } }
+@media (max-width: 600px) {
+  .masonry { columns: 1; }
+  .gallery-section { padding: 0 20px 60px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SPATIAL NARRATIVE
+   ═══════════════════════════════════════════════════════════ */
+.spatial-panel {
+  min-height: 80vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+}
+.spatial-panel.reversed { direction: rtl; }
+.spatial-panel.reversed > * { direction: ltr; }
+
+.spatial-number-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px;
+  min-height: 80vh;
+  overflow: hidden;
+}
+.spatial-number {
+  position: absolute;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(8rem, 15vw, 12rem);
+  color: currentColor;
+  opacity: 0.1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+.spatial-floor-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  color: var(--vellum);
+  position: relative;
+  z-index: 1;
+}
+.spatial-subname {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+.spatial-text-panel {
+  padding: 80px 64px;
+}
+.spatial-text-panel p {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--vellum);
+}
+
+@media (max-width: 768px) {
+  .spatial-panel { grid-template-columns: 1fr; }
+  .spatial-panel.reversed { direction: ltr; }
+  .spatial-number-panel { min-height: auto; padding: 60px 24px 24px; }
+  .spatial-text-panel { padding: 24px 24px 60px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHTBOX
+   ═══════════════════════════════════════════════════════════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.lightbox.open { display: flex; }
+.lightbox-media {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 1px solid rgba(198, 146, 42, 0.2);
+}
+.lightbox-close {
+  position: absolute;
+  top: 24px; right: 24px;
+  width: 36px; height: 36px;
+  cursor: pointer;
+  padding: 0;
+}
+.lightbox-close line {
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  transition: stroke 0.3s;
+}
+.lightbox-close:hover line { stroke: var(--vellum); }
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 16px;
+  cursor: pointer;
+}
+.lightbox-arrow.prev { left: 16px; }
+.lightbox-arrow.next { right: 16px; }
+.lightbox-arrow svg { transition: transform 0.3s; }
+.lightbox-arrow:hover svg { transform: scale(1.2); }
+
+/* ═══════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════ */
+.footer {
+  padding: 64px 40px 0;
+  background: var(--ink);
+}
+.footer-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+.footer-left .footer-brand {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.footer-left .footer-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.footer-left .footer-location {
+  font-family: 'EB Garamond', serif;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.footer-center {
+  text-align: center;
+}
+.footer-center p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--vellum);
+  line-height: 2;
+}
+.footer-right {
+  text-align: right;
+}
+.footer-right p {
+  font-family: 'EB Garamond', serif;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 2;
+}
+.footer-bottom {
+  background: var(--teal-deep);
+  text-align: center;
+  padding: 16px;
+  margin: 0 -40px;
+}
+.footer-bottom p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .footer { padding: 48px 24px 0; }
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+  .footer-right { text-align: center; }
+  .footer-bottom { margin: 0 -24px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+.reveal-up, .reveal-left, .reveal-right, .reveal-slow {
+  opacity: 0;
+  transition-property: transform, opacity;
+  transition-timing-function: ease-out;
+}
+.reveal-up { transform: translateY(40px); transition-duration: 0.7s; }
+.reveal-left { transform: translateX(-40px); transition-duration: 0.7s; }
+.reveal-right { transform: translateX(40px); transition-duration: 0.7s; }
+.reveal-slow { transform: translateY(40px); transition-duration: 1.1s; }
+
+.reveal-up.revealed, .reveal-left.revealed, .reveal-right.revealed, .reveal-slow.revealed {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY
+   ═══════════════════════════════════════════════════════════ */
+.main-content {
+  opacity: 0;
+  transition: opacity 0.5s 0.3s;
+}
+.main-content.visible { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════
+   PREFERENCES SECTION
+   ═══════════════════════════════════════════════════════════ */
+.prefs-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+}
+.prefs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.pref-card {
+  background: var(--smoke);
+  border: 1px solid rgba(198, 146, 42, 0.12);
+  border-top: 2px solid var(--gold);
+  padding: 32px;
+  transition: border-color 0.3s;
+}
+.pref-card:hover { border-color: rgba(198, 146, 42, 0.3); }
+.pref-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pref-card h3 .pref-icon {
+  width: 20px; height: 20px;
+  opacity: 0.7;
+}
+.pref-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(232, 201, 122, 0.08);
+  gap: 16px;
+}
+.pref-row:last-child { border-bottom: none; }
+.pref-label {
+  font-family: 'EB Garamond', serif;
+  color: var(--vellum);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.pref-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: right;
+}
+.pref-value.decided {
+  color: var(--vellum);
+  font-style: normal;
+}
+.pref-value.highlight {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 600;
+}
+.pref-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(232, 201, 122, 0.08);
+  line-height: 1.6;
+}
+.pref-card.full-width {
+  grid-column: 1 / -1;
+}
+.pref-subhead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--gold-pale);
+  margin-top: 16px;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .prefs-grid { grid-template-columns: 1fr; }
+  .prefs-section { padding: 0 20px 60px; }
+  .pref-card { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     CUSTOM CURSOR
+     ═══════════════════════════════════════════════ -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══════════════════════════════════════════════
+     ENTRY SCREEN
+     ═══════════════════════════════════════════════ -->
+<div class="entry-screen" id="entryScreen">
+  <!-- Jali pattern background -->
+  <svg class="entry-jali" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="jaliPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+        <path d="M50 0 L100 50 L50 100 L0 50 Z" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <circle cx="50" cy="50" r="20" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <circle cx="0" cy="0" r="15" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <circle cx="100" cy="0" r="15" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <circle cx="0" cy="100" r="15" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <circle cx="100" cy="100" r="15" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <path d="M50 30 L70 50 L50 70 L30 50 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+        <line x1="0" y1="50" x2="30" y2="50" stroke="currentColor" stroke-width="0.3"/>
+        <line x1="70" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="0.3"/>
+        <line x1="50" y1="0" x2="50" y2="30" stroke="currentColor" stroke-width="0.3"/>
+        <line x1="50" y1="70" x2="50" y2="100" stroke="currentColor" stroke-width="0.3"/>
+      </pattern>
+    </defs>
+    <rect width="800" height="800" fill="url(#jaliPattern)" stroke="var(--gold)"/>
+  </svg>
+
+  <div class="entry-tamil">மனை</div>
+  <div class="entry-line"></div>
+  <div class="entry-title">MANAI</div>
+  <div class="entry-subtitle">DESIGN REQUIREMENTS BRIEF</div>
+  <button class="entry-btn" id="enterBtn" onclick="enterSite()">
+    <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+      <path d="M50 2 C50 2, 95 40, 95 65 C95 82, 74 95, 50 95 C26 95, 5 82, 5 65 C5 40, 50 2, 50 2 Z"
+            stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+      <text x="50" y="58" text-anchor="middle" class="entry-btn-text" fill="var(--gold)"
+            font-family="'Cormorant Garamond', serif" font-size="13" letter-spacing="3">ENTER</text>
+    </svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════ -->
+<nav class="nav" id="mainNav">
+  <div class="nav-brand">
+    <svg class="nav-monogram" width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <polygon points="18,1 33.6,9.5 33.6,26.5 18,35 2.4,26.5 2.4,9.5"
+               stroke="var(--gold)" stroke-width="1" fill="none"/>
+      <text x="18" y="22" text-anchor="middle" fill="var(--gold)"
+            font-family="'Cinzel Decorative', serif" font-size="14" font-weight="700">M</text>
+    </svg>
+    <span class="nav-brand-text">MANAI</span>
+  </div>
+  <ul class="nav-links">
+    <li><a class="nav-link" href="#vision">Design Brief</a></li>
+    <li><a class="nav-link" href="#floor-plans">Floor Plans</a></li>
+    <li><a class="nav-link" href="#structural">Structural</a></li>
+    <li><a class="nav-link" href="#reference">References</a></li>
+    <li><a class="nav-link" href="#narrative">Floor Requirements</a></li>
+    <li><a class="nav-link" href="#preferences">Preferences</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#vision" onclick="closeMobileMenu()">Design Brief</a>
+  <a href="#floor-plans" onclick="closeMobileMenu()">Floor Plans</a>
+  <a href="#structural" onclick="closeMobileMenu()">Structural</a>
+  <a href="#reference" onclick="closeMobileMenu()">References</a>
+  <a href="#narrative" onclick="closeMobileMenu()">Floor Requirements</a>
+  <a href="#preferences" onclick="closeMobileMenu()">Preferences</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════════════ -->
+<main class="main-content" id="mainContent">
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-content reveal-slow">
+    <p class="hero-location">Old Washermanpet, Chennai</p>
+
+    <div class="ornament-divider">
+      <svg width="280" height="16" viewBox="0 0 280 16" fill="none">
+        <line x1="0" y1="8" x2="124" y2="8" stroke="var(--gold-pale)" stroke-width="0.5"/>
+        <rect x="132" y="2" width="16" height="12" rx="1" transform="rotate(45 140 8)" stroke="var(--gold)" stroke-width="0.8" fill="none"/>
+        <line x1="156" y1="8" x2="280" y2="8" stroke="var(--gold-pale)" stroke-width="0.5"/>
+        <circle cx="8" cy="8" r="2" fill="var(--gold-pale)"/>
+        <circle cx="272" cy="8" r="2" fill="var(--gold-pale)"/>
+      </svg>
+    </div>
+
+    <p class="hero-tamil">மனை</p>
+    <h1 class="hero-title">MANAI</h1>
+    <p class="hero-subtitle">Design Requirements Brief</p>
+
+    <div class="ornament-divider">
+      <svg width="280" height="16" viewBox="0 0 280 16" fill="none">
+        <line x1="0" y1="8" x2="124" y2="8" stroke="var(--gold-pale)" stroke-width="0.5"/>
+        <rect x="132" y="2" width="16" height="12" rx="1" transform="rotate(45 140 8)" stroke="var(--gold)" stroke-width="0.8" fill="none"/>
+        <line x1="156" y1="8" x2="280" y2="8" stroke="var(--gold-pale)" stroke-width="0.5"/>
+        <circle cx="8" cy="8" r="2" fill="var(--gold-pale)"/>
+        <circle cx="272" cy="8" r="2" fill="var(--gold-pale)"/>
+      </svg>
+    </div>
+
+    <p class="hero-manifesto">A Neo-Deccan Heritage Residence — For Architect Review</p>
+
+    <div class="hero-stats">
+      <span>880 sq.ft Plot</span>
+      <span class="hero-stat-dot">·</span>
+      <span>2,772 sq.ft Built</span>
+      <span class="hero-stat-dot">·</span>
+      <span>G+2 Residence</span>
+      <span class="hero-stat-dot">·</span>
+      <span>Neo-Deccan Heritage</span>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-arches">
+      <svg class="hero-arch" width="28" height="60" viewBox="0 0 28 60" fill="none">
+        <path d="M14 2 C14 2, 26 20, 26 35 C26 45, 20 55, 14 55 C8 55, 2 45, 2 35 C2 20, 14 2, 14 2Z"
+              stroke="var(--gold-pale)" stroke-width="0.8" fill="var(--glass-blue)"/>
+      </svg>
+      <svg class="hero-arch" width="28" height="60" viewBox="0 0 28 60" fill="none">
+        <path d="M14 2 C14 2, 26 20, 26 35 C26 45, 20 55, 14 55 C8 55, 2 45, 2 35 C2 20, 14 2, 14 2Z"
+              stroke="var(--gold-pale)" stroke-width="0.8" fill="var(--glass-amber)"/>
+      </svg>
+      <svg class="hero-arch" width="28" height="60" viewBox="0 0 28 60" fill="none">
+        <path d="M14 2 C14 2, 26 20, 26 35 C26 45, 20 55, 14 55 C8 55, 2 45, 2 35 C2 20, 14 2, 14 2Z"
+              stroke="var(--gold-pale)" stroke-width="0.8" fill="var(--glass-green)"/>
+      </svg>
+    </div>
+    <p class="hero-scroll-hint">↓ View Requirements</p>
+  </div>
+</section>
+
+<!-- ═══════════════ THE VISION ═══════════════ -->
+<section id="vision">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Project Overview</p>
+    <h2 class="section-title">Design Brief</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <defs>
+        <pattern id="friezeP" x="0" y="0" width="60" height="40" patternUnits="userSpaceOnUse">
+          <path d="M30 0 L60 20 L30 40 L0 20 Z" stroke="var(--gold-pale)" stroke-width="0.5" fill="none"/>
+          <circle cx="30" cy="20" r="6" stroke="var(--gold-pale)" stroke-width="0.3" fill="none"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="vision">
+    <div class="vision-quote reveal-left">
+      <svg class="vision-quote-mark" width="48" height="40" viewBox="0 0 48 40">
+        <text x="0" y="38" font-family="'Cormorant Garamond', serif" font-size="56" fill="var(--gold)">"</text>
+      </svg>
+      <p class="vision-quote-text">
+        Not a museum, not a show home —<br>
+        a house that feels genuinely rooted in its culture<br>
+        and still completely liveable today.
+      </p>
+      <p class="vision-quote-attr">— Core Design Intent</p>
+    </div>
+    <div class="vision-body reveal-right">
+      <p>Manai is a private residence on an 880 sq.ft plot in Old Washermanpet, Chennai. The structure is G+2 with the foundation built to support G+3 for future expansion. Total built-up area is approximately 2,772 sq.ft. The ground floor handles parking and servant quarters. The first floor is my parents' living space — their bedrooms, living and dining area, kitchen, and everything they need for comfortable daily life. The second floor is my personal space — designed around how I want to live, work, and spend my time at home.</p>
+      <p>The aesthetic we are going for is Neo-Deccan Heritage: traditional South Indian design sensibility brought into a modern home. Not a museum, not a show home — a house that feels genuinely rooted in its culture and still completely liveable today.</p>
+      <p>Art is a core requirement throughout the house, not an afterthought. We want traditional paintings, handcrafted elements, and artisan work integrated into the architecture at every level — on walls, at entrances, in corridors, not just in one feature room. The house should also feel green and alive — plants are a serious part of the design, indoors and wherever outdoor space allows. The overall feeling we are after is a home that is rich in character, full of craft, and still feels fresh and breathing — not heavy or dark.</p>
+      <p>The design team should treat every surface as an opportunity, not just the obvious ones. Please review the floor plans, structural drawings, and reference images in this document.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FLOOR PLANS ═══════════════ -->
+<section id="floor-plans">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Level by Level</p>
+    <h2 class="section-title">Floor Plans</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="plans-section">
+    <div class="tabs" id="floorTabs">
+      <button class="tab-btn active" onclick="switchTab('floor', 0, this)">Ground</button>
+      <button class="tab-btn" onclick="switchTab('floor', 1, this)">First Floor</button>
+      <button class="tab-btn" onclick="switchTab('floor', 2, this)">Second Floor</button>
+    </div>
+
+    <!-- Ground Floor -->
+    <div class="tab-content active" id="floor-0">
+      <div class="plan-frame" onclick="openLightbox('assets/plans/ground-floor.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/plans/ground-floor.jpg" alt="Ground Floor Plan">
+      </div>
+      <div class="room-list">
+        <h3>Ground Floor</h3>
+        <div class="room-row"><span class="room-name">Parking</span><span class="room-dim">Open</span></div>
+        <div class="room-row"><span class="room-name">Servant Room</span><span class="room-dim">—</span></div>
+        <div class="room-row"><span class="room-name">Toilet</span><span class="room-dim">—</span></div>
+        <div class="room-row"><span class="room-name">Lift</span><span class="room-dim">4' × 5'</span></div>
+        <div class="room-row"><span class="room-name">OTS</span><span class="room-dim">6' × 3'</span></div>
+        <a class="pdf-download" href="assets/pdfs/architecture-plans.pdf" download>↓ Download Plans PDF</a>
+      </div>
+    </div>
+
+    <!-- First Floor -->
+    <div class="tab-content" id="floor-1">
+      <div class="plan-frame" onclick="openLightbox('assets/plans/first-floor.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/plans/first-floor.jpg" alt="First Floor Plan">
+      </div>
+      <div class="room-list">
+        <h3>First Floor</h3>
+        <div class="room-row"><span class="room-name">Living + Dining</span><span class="room-dim">9'4" × 17'1"</span></div>
+        <div class="room-row"><span class="room-name">Kitchen</span><span class="room-dim">10' × 8'</span></div>
+        <div class="room-row"><span class="room-name">Bedroom 2</span><span class="room-dim">10' × 10'4"</span></div>
+        <div class="room-row"><span class="room-name">Bedroom 3</span><span class="room-dim">9'6" × 9'4"</span></div>
+        <div class="room-row"><span class="room-name">Toilets</span><span class="room-dim">× 2</span></div>
+        <div class="room-row"><span class="room-name">Sit-out</span><span class="room-dim">9'7" × 10'</span></div>
+        <div class="room-row"><span class="room-name">Staircase</span><span class="room-dim">6' × 14'4"</span></div>
+        <div class="room-row"><span class="room-name">Lift</span><span class="room-dim">4' × 5'</span></div>
+        <a class="pdf-download" href="assets/pdfs/architecture-plans.pdf" download>↓ Download Plans PDF</a>
+      </div>
+    </div>
+
+    <!-- Second Floor -->
+    <div class="tab-content" id="floor-2">
+      <div class="plan-frame" onclick="openLightbox('assets/plans/second-floor.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/plans/second-floor.jpg" alt="Second Floor Plan">
+      </div>
+      <div class="room-list">
+        <h3>Second Floor</h3>
+        <div class="room-row"><span class="room-name">Master Bedroom</span><span class="room-dim">9'9" × 14'3"</span></div>
+        <div class="room-row"><span class="room-name">Lounge</span><span class="room-dim">13' × 9'4"</span></div>
+        <div class="room-row"><span class="room-name">Dressing</span><span class="room-dim">9'9" × 7'7"</span></div>
+        <div class="room-row"><span class="room-name">Toilet</span><span class="room-dim">5'10" × 7'9"</span></div>
+        <div class="room-row"><span class="room-name">Patio</span><span class="room-dim">Open</span></div>
+        <div class="room-row"><span class="room-name">Sit-out</span><span class="room-dim">9'6" × 9'4"</span></div>
+        <div class="room-row"><span class="room-name">Workstation</span><span class="room-dim">6'4" × 4'3"</span></div>
+        <div class="room-row"><span class="room-name">Staircase + Lift</span><span class="room-dim">—</span></div>
+        <a class="pdf-download" href="assets/pdfs/architecture-plans.pdf" download>↓ Download Plans PDF</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STRUCTURAL ═══════════════ -->
+<section id="structural">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Engineering</p>
+    <h2 class="section-title">Structural Plans</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="plans-section">
+    <div class="tabs" id="structTabs">
+      <button class="tab-btn active" onclick="switchTab('struct', 0, this)">Foundation</button>
+      <button class="tab-btn" onclick="switchTab('struct', 1, this)">Ground Slab</button>
+      <button class="tab-btn" onclick="switchTab('struct', 2, this)">First Slab</button>
+      <button class="tab-btn" onclick="switchTab('struct', 3, this)">Second Slab</button>
+      <button class="tab-btn" onclick="switchTab('struct', 4, this)">Terrace</button>
+    </div>
+
+    <!-- Foundation -->
+    <div class="tab-content active" id="struct-0">
+      <div class="plan-frame" onclick="openLightbox('assets/structural/foundation.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/structural/foundation.jpg" alt="Foundation Plan">
+      </div>
+      <div class="room-list">
+        <h3>Foundation</h3>
+        <div class="specs-card">
+          <h4>Structural Specifications</h4>
+          <div class="specs-grid">
+            <div class="spec-item"><span class="spec-label">Concrete Grade</span><span class="spec-value">M20 (IS 456-2000)</span></div>
+            <div class="spec-item"><span class="spec-label">Steel Grade</span><span class="spec-value">Fe500 (IS 1786-1985)</span></div>
+            <div class="spec-item"><span class="spec-label">Slab Thickness</span><span class="spec-value">5 inches</span></div>
+            <div class="spec-item"><span class="spec-label">Primary Beams</span><span class="spec-value">9" × 18" incl. slab</span></div>
+            <div class="spec-item"><span class="spec-label">Columns</span><span class="spec-value">9" × 12" to 9" × 18"</span></div>
+            <div class="spec-item"><span class="spec-label">Foundation</span><span class="spec-value">Designed for G+3</span></div>
+            <div class="spec-item"><span class="spec-label">Structural Eng.</span><span class="spec-value">NJ Associates</span></div>
+            <div class="spec-item"><span class="spec-label">Job Reference</span><span class="spec-value">215/25</span></div>
+          </div>
+          <p class="specs-footnote">Structural drawings are the property of NJ Associates and are reproduced here for reference only.</p>
+        </div>
+        <a class="pdf-download" href="assets/pdfs/architecture-plans.pdf" download style="margin-top: 24px;">↓ Download Full PDF</a>
+      </div>
+    </div>
+
+    <!-- Ground Slab -->
+    <div class="tab-content" id="struct-1">
+      <div class="plan-frame" onclick="openLightbox('assets/structural/ground-slab.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/structural/ground-slab.jpg" alt="Ground Slab Plan">
+      </div>
+      <div class="room-list"><h3>Ground Slab</h3>
+        <div class="specs-card">
+          <h4>Structural Specifications</h4>
+          <div class="specs-grid">
+            <div class="spec-item"><span class="spec-label">Concrete Grade</span><span class="spec-value">M20</span></div>
+            <div class="spec-item"><span class="spec-label">Steel Grade</span><span class="spec-value">Fe500</span></div>
+            <div class="spec-item"><span class="spec-label">Slab Thickness</span><span class="spec-value">5 inches</span></div>
+            <div class="spec-item"><span class="spec-label">Primary Beams</span><span class="spec-value">9" × 18"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- First Slab -->
+    <div class="tab-content" id="struct-2">
+      <div class="plan-frame" onclick="openLightbox('assets/structural/first-slab.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/structural/first-slab.jpg" alt="First Slab Plan">
+      </div>
+      <div class="room-list"><h3>First Slab</h3>
+        <div class="specs-card">
+          <h4>Structural Specifications</h4>
+          <div class="specs-grid">
+            <div class="spec-item"><span class="spec-label">Concrete Grade</span><span class="spec-value">M20</span></div>
+            <div class="spec-item"><span class="spec-label">Steel Grade</span><span class="spec-value">Fe500</span></div>
+            <div class="spec-item"><span class="spec-label">Slab Thickness</span><span class="spec-value">5 inches</span></div>
+            <div class="spec-item"><span class="spec-label">Primary Beams</span><span class="spec-value">9" × 18"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Slab -->
+    <div class="tab-content" id="struct-3">
+      <div class="plan-frame" onclick="openLightbox('assets/structural/second-slab.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/structural/second-slab.jpg" alt="Second Slab Plan">
+      </div>
+      <div class="room-list"><h3>Second Slab</h3>
+        <div class="specs-card">
+          <h4>Structural Specifications</h4>
+          <div class="specs-grid">
+            <div class="spec-item"><span class="spec-label">Concrete Grade</span><span class="spec-value">M20</span></div>
+            <div class="spec-item"><span class="spec-label">Steel Grade</span><span class="spec-value">Fe500</span></div>
+            <div class="spec-item"><span class="spec-label">Slab Thickness</span><span class="spec-value">5 inches</span></div>
+            <div class="spec-item"><span class="spec-label">Primary Beams</span><span class="spec-value">9" × 18"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terrace -->
+    <div class="tab-content" id="struct-4">
+      <div class="plan-frame" onclick="openLightbox('assets/structural/terrace.jpg', 'image')">
+        <svg class="plan-corner tl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner tr" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner bl" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <svg class="plan-corner br" viewBox="0 0 24 24"><path d="M2 22 L2 8 Q2 2 8 2 L22 2" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="22" cy="2" r="1.5" fill="currentColor"/></svg>
+        <img src="assets/structural/terrace.jpg" alt="Terrace Plan">
+      </div>
+      <div class="room-list"><h3>Terrace</h3>
+        <div class="specs-card">
+          <h4>Structural Specifications</h4>
+          <div class="specs-grid">
+            <div class="spec-item"><span class="spec-label">Foundation</span><span class="spec-value">Designed for G+3</span></div>
+            <div class="spec-item"><span class="spec-label">Structural Eng.</span><span class="spec-value">NJ Associates (215/25)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ REFERENCE GALLERY ═══════════════ -->
+<section id="reference">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">What We Want It to Look Like</p>
+    <h2 class="section-title">Design References & Inspiration</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="gallery-section">
+    <div class="gallery-filters" id="galleryFilters"></div>
+    <div class="masonry" id="masonryGrid"></div>
+    <div class="gallery-empty" id="galleryEmpty" style="display:none;">
+      <p>Add images to <code>assets/reference/photos/</code> and update the REFERENCE_ITEMS array to see your inspiration board here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SPATIAL NARRATIVE ═══════════════ -->
+<section id="narrative">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Floor-by-Floor</p>
+    <h2 class="section-title">Requirements per Floor</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <!-- Ground Floor Panel -->
+  <div class="spatial-panel">
+    <div class="spatial-number-panel reveal-left" style="background: var(--teal-deep); color: var(--vellum);">
+      <span class="spatial-number">01</span>
+      <h3 class="spatial-floor-name">Ground Floor</h3>
+      <p class="spatial-subname">Parking & Services</p>
+    </div>
+    <div class="spatial-text-panel reveal-right">
+      <p>Requirements: Covered car parking, a servant room with attached toilet, a lift shaft (4' × 5') designed to accommodate a home lift, main staircase (6' × 14'4"), and an OTS (6' × 3'). The entrance should have a heritage-style threshold — consider a Mughal arch doorway with carved teak frame. Even though this is the service floor, we want the staircase to make a visual statement from the ground level itself. Flooring should be durable but not generic — consider Athangudi tiles or terracotta.</p>
+    </div>
+  </div>
+
+  <!-- First Floor Panel -->
+  <div class="spatial-panel reversed">
+    <div class="spatial-text-panel reveal-left">
+      <p>Requirements: Living + Dining area (9'4" × 17'1") — this is the main gathering space and needs a stained glass ceiling feature that casts colored light. Kitchen (10' × 8') — should be functional with modern fittings but heritage aesthetics (patterned tiles, brass fixtures). Bedroom 2 (10' × 10'4") and Bedroom 3 (9'6" × 9'4") — both need carved teak window frames and jali screens for ventilation. Two attached toilets with zellige tile work. Sit-out (9'7" × 10') — this is important, needs to feel like a verandah with carved teak railings and space for morning seating. All rooms need peacock motif integration in either ceiling, doorframe, or floor pattern.</p>
+    </div>
+    <div class="spatial-number-panel reveal-right" style="background: var(--burgundy); color: var(--vellum);">
+      <span class="spatial-number">02</span>
+      <h3 class="spatial-floor-name">First Floor</h3>
+      <p class="spatial-subname">Family Living</p>
+    </div>
+  </div>
+
+  <!-- Second Floor Panel -->
+  <div class="spatial-panel">
+    <div class="spatial-number-panel reveal-left" style="background: var(--teal-deep); color: var(--vellum);">
+      <span class="spatial-number">03</span>
+      <h3 class="spatial-floor-name">Second Floor</h3>
+      <p class="spatial-subname">Private Suite</p>
+    </div>
+    <div class="spatial-text-panel reveal-right">
+      <p>Requirements: Master Bedroom (9'9" × 14'3") — needs to be the most designed room in the house with a feature wall (3D relief mural or carved teak headboard wall). Lounge area (13' × 9'4") — this will serve as both a screening/cinema room and a hi-fi music listening space, needs acoustic consideration and mood lighting. Dressing room (9'9" × 7'7"). Toilet (5'10" × 7'9") — we want black Kadappa stone flooring with zellige tile walls, this should feel like a spa. Patio — open to sky. Sit-out (9'6" × 9'4"). Workstation (6'4" × 4'3"). We also need a dedicated Pooja room — turmeric yellow and white marble, with a small Mughal arch niche. This floor should have the heaviest design treatment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DESIGN PREFERENCES ═══════════════ -->
+<section id="preferences">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Detailed Specifications</p>
+    <h2 class="section-title">Design Preferences</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="prefs-section">
+    <div class="prefs-grid">
+
+      <!-- COLOR PALETTE -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Colour Preferences</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <p class="pref-subhead">Primary Palette — Neo-Heritage Indian</p>
+            <div class="pref-row">
+              <span class="pref-label">Rust Terracotta</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#A56A54;display:inline-block;flex-shrink:0;"></span>#A56A54</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Deep Indigo</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#1F2C61;display:inline-block;flex-shrink:0;"></span>#1F2C61</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Ochre Gold</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#D2A747;display:inline-block;flex-shrink:0;"></span>#D2A747</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Forest Green</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#3C6345;display:inline-block;flex-shrink:0;"></span>#3C6345</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Creme Ivory</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#F5FDE1;display:inline-block;flex-shrink:0;"></span>#F5FDE1</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Natural Teak</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#9B8646;display:inline-block;flex-shrink:0;"></span>#9B8646</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Rich Oxide Red</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#C04030;display:inline-block;flex-shrink:0;"></span>#C04030</span>
+            </div>
+
+            <p class="pref-subhead">Material Textures</p>
+            <div class="pref-row"><span class="pref-label">Patterns</span><span class="pref-value decided">Traditional (Athangudi tiles)</span></div>
+            <div class="pref-row"><span class="pref-label">Fabrics</span><span class="pref-value decided">Natural — cotton, jute, linen</span></div>
+            <div class="pref-row"><span class="pref-label">Wood</span><span class="pref-value decided">Hand-carved teak</span></div>
+            <div class="pref-row"><span class="pref-label">Decor</span><span class="pref-value decided">Clay pottery, brass, plants</span></div>
+          </div>
+          <div>
+            <img src="assets/color-palette.png" alt="Neo-Heritage Indian Interior Palette — Chettinad & Eco-Style Inspiration" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/color-palette.png','image')">
+          </div>
+        </div>
+        <p class="pref-note">This is our broad colour direction — Chettinad & eco-heritage inspired. Creme Ivory as the neutral base (lime wash walls), with terracotta, indigo, green, and gold as accents placed strategically. Oxide red for Chettinad tile flooring and accents. The design team can adjust shades but should stay within this warm, earthy, heritage family. No cool greys, no stark whites, no synthetic-feeling colours.</p>
+      </div>
+
+      <!-- FLOORING & TILES -->
+      <div class="pref-card reveal-up">
+        <h3>Flooring & Tiles</h3>
+        <p class="pref-subhead">Ground Floor</p>
+        <div class="pref-row"><span class="pref-label">Parking Area</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Common Areas</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">First Floor</p>
+        <div class="pref-row"><span class="pref-label">Living + Dining</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Kitchen</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Bedrooms</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Bathrooms</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Sit-out / Balcony</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Second Floor</p>
+        <div class="pref-row"><span class="pref-label">Master Bedroom</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Lounge / Screening Room</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Master Bathroom</span><span class="pref-value decided">Black Kadappa stone + Zellige tiles</span></div>
+        <div class="pref-row"><span class="pref-label">Pooja Room</span><span class="pref-value decided">White marble</span></div>
+        <div class="pref-row"><span class="pref-label">Patio</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Staircase</p>
+        <div class="pref-row"><span class="pref-label">Staircase Treads</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Staircase Railing</span><span class="pref-value">To be discussed</span></div>
+        <div style="margin-top:16px;">
+          <img src="assets/tiles-reference.png" alt="Athangudi tile patterns — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/tiles-reference.png','image')">
+        </div>
+        <p class="pref-note">Leaning towards Athangudi tiles or similar handcrafted heritage tiles — open to whatever the interior designer suggests. Avoid generic vitrified tiles. The tile patterns above are the kind of direction we like.</p>
+      </div>
+
+      <!-- WOODWORK & DOORS -->
+      <div class="pref-card reveal-up">
+        <h3>Woodwork & Doors</h3>
+        <div class="pref-row"><span class="pref-label">Primary Wood Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Entrance Door</span><span class="pref-value decided">Carved teak — heritage style</span></div>
+        <div class="pref-row"><span class="pref-label">Internal Doors Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Window Frames</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Built-in Wardrobes</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">TV Units / Shelving</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Shoe Rack / Storage</span><span class="pref-value decided">Heritage-style cabinet (see ref below)</span></div>
+        <div class="pref-row"><span class="pref-label">Kitchen Cabinets</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Wood Finish</span><span class="pref-value">To be discussed</span></div>
+        <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <img src="assets/stained-glass-door-ref.png" alt="Stained glass panel doors with transom — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/stained-glass-door-ref.png','image')">
+          <img src="assets/shoe-rack-ref.png" alt="Heritage-style painted shoe cabinet — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/shoe-rack-ref.png','image')">
+        </div>
+        <p class="pref-note">Carved teak is required for all main door and window frames. Internal doors can be simpler but should still feel heritage. No laminate or veneer-only look. We also want stained glass panels in select doors and windows — colourful heritage-style glass work with floral/geometric patterns, similar to Chettinad mansion doors (see left reference). Transom windows (arched glass above doors) are preferred for main entrances and key thresholds. Shoe rack should be a heritage-style painted wood cabinet with hand-painted panels — functional storage that doubles as an art piece (see right reference).</p>
+      </div>
+
+      <!-- KITCHEN -->
+      <div class="pref-card reveal-up">
+        <h3>Kitchen</h3>
+        <div class="pref-row"><span class="pref-label">Layout</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Modular or Carpenter-built?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Countertop Material</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Backsplash</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Wet Kitchen + Dry Kitchen?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Chimney / Hob Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Water Purifier Provision</span><span class="pref-value">Yes — built-in</span></div>
+        <div class="pref-row"><span class="pref-label">Dishwasher Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Pantry / Storage</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Kitchen should be functional with modern fittings but with heritage aesthetics — patterned tile backsplash, brass fixtures where possible.</p>
+      </div>
+
+      <!-- BATHROOMS -->
+      <div class="pref-card reveal-up">
+        <h3>Bathrooms & Fixtures</h3>
+        <p class="pref-subhead">General</p>
+        <div class="pref-row"><span class="pref-label">Preferred Brands</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Western WC in All?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Concealed Plumbing</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Geyser Type</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">First Floor Bathrooms</p>
+        <div class="pref-row"><span class="pref-label">Wall Tiles</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Floor Tiles</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Vanity Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Shower Type</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Master Bathroom (2nd Floor)</p>
+        <div class="pref-row"><span class="pref-label">Floor</span><span class="pref-value decided">Black Kadappa stone</span></div>
+        <div class="pref-row"><span class="pref-label">Walls</span><span class="pref-value decided">Zellige tiles</span></div>
+        <div class="pref-row"><span class="pref-label">Bathtub?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Rain Shower</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Overall Feel</span><span class="pref-value decided">Spa-like, premium</span></div>
+        <p class="pref-note">Master bathroom is a priority space. Other bathrooms should be well-designed but can be simpler.</p>
+      </div>
+
+      <!-- LIGHTING -->
+      <div class="pref-card reveal-up">
+        <h3>Lighting</h3>
+        <div class="pref-row"><span class="pref-label">Chandeliers</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Cove / Concealed Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Staircase Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Pooja Room Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Screening Room</span><span class="pref-value decided">Mood / dimmable lighting</span></div>
+        <div class="pref-row"><span class="pref-label">Natural Light Priority</span><span class="pref-value decided">Living, Dining, Sit-outs</span></div>
+        <div class="pref-row"><span class="pref-label">Exterior / Facade Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Fixture Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Lighting is critical to the heritage feel. Open to brass hanging lamps, lantern-style fixtures, and traditional designs. No generic LED downlight-only approach.</p>
+      </div>
+
+      <!-- CEILING TREATMENTS -->
+      <div class="pref-card reveal-up">
+        <h3>Ceiling Treatments</h3>
+        <div class="pref-row"><span class="pref-label">Stained Glass Ceiling</span><span class="pref-value decided">Living + Dining area (1st floor)</span></div>
+        <div class="pref-row"><span class="pref-label">Other Stained Glass Locations</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">False Ceiling — Where?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exposed Wooden Beams</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Double-height Spaces</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Ceiling Fans Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Stained glass ceiling in living/dining is a must. Other locations open to discussion. Ceiling treatment should complement the heritage aesthetic — no plain gypsum everywhere.</p>
+      </div>
+
+      <!-- ELECTRICAL & SMART HOME -->
+      <div class="pref-card reveal-up">
+        <h3>Electrical & Smart Home</h3>
+        <div class="pref-row"><span class="pref-label">Smart Switches</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Automated Curtains</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Home Theater Pre-wiring</span><span class="pref-value decided">2nd floor lounge</span></div>
+        <div class="pref-row"><span class="pref-label">Hi-Fi / Speaker Pre-wiring</span><span class="pref-value decided">2nd floor lounge</span></div>
+        <div class="pref-row"><span class="pref-label">LAN / Internet Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">USB Charging Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">EV Charging (Parking)</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Solar Panel Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Inverter / Battery Backup</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Generator Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Switch Board Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Pre-wiring for all AV and smart home capability is essential even if not installed immediately. Future-proof the electrical layout.</p>
+      </div>
+
+      <!-- VENTILATION & CLIMATE -->
+      <div class="pref-card reveal-up">
+        <h3>Ventilation & Climate</h3>
+        <div class="pref-row"><span class="pref-label">AC in All Rooms?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">AC Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">AC Outdoor Unit Placement</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Cross-ventilation Priority</span><span class="pref-value decided">All rooms where possible</span></div>
+        <div class="pref-row"><span class="pref-label">Ceiling Fan Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exhaust Fans</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Jali Screens for Ventilation</span><span class="pref-value decided">Yes — key requirement</span></div>
+        <p class="pref-note">Chennai climate means cross-ventilation and natural airflow are critical. Jali screens serve both the heritage aesthetic and ventilation purpose. AC provisions should be hidden/integrated, not afterthought split-unit mounting.</p>
+      </div>
+
+      <!-- SAFETY & SECURITY -->
+      <div class="pref-card reveal-up">
+        <h3>Safety & Security</h3>
+        <div class="pref-row"><span class="pref-label">CCTV Camera Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Video Door Phone</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Intercom System</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Window Grills</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Gate Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Fire Safety</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Lightning Arrester</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Terrace Safety Railing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">If window grills are needed, they should be designed as heritage-style jali or wrought iron patterns — not standard MS grills. Security should be integrated, not visible as an afterthought.</p>
+      </div>
+
+      <!-- PLANTS & GREENERY -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Plants & Greenery</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <p class="pref-subhead">Outside / Street Front</p>
+            <div class="pref-row"><span class="pref-label">Tabebuia Rosea (Pink Trumpet Tree)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Bougainvillea — pink, compound wall</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Canna Lily in terracotta pots (gate entrance)</span><span class="pref-value decided">2 pots</span></div>
+
+            <p class="pref-subhead">Ground Floor — Parking Area</p>
+            <div class="pref-row"><span class="pref-label">Ixora Coccinea (border along parking)</span><span class="pref-value decided">6</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca — ground filler between pots</span><span class="pref-value decided">4 pots</span></div>
+
+            <p class="pref-subhead">First Floor — Parents' Sit-out</p>
+            <div class="pref-row"><span class="pref-label">Plumeria / Frangipani (large pot)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Adenium / Desert Rose</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Jasmine on small trellis</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Tradescantia — hanging (ceiling)</span><span class="pref-value decided">2 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Pothos — hanging (ceiling)</span><span class="pref-value decided">2 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Tulsi (near kitchen or sit-out)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Curry Leaf</span><span class="pref-value decided">1</span></div>
+
+            <p class="pref-subhead">Second Floor — My Sit-out</p>
+            <div class="pref-row"><span class="pref-label">Strelitzia / Bird of Paradise (corner)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Bougainvillea on teak trellis (wall)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Areca Palm (floor entrance)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca in long planter (railing)</span><span class="pref-value decided">3 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Lemongrass</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Tulsi</span><span class="pref-value decided">1</span></div>
+
+            <p class="pref-subhead">Terrace</p>
+            <div class="pref-row"><span class="pref-label">Dwarf Bougainvillea in large urns — pink</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Dwarf Bougainvillea in large urns — white</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Crossandra / Firecracker Flower</span><span class="pref-value decided">4</span></div>
+            <div class="pref-row"><span class="pref-label">Pentas — pink</span><span class="pref-value decided">4</span></div>
+            <div class="pref-row"><span class="pref-label">Lantana</span><span class="pref-value decided">3</span></div>
+            <div class="pref-row"><span class="pref-label">Thunbergia Grandiflora on parapet trellis</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Moringa / Drumstick in large container</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca — ground filler</span><span class="pref-value decided">6 pots</span></div>
+          </div>
+          <div>
+            <img src="assets/plants-plan-ref.png" alt="Floor-by-floor plant plan — nursery reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;margin-bottom:24px;" onclick="openLightbox('assets/plants-plan-ref.png','image')">
+
+            <p class="pref-subhead">Total Count</p>
+            <div class="pref-row"><span class="pref-label">Trees</span><span class="pref-value highlight">1</span></div>
+            <div class="pref-row"><span class="pref-label">Large shrubs / feature plants</span><span class="pref-value highlight">9</span></div>
+            <div class="pref-row"><span class="pref-label">Climbers</span><span class="pref-value highlight">5</span></div>
+            <div class="pref-row"><span class="pref-label">Fragrant / kitchen plants</span><span class="pref-value highlight">4</span></div>
+            <div class="pref-row"><span class="pref-label">Hanging pots</span><span class="pref-value highlight">4</span></div>
+            <div class="pref-row"><span class="pref-label">Filler / ground cover pots</span><span class="pref-value highlight">13</span></div>
+            <div class="pref-row" style="border-top:1px solid var(--gold);padding-top:12px;margin-top:4px;"><span class="pref-label" style="color:var(--gold);font-size:1.1rem;">Total Plants</span><span class="pref-value highlight" style="font-size:1.1rem;">36</span></div>
+
+            <p class="pref-subhead" style="margin-top:24px;">Infrastructure Needed</p>
+            <div class="pref-row"><span class="pref-label">Water outlets — all balconies & terrace</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Drainage provisions</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Trellis mounting points (walls)</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Ceiling hooks for hanging pots</span><span class="pref-value decided">Yes — 1st floor sit-out</span></div>
+            <div class="pref-row"><span class="pref-label">Drip irrigation / auto-watering</span><span class="pref-value">To be discussed</span></div>
+          </div>
+        </div>
+        <p class="pref-note">Plants are a serious part of the design, not decoration. The house should feel green and alive at every level. Everything listed above is available in Chennai — single nursery visit to Vandalur. The architect needs to provision water outlets, drainage, trellis mounting points, and ceiling hooks at all outdoor and semi-outdoor spaces during construction.</p>
+      </div>
+
+      <!-- ART & CRAFT INTEGRATION -->
+      <div class="pref-card reveal-up">
+        <h3>Art & Craft Integration</h3>
+        <div class="pref-row"><span class="pref-label">3D Relief Murals</span><span class="pref-value decided">Feature walls — locations TBD</span></div>
+        <div class="pref-row"><span class="pref-label">Traditional Paintings</span><span class="pref-value decided">Every floor — integrated</span></div>
+        <div class="pref-row"><span class="pref-label">Peacock Motifs</span><span class="pref-value decided">Recurring theme — all floors</span></div>
+        <div class="pref-row"><span class="pref-label">Mughal Arches</span><span class="pref-value decided">Key thresholds & doorways</span></div>
+        <div class="pref-row"><span class="pref-label">Carved Teak Elements</span><span class="pref-value decided">Doors, windows, frames</span></div>
+        <div class="pref-row"><span class="pref-label">Stained Glass</span><span class="pref-value decided">Ceilings & select windows</span></div>
+        <div class="pref-row"><span class="pref-label">Zellige Tile Work</span><span class="pref-value decided">All bathrooms</span></div>
+        <div class="pref-row"><span class="pref-label">Corridor / Entrance Art</span><span class="pref-value decided">Yes — not bare walls</span></div>
+        <div class="pref-row"><span class="pref-label">Artisan Sourcing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Art is a core requirement, not an afterthought. Every surface is an opportunity. The design team should plan art placement as part of the architecture, not leave blank walls for later.</p>
+      </div>
+
+      <!-- LIFT -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Lift / Elevator</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <div class="pref-row"><span class="pref-label">Shaft Size</span><span class="pref-value decided">4' × 5'</span></div>
+            <div class="pref-row"><span class="pref-label">Floors Served</span><span class="pref-value decided">G to 2nd (provision for 3rd)</span></div>
+            <div class="pref-row"><span class="pref-label">Brand</span><span class="pref-value decided">Johnson Lifts</span></div>
+            <div class="pref-row"><span class="pref-label">Model</span><span class="pref-value decided">Sukranti</span></div>
+            <div class="pref-row"><span class="pref-label">Cabin Finish</span><span class="pref-value decided">Teak Wood & SS Hairline</span></div>
+            <div class="pref-row"><span class="pref-label">Door Style</span><span class="pref-value">To be discussed</span></div>
+            <div class="pref-row"><span class="pref-label">Display Panel</span><span class="pref-value">To be discussed</span></div>
+            <p class="pref-note">Lift is required — primarily for parents' convenience. We are planning Johnson Lifts Sukranti model with a Teak Wood + SS Hairline cabin finish to match the heritage aesthetic of the house. <a href="assets/johnson-sukranti-brochure.pdf" download style="color:var(--gold);">↓ Download full Sukranti brochure (PDF)</a></p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <img src="assets/johnson-sukranti-p1.jpg" alt="Johnson Sukranti — Cover" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-p1.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p7.jpg" alt="Johnson Sukranti — Teak & SS Hairline finish" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p7.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p15.jpg" alt="Johnson Sukranti — Finish options" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p15.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p12.jpg" alt="Johnson Sukranti — Display options" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p12.jpg','image')">
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- EXTERIOR & FACADE -->
+      <div class="pref-card reveal-up">
+        <h3>Exterior & Facade</h3>
+        <div class="pref-row"><span class="pref-label">Facade Style</span><span class="pref-value decided">Neo-Deccan Heritage</span></div>
+        <div class="pref-row"><span class="pref-label">Facade Material</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Facade Colour</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Balcony Railing Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Name Board Design</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Gate Design</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Compound Wall</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exterior Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Weatherproofing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">The facade is the first impression. It should unmistakably communicate the heritage intent — no generic modern elevation with decorative elements stuck on.</p>
+      </div>
+
+      <!-- BUDGET & TIMELINE (full width) -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Budget & Timeline</h3>
+        <div class="pref-row"><span class="pref-label">Overall Budget Range</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Construction Start Target</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Expected Completion</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Priority if Budget Constrained</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Phased Construction?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">3rd Floor — When?</span><span class="pref-value decided">Future — foundation ready now</span></div>
+        <p class="pref-note">Budget and timeline to be discussed in person. The intent is to build once and build right — quality of craftsmanship is more important than speed. We are willing to phase certain finishes if needed, but the structure and core design must be complete.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="frieze" style="margin-bottom: 48px;">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+  <div class="footer-columns">
+    <div class="footer-left">
+      <p class="footer-brand">MANAI</p>
+      <p class="footer-tamil">மனை</p>
+      <p class="footer-location">Old Washermanpet, Chennai</p>
+    </div>
+    <div class="footer-center">
+      <p>880 sq.ft Plot · G+2 Built</p>
+      <p>Foundation: G+3 · 2,772 sq.ft</p>
+      <p>Neo-Deccan Heritage</p>
+    </div>
+    <div class="footer-right">
+      <p>Architect: Manivalluvan & Associates</p>
+      <p>Structural: NJ Associates (Job 215/25)</p>
+      <p>Aesthetic: Neo-Deccan Heritage</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Design Requirements Document — Prepared for Architect Review</p>
+  </div>
+</footer>
+
+<!-- ═══════════════ LIGHTBOX ═══════════════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg width="36" height="36" viewBox="0 0 36 36">
+      <line x1="8" y1="8" x2="28" y2="28"/><line x1="28" y1="8" x2="8" y2="28"/>
+    </svg>
+  </button>
+  <button class="lightbox-arrow prev" onclick="navigateLightbox(-1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M20 4 L6 20 L20 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+  <div id="lightboxContent"></div>
+  <button class="lightbox-arrow next" onclick="navigateLightbox(1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M4 4 L18 20 L4 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════ -->
+<script>
+/* ─── REFERENCE GALLERY DATA ───
+   Populate this array with your reference images and videos.
+   
+   type:     'photo' or 'video'
+   src:      Path to file (relative to index.html)
+   thumb:    (videos only) Path to thumbnail image
+   caption:  Description shown on hover
+   category: One of: 'Exteriors', 'Interiors', 'Stained Glass', 
+             'Carved Teak', 'Peacock Motifs', 'Materials', 'Structural'
+   
+   Example:
+   { type: 'photo', src: 'assets/reference/photos/stained-glass-01.jpg', 
+     caption: 'Stained glass ceiling from a Chettinad mansion', category: 'Stained Glass' },
+   { type: 'video', src: 'assets/reference/videos/carved-door.mp4', 
+     thumb: 'assets/reference/photos/carved-door-thumb.jpg',
+     caption: 'Hand-carved teak doorway detail', category: 'Carved Teak' },
+*/
+const REFERENCE_ITEMS = [
+  // ── Instagram Carousel: Architecture/Interiors ──
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511558789274616.webp', caption: 'Design reference — Heritage interior', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511558613132108.webp', caption: 'Design reference — Detail', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511567261814830.webp', caption: 'Design reference — Craftsmanship', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511579223962883.webp', caption: 'Design reference — Material palette', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511586404582901.webp', caption: 'Design reference — Surface treatment', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511604985370100.webp', caption: 'Design reference — Spatial composition', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511621057929017.webp', caption: 'Design reference — Architectural detail', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511632952992376.webp', caption: 'Design reference — Light and form', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511643673592251.webp', caption: 'Design reference — Threshold', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511658513096179.webp', caption: 'Design reference — Pattern', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3855512245279395088_3855511677865584236.webp', caption: 'Design reference — Overview', category: 'Interiors' },
+
+  // ── Instagram: Standalone image ──
+  { type: 'photo', src: 'assets/reference/photos/3816236472630793011.jpg', caption: 'Inspiration — Heritage architecture', category: 'Exteriors' },
+
+  // ── Instagram Carousel: Exterior/Facade ──
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130527621461353.jpg', caption: 'Facade reference — Entrance', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130549943545929.jpg', caption: 'Facade reference — Elevation', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130584915672162.jpg', caption: 'Facade reference — Detail', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130589386770374.jpg', caption: 'Facade reference — Ornamentation', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130592926814194.jpg', caption: 'Facade reference — Texture', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130599092424836.jpg', caption: 'Facade reference — Material', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130603412580587.jpg', caption: 'Facade reference — Color palette', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130606625412760.jpg', caption: 'Facade reference — Context', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130615961905099.jpg', caption: 'Facade reference — Composition', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130618092645888.jpg', caption: 'Facade reference — Arch detail', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130622991572510.jpg', caption: 'Facade reference — Fenestration', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130628771320976.jpg', caption: 'Facade reference — Night view', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130654239135150.jpg', caption: 'Facade reference — Street view', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/3851131112131983137_3851130655111533446.jpg', caption: 'Facade reference — Overview', category: 'Exteriors' },
+
+  // ── Instagram Carousel: Interior details ──
+  { type: 'photo', src: 'assets/reference/photos/3844672839610055338_3844672641907328483.jpg', caption: 'Interior reference — Carved woodwork', category: 'Carved Teak' },
+  { type: 'photo', src: 'assets/reference/photos/3844672839610055338_3844672654230178063.jpg', caption: 'Interior reference — Teak detail', category: 'Carved Teak' },
+  { type: 'photo', src: 'assets/reference/photos/3844672839610055338_3844672657233290164.jpg', caption: 'Interior reference — Frame', category: 'Carved Teak' },
+  { type: 'photo', src: 'assets/reference/photos/3844672839610055338_3844672661880610901.jpg', caption: 'Interior reference — Joinery', category: 'Carved Teak' },
+  { type: 'photo', src: 'assets/reference/photos/3844672839610055338_3844672665227672664.jpg', caption: 'Interior reference — Overview', category: 'Carved Teak' },
+
+  // ── Instagram Carousel: Motifs/Art ──
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091798279556579.jpg', caption: 'Art reference — Motif study', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091800745860778.jpg', caption: 'Art reference — Pattern', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091806693377953.jpg', caption: 'Art reference — Relief detail', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091807783889867.jpg', caption: 'Art reference — Ornamental', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091814142463649.jpg', caption: 'Art reference — Peacock form', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091821390193161.jpg', caption: 'Art reference — Mural', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091826347859199.jpg', caption: 'Art reference — Tile work', category: 'Peacock Motifs' },
+  { type: 'photo', src: 'assets/reference/photos/3848092503786687311_3848091831649491545.jpg', caption: 'Art reference — Full view', category: 'Peacock Motifs' },
+
+  // ── Instagram: Architecture details ──
+  { type: 'photo', src: 'assets/reference/photos/3838194746040827447_3838193967938721525.jpg', caption: 'Structure reference — Form', category: 'Structural' },
+  { type: 'photo', src: 'assets/reference/photos/3838194746040827447_3838193975379365966.jpg', caption: 'Structure reference — Detail', category: 'Structural' },
+  { type: 'photo', src: 'assets/reference/photos/3838194746040827447_3838193978936137852.jpg', caption: 'Structure reference — Material', category: 'Structural' },
+
+  // ── Pinterest: Design references ──
+  { type: 'photo', src: 'assets/reference/photos/pinterest_650066527507305132.jpg', caption: 'Pinterest — Heritage design inspiration', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_650066527507228898_2429493123.png', caption: 'Pinterest — Architectural reference', category: 'Exteriors' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_9640586698113200.jpg', caption: 'Pinterest — Material & texture', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_20125529581068327.jpg', caption: 'Pinterest — Colour palette reference', category: 'Materials' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_5207355815655764_3945723378.jpg', caption: 'Pinterest — Decorative element', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_650066527507147364_46576708.jpg', caption: 'Pinterest — Spatial design', category: 'Interiors' },
+  { type: 'photo', src: 'assets/reference/photos/pinterest_650066527507147493.jpg', caption: 'Pinterest — Heritage detail', category: 'Interiors' },
+
+  // ── Videos ──
+  { type: 'video', src: 'assets/reference/videos/3847557390145907839.mp4', caption: 'Video — Architectural walkthrough', category: 'Interiors' },
+  { type: 'video', src: 'assets/reference/videos/3818447825076693082.mp4', caption: 'Video — Heritage craftsmanship', category: 'Materials' },
+  { type: 'video', src: 'assets/reference/videos/3806293978992113971.mp4', caption: 'Video — Design inspiration', category: 'Interiors' },
+  { type: 'video', src: 'assets/reference/videos/3840339047722350508.mp4', caption: 'Video — Spatial experience', category: 'Interiors' },
+  { type: 'video', src: 'assets/reference/videos/3738003682785775691.mp4', caption: 'Video — Material & texture study', category: 'Materials' },
+  { type: 'video', src: 'assets/reference/videos/3761770839394616373.mp4', caption: 'Video — Interior detail', category: 'Interiors' },
+  { type: 'video', src: 'assets/reference/videos/3764325214889773147.mp4', caption: 'Video — Craft process', category: 'Materials' },
+  { type: 'video', src: 'assets/reference/videos/3795171405785233762.mp4', caption: 'Video — Atmosphere & light', category: 'Stained Glass' },
+];
+
+/* ─── ENTRY ANIMATION ─── */
+function enterSite() {
+  const entry = document.getElementById('entryScreen');
+  entry.classList.add('dismissed');
+  document.getElementById('mainContent').classList.add('visible');
+  setTimeout(() => { entry.style.display = 'none'; }, 900);
+}
+
+/* ─── CUSTOM CURSOR ─── */
+(function() {
+  if (window.matchMedia('(hover: none)').matches || 'ontouchstart' in window) return;
+  
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.15;
+    ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.addEventListener('mouseover', function(e) {
+    const t = e.target;
+    if (t.closest('a, button, .plan-frame, .masonry-item, .tab-btn, .filter-pill, .pdf-download, .nav-link')) {
+      document.body.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', function(e) {
+    const t = e.target;
+    if (t.closest('a, button, .plan-frame, .masonry-item, .tab-btn, .filter-pill, .pdf-download, .nav-link')) {
+      document.body.classList.remove('cursor-hover');
+    }
+  });
+})();
+
+/* ─── NAVIGATION SCROLL ─── */
+(function() {
+  const nav = document.getElementById('mainNav');
+  let ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
+/* ─── MOBILE MENU ─── */
+function toggleMobileMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* ─── TAB SWITCHING ─── */
+function switchTab(prefix, index, btn) {
+  const container = btn.parentElement;
+  container.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  
+  var i = 0;
+  while (document.getElementById(prefix + '-' + i)) {
+    document.getElementById(prefix + '-' + i).classList.remove('active');
+    i++;
+  }
+  var target = document.getElementById(prefix + '-' + index);
+  if (target) target.classList.add('active');
+}
+
+/* ─── LIGHTBOX ─── */
+var lightboxItems = [];
+var lightboxIndex = 0;
+
+function openLightbox(src, type) {
+  var lb = document.getElementById('lightbox');
+  var content = document.getElementById('lightboxContent');
+  
+  lightboxItems = [{ src: src, type: type }];
+  lightboxIndex = 0;
+  
+  renderLightboxItem(src, type, content);
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+var currentFilteredItems = [];
+
+function openGalleryLightbox(filteredIndex) {
+  var lb = document.getElementById('lightbox');
+  var content = document.getElementById('lightboxContent');
+  
+  lightboxItems = currentFilteredItems.map(function(item) {
+    return { src: item.src, type: item.type };
+  });
+  lightboxIndex = filteredIndex;
+  
+  var item = lightboxItems[filteredIndex];
+  renderLightboxItem(item.src, item.type, content);
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderLightboxItem(src, type, container) {
+  if (type === 'video') {
+    container.innerHTML = '<video class="lightbox-media" controls autoplay><source src="' + src + '"></video>';
+  } else {
+    container.innerHTML = '<img class="lightbox-media" src="' + src + '" alt="">';
+  }
+}
+
+function closeLightbox() {
+  var lb = document.getElementById('lightbox');
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('lightboxContent').innerHTML = '';
+}
+
+function navigateLightbox(dir) {
+  if (lightboxItems.length <= 1) return;
+  lightboxIndex = (lightboxIndex + dir + lightboxItems.length) % lightboxItems.length;
+  var item = lightboxItems[lightboxIndex];
+  renderLightboxItem(item.src, item.type, document.getElementById('lightboxContent'));
+}
+
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navigateLightbox(-1);
+  if (e.key === 'ArrowRight') navigateLightbox(1);
+});
+
+/* Touch swipe for lightbox */
+(function() {
+  var startX = 0;
+  var lb = document.getElementById('lightbox');
+  lb.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; });
+  lb.addEventListener('touchend', function(e) {
+    var diff = e.changedTouches[0].clientX - startX;
+    if (Math.abs(diff) > 50) navigateLightbox(diff > 0 ? -1 : 1);
+  });
+})();
+
+/* ─── REFERENCE GALLERY RENDER ─── */
+(function() {
+  if (REFERENCE_ITEMS.length === 0) {
+    document.getElementById('galleryEmpty').style.display = 'block';
+    document.getElementById('galleryFilters').style.display = 'none';
+    return;
+  }
+
+  var categories = ['All'];
+  REFERENCE_ITEMS.forEach(function(item) {
+    if (item.category && categories.indexOf(item.category) === -1) {
+      categories.push(item.category);
+    }
+  });
+  categories.push('Videos');
+
+  var filtersEl = document.getElementById('galleryFilters');
+  categories.forEach(function(cat) {
+    var pill = document.createElement('button');
+    pill.className = 'filter-pill' + (cat === 'All' ? ' active' : '');
+    pill.textContent = cat;
+    pill.onclick = function() { filterGallery(cat, pill); };
+    filtersEl.appendChild(pill);
+  });
+
+  renderGallery('All');
+})();
+
+function filterGallery(category, activePill) {
+  document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+  activePill.classList.add('active');
+  renderGallery(category);
+}
+
+function renderGallery(category) {
+  var grid = document.getElementById('masonryGrid');
+  grid.innerHTML = '';
+  
+  currentFilteredItems = REFERENCE_ITEMS.filter(function(item) {
+    if (category === 'Videos') return item.type === 'video';
+    if (category === 'All') return true;
+    return item.category === category;
+  });
+  
+  currentFilteredItems.forEach(function(item, idx) {
+    var el = document.createElement('div');
+    el.className = 'masonry-item';
+    el.style.transitionDelay = (idx * 0.05) + 's';
+    
+    if (item.type === 'video') {
+      var thumbHtml = item.thumb
+        ? '<img src="' + item.thumb + '" alt="' + (item.caption || '') + '">'
+        : '<video muted preload="metadata" style="width:100%;display:block;pointer-events:none;"><source src="' + item.src + '#t=0.5"></video>';
+      el.innerHTML = 
+        thumbHtml +
+        '<div class="video-play-overlay">' +
+          '<svg width="48" height="56" viewBox="0 0 48 56" fill="none">' +
+            '<path d="M24 2 C24 2, 45 18, 45 30 C45 40, 36 50, 24 50 C12 50, 3 40, 3 30 C3 18, 24 2, 24 2Z" stroke="var(--gold)" stroke-width="1" fill="rgba(13,13,13,0.5)"/>' +
+            '<polygon points="20,20 34,28 20,36" fill="var(--gold)"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div class="masonry-caption"><span>' + (item.caption || '') + '</span></div>';
+      el.onclick = (function(fi) { return function() { openGalleryLightbox(fi); }; })(idx);
+    } else {
+      el.innerHTML = 
+        '<img src="' + item.src + '" alt="' + (item.caption || '') + '">' +
+        '<div class="masonry-caption"><span>' + (item.caption || '') + '</span></div>';
+      el.onclick = (function(fi) { return function() { openGalleryLightbox(fi); }; })(idx);
+    }
+    
+    grid.appendChild(el);
+  });
+}
+
+/* ─── SCROLL REVEAL ─── */
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        
+        var children = entry.target.querySelectorAll('.room-row, .masonry-item, .spec-item');
+        children.forEach(function(child, i) {
+          child.style.opacity = '0';
+          child.style.transform = 'translateY(12px)';
+          child.style.transition = 'opacity 0.4s ease ' + (i * 0.06) + 's, transform 0.4s ease ' + (i * 0.06) + 's';
+          setTimeout(function() {
+            child.style.opacity = '1';
+            child.style.transform = 'translateY(0)';
+          }, 50);
+        });
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-slow').forEach(function(el) {
+    observer.observe(el);
+  });
+})();
+
+</script>
+</body>
+</html>
