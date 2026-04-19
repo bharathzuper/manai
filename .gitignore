@@ -1,0 +1,18 @@
+# Editor / OS
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Conductor workspace state
+.context/
+
+# Unused reference material (kept locally, not deployed)
+assets/reference/instagram/*.mp4
+assets/reference/videos/
+assets/reference/photos/
+
+# Node / build (if added later)
+node_modules/
+dist/
+.vercel/

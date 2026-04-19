@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rasanai — Manai Moodboard</title>
+<meta name="description" content="A private archive of the images, rooms, and details that inform the vision for Manai — a Neo-Deccan Heritage Residence in Old Washermanpet, Chennai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=EB+Garamond:wght@400;500;600&family=Noto+Serif+Tamil:wght@400;700&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+    "react-dom": "https://esm.sh/react-dom@18.3.1?deps=react@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client?deps=react@18.3.1",
+    "scheduler": "https://esm.sh/scheduler@0.23.2",
+    "three": "https://esm.sh/three@0.160.0",
+    "three/src/math/MathUtils.js": "https://esm.sh/three@0.160.0/src/math/MathUtils.js",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.19?deps=react@18.3.1,react-dom@18.3.1,three@0.160.0&external=react,react-dom,three",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@9.99.0?deps=react@18.3.1,react-dom@18.3.1,three@0.160.0,@react-three/fiber@8.15.19&external=react,react-dom,three,@react-three/fiber"
+  }
+}
+</script>
+<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+
+<style>
+:root {
+  --ink: #0D0D0D;
+  --ink-2: #141210;
+  --vellum: #F2E8D5;
+  --vellum-dim: #C8BDA5;
+  --gold: #C6922A;
+  --gold-pale: #E8C97A;
+  --gold-ink: rgba(198, 146, 42, 0.15);
+  --teal-deep: #0F3D3D;
+  --burgundy: #5C1A28;
+  --smoke: #1A1A1A;
+  --muted: #7A6A55;
+  --line: rgba(198, 146, 42, 0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--vellum);
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: none;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: none; border: none; background: none; color: inherit; }
+
+.font-cinzel { font-family: 'Cinzel Decorative', serif; font-weight: 700; }
+.font-cormorant { font-family: 'Cormorant Garamond', serif; }
+.font-eb { font-family: 'EB Garamond', serif; }
+.font-tamil { font-family: 'Noto Serif Tamil', serif; }
+
+/* ═════ CURSOR ═════ */
+.cursor-dot {
+  position: fixed; top: 0; left: 0;
+  width: 10px; height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.25s, height 0.25s;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease-out, width 0.25s, height 0.25s, opacity 0.25s;
+}
+.cursor-ring.hover { width: 54px; height: 54px; background: rgba(198,146,42,0.1); }
+
+/* ═════ NAV ═════ */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(13,13,13,0.92), rgba(13,13,13,0.5) 70%, transparent);
+  z-index: 900;
+  backdrop-filter: blur(8px);
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-monogram {
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  display: grid; place-items: center;
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+.nav-brand-text {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--vellum);
+  font-size: 1rem;
+  letter-spacing: 0.32em;
+}
+.nav-back {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--vellum-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 2px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+.nav-back:hover { color: var(--gold); border-color: var(--gold); }
+.nav-back svg { width: 14px; height: 14px; }
+
+/* ═════ HERO ═════ */
+.hero {
+  min-height: 100vh;
+  padding: 0 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+}
+.rasanai-blinds-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.rasanai-hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at center, rgba(13, 13, 13, 0.55) 0%, rgba(13, 13, 13, 0.82) 60%, rgba(13, 13, 13, 0.96) 100%),
+    linear-gradient(180deg, rgba(13, 13, 13, 0.65) 0%, rgba(13, 13, 13, 0.2) 30%, rgba(13, 13, 13, 0.2) 70%, rgba(13, 13, 13, 0.85) 100%);
+}
+.hero > *:not(.rasanai-blinds-bg):not(.rasanai-hero-veil) {
+  position: relative;
+  z-index: 2;
+}
+.hero-overline {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.2s forwards;
+}
+.hero-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  font-weight: 400;
+  color: var(--gold);
+  font-size: clamp(3rem, 8.5vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.4s forwards;
+}
+.hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+  letter-spacing: 0.42em;
+  color: var(--vellum);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.7s forwards;
+}
+.hero-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 28px;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.9s forwards;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  color: var(--vellum-dim);
+  max-width: 640px;
+  opacity: 0;
+  animation: fadeUp 1.4s 1.1s forwards;
+}
+.hero-meta {
+  position: absolute;
+  bottom: 48px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp 1.4s 1.4s forwards;
+}
+.hero-meta span { position: relative; }
+.hero-meta span::before {
+  content: '·';
+  color: var(--gold);
+  position: absolute;
+  left: -24px; top: -2px;
+}
+.hero-meta span:first-child::before { display: none; }
+.hero-scroll {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 0;
+  background: var(--gold);
+  animation: scrollLine 2s 1.6s forwards;
+  opacity: 0;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollLine {
+  0% { height: 0; opacity: 0; }
+  50% { opacity: 1; }
+  100% { height: 28px; opacity: 1; }
+}
+
+/* ═════ SECTION HEADER ═════ */
+.board-header {
+  padding: 120px 48px 40px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.board-overline {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.38em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.board-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--vellum);
+  letter-spacing: 0.12em;
+  margin-bottom: 24px;
+}
+.board-intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: var(--vellum-dim);
+  line-height: 1.55;
+}
+.board-stats {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 44px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.board-stat-num {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.board-stat-label {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+/* ═════ FILTERS ═════ */
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 20px 48px;
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.filter-pill {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--vellum-dim);
+  border-radius: 2px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.filter-pill:hover { border-color: var(--gold); color: var(--gold); }
+.filter-pill.active {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+.filter-pill .count {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+.filter-pill.active .count { opacity: 0.85; }
+
+/* ═════ MASONRY ═════ */
+.board {
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 0 32px 120px;
+  columns: 3;
+  column-gap: 24px;
+}
+@media (max-width: 1200px) { .board { columns: 2; } }
+@media (max-width: 700px) {
+  .board { columns: 1; padding: 0 20px 80px; }
+  .filter-bar { padding: 14px 20px; }
+  .top-nav { padding: 16px 20px; }
+  .board-header { padding: 80px 20px 24px; }
+  .board-stats { gap: 28px; }
+}
+
+.card {
+  break-inside: avoid;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  background: var(--smoke);
+  border: 1px solid transparent;
+  transition: border-color 0.5s, transform 0.5s;
+}
+.card.hidden { display: none; }
+.card:hover { border-color: var(--gold); }
+
+.card-media {
+  position: relative;
+  overflow: hidden;
+}
+.card-media img, .card-media video {
+  width: 100%;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s;
+  filter: saturate(0.95);
+}
+.card:hover .card-media img, .card:hover .card-media video {
+  transform: scale(1.035);
+  filter: saturate(1.05);
+}
+
+.card-count {
+  position: absolute;
+  top: 14px; right: 14px;
+  padding: 5px 11px;
+  background: rgba(13,13,13,0.78);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--line);
+  color: var(--gold-pale);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 2;
+}
+.card-count svg { width: 11px; height: 11px; }
+
+.card-caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 60px 20px 20px;
+  background: linear-gradient(to top, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.6) 55%, transparent 100%);
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+}
+.card:hover .card-caption { transform: translateY(0); }
+.card-studio {
+  font-family: 'EB Garamond', serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.card-studio::before {
+  content: '';
+  width: 18px; height: 1px;
+  background: var(--gold);
+}
+.card-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: var(--vellum);
+  opacity: 0.96;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.video-play div {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(13,13,13,0.7);
+  border: 1px solid var(--gold);
+  display: grid;
+  place-items: center;
+}
+.video-play svg { width: 18px; height: 18px; fill: var(--gold); margin-left: 3px; }
+
+/* ═════ LIGHTBOX ═════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.lightbox.open {
+  display: flex;
+  opacity: 1;
+}
+.lb-top {
+  padding: 22px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.lb-studio-line {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.lb-studio-line::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--gold);
+}
+.lb-close {
+  width: 42px; height: 42px;
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  color: var(--vellum-dim);
+  transition: all 0.3s;
+}
+.lb-close:hover { color: var(--gold); border-color: var(--gold); }
+.lb-close svg { width: 14px; height: 14px; }
+
+.lb-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 380px);
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+.lb-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--ink-2);
+  overflow: hidden;
+  min-width: 0;
+}
+.lb-stage img, .lb-stage video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: lbFade 0.35s ease-out;
+}
+@keyframes lbFade {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px; height: 48px;
+  border: 1px solid var(--line);
+  background: rgba(13,13,13,0.7);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  color: var(--vellum-dim);
+  transition: all 0.3s;
+  z-index: 2;
+}
+.lb-nav:hover { color: var(--gold); border-color: var(--gold); background: rgba(13,13,13,0.9); }
+.lb-nav.prev { left: 20px; }
+.lb-nav.next { right: 20px; }
+.lb-nav svg { width: 16px; height: 16px; }
+.lb-nav.hidden { opacity: 0; pointer-events: none; }
+
+.lb-counter {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  background: rgba(13,13,13,0.75);
+  border: 1px solid var(--line);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--gold-pale);
+}
+
+.lb-info {
+  background: var(--ink);
+  border-left: 1px solid var(--line);
+  padding: 44px 36px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.lb-info-label {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lb-info-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.1rem;
+  color: var(--vellum);
+  letter-spacing: 0.16em;
+  margin-top: 6px;
+}
+.lb-info-handle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--gold);
+  margin-top: 4px;
+}
+.lb-info-rule {
+  width: 36px; height: 1px;
+  background: var(--gold);
+}
+.lb-info-caption {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--vellum);
+}
+.lb-info-link {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-family: 'EB Garamond', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--vellum-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.3s;
+}
+.lb-info-link:hover { color: var(--gold); }
+.lb-info-link svg { width: 12px; height: 12px; }
+
+.lb-thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.lb-thumb {
+  width: 48px; height: 48px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid transparent;
+  opacity: 0.5;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+.lb-thumb:hover { opacity: 0.9; }
+.lb-thumb.active { opacity: 1; border-color: var(--gold); }
+
+@media (max-width: 900px) {
+  .lb-body { grid-template-columns: 1fr; }
+  .lb-info { border-left: 0; border-top: 1px solid var(--line); padding: 28px 22px; max-height: 40vh; }
+  .lb-stage { padding: 20px; }
+  .lb-top { padding: 16px 20px; }
+}
+
+/* ═════ FOOTER ═════ */
+.outro {
+  padding: 100px 48px 80px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  margin: 0 32px;
+}
+.outro-mark {
+  font-family: 'Noto Serif Tamil', serif;
+  color: var(--gold);
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.outro-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--vellum-dim);
+  max-width: 520px;
+  margin: 0 auto 32px;
+}
+.outro-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 28px;
+  border: 1px solid var(--gold);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  transition: all 0.3s;
+}
+.outro-back:hover { background: var(--gold); color: var(--ink); }
+.outro-back svg { width: 12px; height: 12px; }
+
+/* ═════ UTILITIES ═════ */
+body.lb-open { overflow: hidden; }
+a, button, .card { cursor: none; }
+
+@media (hover: none) {
+  body, a, button, .card { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+  .card-caption { transform: translateY(0); background: linear-gradient(to top, rgba(13,13,13,0.92) 0%, transparent 100%); padding: 50px 16px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═════ NAV ═════ -->
+<nav class="top-nav">
+  <a href="index.html" class="nav-brand" data-hover>
+    <div class="nav-monogram">M</div>
+    <span class="nav-brand-text">MANAI</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:28px;">
+    <a href="wishlist.html" class="nav-back" data-hover>
+      Wishlist
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M7 17L17 7M17 7H9M17 7V15" />
+      </svg>
+    </a>
+    <a href="index.html" class="nav-back" data-hover>
+      Back to the brief
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M7 17L17 7M17 7H9M17 7V15" />
+      </svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ═════ HERO ═════ -->
+<section class="hero">
+  <div id="rasanaiBlindsRoot" class="rasanai-blinds-bg"></div>
+  <div class="rasanai-hero-veil"></div>
+  <p class="hero-overline">Moodboard · Things I Love</p>
+  <h1 class="hero-tamil">ரசனை</h1>
+  <p class="hero-title">RASANAI</p>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">A private archive of the rooms, details, and moments that shape the vision for Manai.</p>
+  <div class="hero-meta">
+    <span id="heroPosts">— Posts</span>
+    <span id="heroImages">— Images</span>
+    <span id="heroStudios">— Studios</span>
+  </div>
+  <div class="hero-scroll"></div>
+</section>
+
+<!-- ═════ BOARD HEADER ═════ -->
+<section class="board-header">
+  <p class="board-overline">The Curation</p>
+  <h2 class="board-title">What Moves Me</h2>
+  <p class="board-intro">Every image here was saved before there was a house. These studios — carving in teak, layering in stone, holding space for light — are the compass. The brief grew from this board.</p>
+</section>
+
+<!-- ═════ FILTERS ═════ -->
+<div class="filter-bar" id="filterBar"></div>
+
+<!-- ═════ MASONRY ═════ -->
+<div class="board" id="board"></div>
+
+<!-- ═════ OUTRO ═════ -->
+<section class="outro">
+  <div class="outro-mark">மனை</div>
+  <p class="outro-text">Every reference traces back to the designer who made it. Tap any image to open the post in its original home.</p>
+  <a href="index.html" class="outro-back" data-hover>
+    Return to the Brief
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M13 5l7 7-7 7" />
+    </svg>
+  </a>
+</section>
+
+<!-- ═════ LIGHTBOX ═════ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lb-top">
+    <span class="lb-studio-line" id="lbStudioLine"></span>
+    <button class="lb-close" id="lbClose" aria-label="Close" data-hover>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-stage" id="lbStage">
+      <button class="lb-nav prev" id="lbPrev" aria-label="Previous" data-hover>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="lb-nav next" id="lbNext" aria-label="Next" data-hover>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <span class="lb-counter" id="lbCounter"></span>
+    </div>
+    <aside class="lb-info">
+      <div>
+        <div class="lb-info-label">Designer</div>
+        <div class="lb-info-name" id="lbName"></div>
+        <div class="lb-info-handle" id="lbHandle"></div>
+      </div>
+      <div class="lb-info-rule"></div>
+      <p class="lb-info-caption" id="lbCaption"></p>
+      <div class="lb-thumbs" id="lbThumbs"></div>
+      <a class="lb-info-link" id="lbLink" target="_blank" rel="noopener" data-hover>
+        View on Instagram
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M7 17L17 7M17 7H9M17 7V15" />
+        </svg>
+      </a>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* ═════ DATA ═════ */
+const POSTS = [
+  {
+    "id": "DXMATVIiWYv",
+    "studio": "indiatoday_home",
+    "name": "India Today HOME",
+    "caption": "From the moment one steps inside, Padmalaya whispers a sense of arrival — a place where the lotus blooms not merely in name, but in the lived experience of its residents.",
+    "url": "https://www.instagram.com/p/DXMATVIiWYv/",
+    "images": [
+      "assets/reference/instagram/DXMATVIiWYv.jpg"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DXJekSKk08c",
+    "studio": "mosaic.studio",
+    "name": "mosaic.studio",
+    "caption": "Layered greens, balanced textures. Matte surfaces, subtle patterns, and warm wood tones come together to create a timeless bathroom space.",
+    "url": "https://www.instagram.com/p/DXJekSKk08c/",
+    "images": [
+      "assets/reference/instagram/DXJekSKk08c.jpg"
+    ],
+    "tags": [
+      "bath",
+      "detail"
+    ]
+  },
+  {
+    "id": "DWl1YBICJAV",
+    "studio": "zainab_farahat",
+    "name": "Zainab Farahat",
+    "caption": "Designing the feeling, not just the space. Design & Visualization | @zainab_farahat — Saudi Arabia, 2026.",
+    "url": "https://www.instagram.com/p/DWl1YBICJAV/",
+    "images": [
+      "assets/reference/instagram/DWl1YBICJAV.jpg"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DTPcXfVCrP0",
+    "studio": "elledecorindia",
+    "name": "ELLE DECOR India",
+    "caption": "For this city in Maharashtra, the historical bones of basalt stone and wadas continue to oscillate between the old and new — in Pune, a residence designed for a Maharashtrian famil…",
+    "url": "https://www.instagram.com/p/DTPcXfVCrP0/",
+    "images": [
+      "assets/reference/instagram/3805384969640653812_3805384944432850337.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944432876873.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944432897778.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944625783529.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944625785353.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944625801235.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944634230850.jpg",
+      "assets/reference/instagram/3805384969640653812_3805384944667731370.jpg"
+    ],
+    "tags": [
+      "bedroom",
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DQn-uwMiijM",
+    "studio": "elledecorindia",
+    "name": "ELLE DECOR India",
+    "caption": "Could a Chettinad mansion prove to be the blueprint for a modern-day home? Shaped with garnet Athangudi tiles, refurbished antiques and colour aplenty, this 2,400 sq ft home in Ben…",
+    "url": "https://www.instagram.com/p/DQn-uwMiijM/",
+    "images": [
+      "assets/reference/instagram/3758248305793575116_3758248278111183681.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278111215110.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278111220619.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278295757601.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278312546444.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278320929754.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278807431847.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278807445651.webp",
+      "assets/reference/instagram/3758248305793575116_3758248278975237271.webp"
+    ],
+    "tags": [
+      "detail"
+    ]
+  },
+  {
+    "id": "DNU4mLKzd01",
+    "studio": "elledecorindia",
+    "name": "ELLE DECOR India",
+    "caption": "“The clues were all around,” says Swati Seraan @swatiseraan of By the Riverside @bytheriverside.in⁠ about this home in Bengaluru, “In the silk sarees the woman of the house wore to…",
+    "url": "https://www.instagram.com/p/DNU4mLKzd01/",
+    "images": [
+      "assets/reference/instagram/3698830107915181365_3698830090928206625.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830090928211359.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830090928368814.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830091054144945.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830091054208906.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830091213478405.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830091213536319.jpg",
+      "assets/reference/instagram/3698830107915181365_3698830091305679907.jpg"
+    ],
+    "tags": [
+      "bedroom",
+      "sacred",
+      "detail"
+    ]
+  },
+  {
+    "id": "DJ8aby9yNr-",
+    "studio": "elledecorindia",
+    "name": "ELLE DECOR India",
+    "caption": "How did a home bridge cultures between the North and the South, the East and the West? In this sprawling home by Renesa Architecture Design Studio @renesa.architects, engraved Chet…",
+    "url": "https://www.instagram.com/p/DJ8aby9yNr-/",
+    "images": [
+      "assets/reference/instagram/3637898858367343358_3637898830542362169.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830550858256.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830559237994.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830676502924.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830676612363.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830676646575.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830684883817.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898830835943314.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898847403633683.jpg",
+      "assets/reference/instagram/3637898858367343358_3637898847453953271.jpg"
+    ],
+    "tags": [
+      "living",
+      "sacred",
+      "detail"
+    ]
+  },
+  {
+    "id": "DXJAD3zjGLT",
+    "studio": "archdigestindia",
+    "name": "Architectural Digest India",
+    "caption": "Inside #AD100 designer Vritima Wadhwa’s soul- and sun-filled Delhi home Designer Vritima Wadhwa of Project 810 (@project810) returned to Delhi to set up hearth and home in a gated …",
+    "url": "https://www.instagram.com/p/DXJAD3zjGLT/",
+    "images": [
+      "assets/reference/instagram/3875629220408091347_3875611034434437669.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034434464480.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034434465498.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034442801679.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034442806265.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034526729122.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034535081207.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034560247826.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034577053812.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034593832797.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034660950009.jpg",
+      "assets/reference/instagram/3875629220408091347_3875611034660959133.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DXMV45jyYTq",
+    "studio": "dr.vidyalakshmi_prakash",
+    "name": "Vidyalakshmi Prakash",
+    "caption": "Some places you visit …some places you feel 👌 Experience your private Heritage Stay @akkarae_calicut …opening sooon ! #ViralReels #ExplorePage #ReelItFeelIt #LuxuryLiving #StayInSt…",
+    "url": "https://www.instagram.com/reel/DXMV45jyYTq/",
+    "images": [
+      "assets/reference/instagram/3876569648330278122.mp4",
+      "assets/reference/instagram/3876569648330278122.mp4"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DXB4rtliM6u",
+    "studio": "the_view_finderr",
+    "name": "Darshan Bafna Photography",
+    "caption": "• K A L P A V R I K S H A • Master Bedroom First attempt at bringing traditional design colors to life-bold, vibrant, and daring to break the mold. Exploring fresh possibilities wh…",
+    "url": "https://www.instagram.com/p/DXB4rtliM6u/",
+    "images": [
+      "assets/reference/instagram/3873626449005563566_3873625739723586210.jpg",
+      "assets/reference/instagram/3873626449005563566_3873625944212686406.jpg",
+      "assets/reference/instagram/3873626449005563566_3873626263164303604.jpg",
+      "assets/reference/instagram/3873626449005563566_3873626293136832165.jpg",
+      "assets/reference/instagram/3873626449005563566_3873626306835446743.jpg"
+    ],
+    "tags": [
+      "bedroom",
+      "workspace"
+    ]
+  },
+  {
+    "id": "DXEoPbsCSrt",
+    "studio": "alchemists_design",
+    "name": "The Alchemists Design",
+    "caption": "Embracing an open concept layout, bold curves at the entrance adds visual interest to the minimalist nature of the kitchen.",
+    "url": "https://www.instagram.com/p/DXEoPbsCSrt/",
+    "images": [
+      "assets/reference/instagram/3874398561827891949.jpg"
+    ],
+    "tags": [
+      "kitchen",
+      "sacred"
+    ]
+  },
+  {
+    "id": "DKMmMt3zz0B",
+    "studio": "alchemists_design",
+    "name": "The Alchemists Design",
+    "caption": "Immensely warm, cosy and charming, the contrasting combination of the cabinetry achieves a striking yet balanced aesthetic.",
+    "url": "https://www.instagram.com/p/DKMmMt3zz0B/",
+    "images": [
+      "assets/reference/instagram/3642454198291741953.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DFHr3hszozG",
+    "studio": "alchemists_design",
+    "name": "The Alchemists Design",
+    "caption": "Simple and sleek, this workstation highlights modern functionality in a cosy setting.",
+    "url": "https://www.instagram.com/p/DFHr3hszozG/",
+    "images": [
+      "assets/reference/instagram/3550999762961337542_3550999753196849763.jpg",
+      "assets/reference/instagram/3550999762961337542_3550999753197020143.jpg"
+    ],
+    "tags": [
+      "workspace"
+    ]
+  },
+  {
+    "id": "C9UjPDrS3fi",
+    "studio": "alchemists_design",
+    "name": "The Alchemists Design",
+    "caption": "Prepare to relax and unwind in a spa-like ambience bathroom at home. A tone-on-tone approach conveys a sense of calmness and adding nature-inspired textures give a cosy touch to th…",
+    "url": "https://www.instagram.com/p/C9UjPDrS3fi/",
+    "images": [
+      "assets/reference/instagram/3410505784193939426.jpg"
+    ],
+    "tags": [
+      "bath"
+    ]
+  },
+  {
+    "id": "DXPEbgylsi6",
+    "studio": "volume_zero",
+    "name": "Volume Zero Architecture & Interior Design Magazine",
+    "caption": "Dhwani by T Square Architects In a time dominated by concrete skylines and glass façades, Dhwani stands apart as a refreshing architectural narrative one that harmoniously blends t…",
+    "url": "https://www.instagram.com/p/DXPEbgylsi6/",
+    "images": [
+      "assets/reference/instagram/3877337287009683642_3877337267959137748.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337268042992391.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337268311427362.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337268873499918.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337268907065884.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337269024493714.jpg",
+      "assets/reference/instagram/3877337287009683642_3877337269058034530.jpg"
+    ],
+    "tags": [
+      "outdoor",
+      "detail"
+    ]
+  },
+  {
+    "id": "DXLrTKsEWFj",
+    "studio": "kalaiii.designs",
+    "name": "K A L A I",
+    "caption": "Brick Wall Cladding Behind the scenes of how it all came together. A beautiful reminder that the smallest details create the biggest impact.",
+    "url": "https://www.instagram.com/reel/DXLrTKsEWFj/",
+    "images": [
+      "assets/reference/instagram/3876382337429234019.mp4",
+      "assets/reference/instagram/3876382337429234019.mp4"
+    ],
+    "tags": [
+      "detail"
+    ]
+  },
+  {
+    "id": "DXDnAr1iC7X",
+    "studio": "roma__interiors",
+    "name": "Roma Interiors",
+    "caption": "Kitchen & Dinning . . . . .",
+    "url": "https://www.instagram.com/p/DXDnAr1iC7X/",
+    "images": [
+      "assets/reference/instagram/3874111675351707351_3874110911208233359.jpg",
+      "assets/reference/instagram/3874111675351707351_3874110924470646042.jpg",
+      "assets/reference/instagram/3874111675351707351_3874110928388103597.jpg",
+      "assets/reference/instagram/3874111675351707351_3874110937749845029.jpg",
+      "assets/reference/instagram/3874111675351707351_3874110941818264781.jpg"
+    ],
+    "tags": [
+      "kitchen"
+    ]
+  },
+  {
+    "id": "DW6sl0vGMv6",
+    "studio": "studio.secondspace",
+    "name": "Studio Secondspace | Architectural and Interior Photography",
+    "caption": "A space that feels rooted, yet refined. Solid wood takes the lead, shaped with soft curves and quiet detailing. The fluted panels, handcrafted handles, and subtle inlays bring a rh…",
+    "url": "https://www.instagram.com/p/DW6sl0vGMv6/",
+    "images": [
+      "assets/reference/instagram/3871602942970219514_3871601711815072388.jpg",
+      "assets/reference/instagram/3871602942970219514_3871601717024402044.jpg",
+      "assets/reference/instagram/3871602942970219514_3871601721797516413.jpg"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DWDzK0igegm",
+    "studio": "b_arts_architects",
+    "name": "𝐁 𝐀𝐫𝐭'𝐬 𝐀𝐫𝐜𝐡𝐢𝐭𝐞𝐜𝐭'𝐬",
+    "caption": "Transforming overlooked spaces into stunning focal points. ✨ Love how this under-stair nook blends bohemian charm, exposed brick, and vibrant greenery❤️🕊️ Client name : Geethish ms…",
+    "url": "https://www.instagram.com/p/DWDzK0igegm/",
+    "images": [
+      "assets/reference/instagram/3856150749939623974.jpg"
+    ],
+    "tags": [
+      "detail"
+    ]
+  },
+  {
+    "id": "DW3zg2zkcmV",
+    "studio": "kalaiii.designs",
+    "name": "K A L A I",
+    "caption": "• அகம் • A pooja room thoughtfully designed to align with the living room’s overall design language. A simple yet traditional unit, enhanced with delicate brass bells and a beautif…",
+    "url": "https://www.instagram.com/p/DW3zg2zkcmV/",
+    "images": [
+      "assets/reference/instagram/3870788962990803349_3870788953083842727.jpg",
+      "assets/reference/instagram/3870788962990803349_3870788953092204170.jpg",
+      "assets/reference/instagram/3870788962990803349_3870788953125774973.jpg",
+      "assets/reference/instagram/3870788962990803349_3870788953226429198.jpg"
+    ],
+    "tags": [
+      "living",
+      "sacred"
+    ]
+  },
+  {
+    "id": "DW9c5NhgkcO",
+    "studio": "bedizen_interiors",
+    "name": "interiorsbyshraddharathi",
+    "caption": "Some doors aren’t meant to be seen 👀✨ @bedizen_interiors (Interiors, interior design, interior designer, residential space, home space goals, luxury goals, Instagram)",
+    "url": "https://www.instagram.com/reel/DW9c5NhgkcO/",
+    "images": [
+      "assets/reference/instagram/3872378331441809166.mp4",
+      "assets/reference/instagram/3872378331441809166.mp4"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DW8-s5DmHEp",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya | Living room Styling by @fyminnaif and @nimithaharith Decor from @rarelilyofficial Design team - @dinesh____27 @i_am_kishoree @sharanya.srini @raghzz @anandanand898 Photogr…",
+    "url": "https://www.instagram.com/p/DW8-s5DmHEp/",
+    "images": [
+      "assets/reference/instagram/3872245543436054825_3872242461879882869.jpg",
+      "assets/reference/instagram/3872245543436054825_3872242484478791600.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DXRiDsimL-1",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya | Life in the courtyard Life unfolds gently in the courtyard— where light, culture, and everyday moments find a quiet rhythm. Styled by @fyminnaif and @nimithaharith Wall de…",
+    "url": "https://www.instagram.com/p/DXRiDsimL-1/",
+    "images": [
+      "assets/reference/instagram/3878030541707591605_3878029589456892794.jpg",
+      "assets/reference/instagram/3878030541707591605_3878029645006277403.jpg",
+      "assets/reference/instagram/3878030541707591605_3878029659610873357.jpg",
+      "assets/reference/instagram/3878030541707591605_3878029666808236471.jpg",
+      "assets/reference/instagram/3878030541707591605_3878029677143042199.jpg"
+    ],
+    "tags": [
+      "outdoor"
+    ]
+  },
+  {
+    "id": "DXEt8iJmHe-",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya | Living Room Styled by @fyminnaif and @nimithaharith Decor from @rarelilyofficial and @vrikshapresentationport Design team - @dinesh____27 @i_am_kishoree @sharanya.srini @r…",
+    "url": "https://www.instagram.com/p/DXEt8iJmHe-/",
+    "images": [
+      "assets/reference/instagram/3874423651375282110_3874422190019997125.jpg",
+      "assets/reference/instagram/3874423651375282110_3874422202930079534.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DWobRq6mD08",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya | Partition This entry partition acts as a gentle threshold—filtering views while setting the tone for what lies beyond. Crafted as a series of elongated, cane-infilled fram…",
+    "url": "https://www.instagram.com/p/DWobRq6mD08/",
+    "images": [
+      "assets/reference/instagram/3866460241664687420_3866457862620898005.jpg",
+      "assets/reference/instagram/3866460241664687420_3866457872628461308.jpg"
+    ],
+    "tags": [
+      "sacred"
+    ]
+  },
+  {
+    "id": "DWjM2n0mFJC",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya - Foyer A quiet pause before the home unfolds. Styling by @fyminnaif @nimithaharith Decor from @rarelilyofficial Design team - @dinesh____27 @i_am_kishoree @sharanya.srini @…",
+    "url": "https://www.instagram.com/p/DWjM2n0mFJC/",
+    "images": [
+      "assets/reference/instagram/3864989435382223426_3864988363702941392.jpg",
+      "assets/reference/instagram/3864989435382223426_3864988372653614995.jpg"
+    ],
+    "tags": [
+      "sacred"
+    ]
+  },
+  {
+    "id": "DWbcv3xiAbp",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya Design team - @dinesh____27 @raghzz @sharanya.srini @i_am_kishoree @anandanand898 Photography by our wonderful clients.",
+    "url": "https://www.instagram.com/p/DWbcv3xiAbp/",
+    "images": [
+      "assets/reference/instagram/3862807540404848361.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DWEV98LGBtQ",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "The Garden Screen House | Master Bedroom A warm cocoon of wood and light, where every surface wraps you in quiet comfort. Soft daylight, earthy textures, and crafted details come t…",
+    "url": "https://www.instagram.com/p/DWEV98LGBtQ/",
+    "images": [
+      "assets/reference/instagram/3856303796411439952_3856301982164248329.jpg",
+      "assets/reference/instagram/3856303796411439952_3856301996936538061.jpg",
+      "assets/reference/instagram/3856303796411439952_3856302002749860601.jpg"
+    ],
+    "tags": [
+      "bedroom",
+      "outdoor",
+      "detail"
+    ]
+  },
+  {
+    "id": "DUA93u1kVvK",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "The Garden Screen House | Living and Dining Decor from @rarelilyofficial Styling by @fyminnaif and @nimithaharith Design team - @dinesh____27 @raghzz @sharanya.srini @anandanand898…",
+    "url": "https://www.instagram.com/p/DUA93u1kVvK/",
+    "images": [
+      "assets/reference/instagram/3819324594709421002_3819323112249438846.jpg",
+      "assets/reference/instagram/3819324594709421002_3819323118851315098.jpg"
+    ],
+    "tags": [
+      "living",
+      "outdoor"
+    ]
+  },
+  {
+    "id": "DCmH7f6y-rf",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "House in the tropics | Home Office Adjacent to the main entrance - the home office was actually an after thought. It sits below a 18ft cantilever - thus with no columns it enjoys s…",
+    "url": "https://www.instagram.com/p/DCmH7f6y-rf/",
+    "images": [
+      "assets/reference/instagram/3505524235001653983_3505524226923286029.jpg",
+      "assets/reference/instagram/3505524235001653983_3505524226931705217.jpg",
+      "assets/reference/instagram/3505524235001653983_3505524227015518463.jpg"
+    ],
+    "tags": [
+      "sacred",
+      "outdoor",
+      "detail",
+      "workspace"
+    ]
+  },
+  {
+    "id": "DWlDT9OFUia",
+    "studio": "berg.interior",
+    "name": "Design Interior | Worldwide marketing agency",
+    "caption": "Красивый дизайн проект спальни вам в ленту - просто и без лишних слов, т.к. тут слова излишнее, тут все прекрасно, согласны со мной?! А в сторис делюсь поделился своей новостью и г…",
+    "url": "https://www.instagram.com/p/DWlDT9OFUia/",
+    "images": [
+      "assets/reference/instagram/3865510420711557274_3865509690776451683.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509691539842343.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509693552893122.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509694233284951.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509695868674851.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509701816340838.jpg",
+      "assets/reference/instagram/3865510420711557274_3865509704349251319.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DWMx9NelEF_",
+    "studio": "luxuriatehomes",
+    "name": "Luxuriate Homes",
+    "caption": "From the warmth of the lighting to the richness of the wood floors, every element here whispers 'welcome home'. It's all about finding beauty in the everyday. 🛋️☕",
+    "url": "https://www.instagram.com/p/DWMx9NelEF_/",
+    "images": [
+      "assets/reference/instagram/3858678691388473727_3858678563822293285.webp",
+      "assets/reference/instagram/3858678691388473727_3858678567983002924.webp",
+      "assets/reference/instagram/3858678691388473727_3858678571774684067.webp",
+      "assets/reference/instagram/3858678691388473727_3858678580087791263.webp"
+    ],
+    "tags": [
+      "detail"
+    ]
+  },
+  {
+    "id": "DWs3hyklWVg",
+    "studio": "berg.interior",
+    "name": "Design Interior | Worldwide marketing agency",
+    "caption": "Суббота день ничего не делания, так вот вам интерьер спальни, где нужно проводить субботние выходные, согласны со мной?! 4 ракурса дизайн проекта спальни, а на последнем ракурсе ди…",
+    "url": "https://www.instagram.com/p/DWs3hyklWVg/",
+    "images": [
+      "assets/reference/instagram/3867710394606118240_3867709165264124995.jpg",
+      "assets/reference/instagram/3867710394606118240_3867709166689903407.jpg",
+      "assets/reference/instagram/3867710394606118240_3867709167075714415.jpg",
+      "assets/reference/instagram/3867710394606118240_3867709167830439830.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DWkvhFvAqPY",
+    "studio": "bedizen_interiors",
+    "name": "interiorsbyshraddharathi",
+    "caption": "Where mornings come alive☕️🌤️ Designed by @bedizen_interiors (Morden kitchen design, Luxury Morden kitchen, Minimalist kitchen design, Elegant kitchen, Contemporary kitchen interio…",
+    "url": "https://www.instagram.com/reel/DWkvhFvAqPY/",
+    "images": [
+      "assets/reference/instagram/3865423362276893656.mp4",
+      "assets/reference/instagram/3865423362276893656.mp4"
+    ],
+    "tags": [
+      "kitchen"
+    ]
+  },
+  {
+    "id": "DUDnHRQk4zB",
+    "studio": "metamoreflora.id",
+    "name": "MetamoreFlora",
+    "caption": "Vertical Garden / Taman Dinding / Greenwall Project Area Jagakarsa More detail or order, link chat at bio",
+    "url": "https://www.instagram.com/reel/DUDnHRQk4zB/",
+    "images": [
+      "assets/reference/instagram/3820068932322299073.mp4",
+      "assets/reference/instagram/3820068932322299073.mp4"
+    ],
+    "tags": [
+      "living",
+      "outdoor"
+    ]
+  },
+  {
+    "id": "archive-3855512245279395088",
+    "studio": "archive",
+    "name": "ARCHIVE · HERITAGE INTERIORS",
+    "caption": "A longer carousel of heritage interiors — threshold, pattern, and light studies that shaped the material vocabulary for Manai.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3855512245279395088_3855511558613132108.webp",
+      "assets/reference/instagram/3855512245279395088_3855511558789274616.webp",
+      "assets/reference/instagram/3855512245279395088_3855511567261814830.webp",
+      "assets/reference/instagram/3855512245279395088_3855511579223962883.webp",
+      "assets/reference/instagram/3855512245279395088_3855511586404582901.webp",
+      "assets/reference/instagram/3855512245279395088_3855511604985370100.webp",
+      "assets/reference/instagram/3855512245279395088_3855511621057929017.webp",
+      "assets/reference/instagram/3855512245279395088_3855511632952992376.webp",
+      "assets/reference/instagram/3855512245279395088_3855511643673592251.webp",
+      "assets/reference/instagram/3855512245279395088_3855511658513096179.webp",
+      "assets/reference/instagram/3855512245279395088_3855511677865584236.webp"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "archive-3851131112131983137",
+    "studio": "archive",
+    "name": "ARCHIVE · FACADE & ELEVATION",
+    "caption": "Facade & elevation study — arches, fenestration, composition, night vs street view. Part of the exterior language I'm circling for Manai.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3851131112131983137_3851130527621461353.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130549943545929.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130584915672162.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130589386770374.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130592926814194.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130599092424836.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130603412580587.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130606625412760.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130615961905099.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130618092645888.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130622991572510.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130628771320976.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130654239135150.jpg",
+      "assets/reference/instagram/3851131112131983137_3851130655111533446.jpg"
+    ],
+    "tags": [
+      "detail",
+      "outdoor"
+    ]
+  },
+  {
+    "id": "archive-3848092503786687311",
+    "studio": "archive",
+    "name": "ARCHIVE · PEACOCK MOTIFS",
+    "caption": "Peacock motifs — carved, cast, painted, and tiled. The motif I want threaded through ceilings, doorframes, and floor patterns in Manai.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3848092503786687311_3848091798279556579.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091800745860778.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091806693377953.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091807783889867.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091814142463649.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091821390193161.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091826347859199.jpg",
+      "assets/reference/instagram/3848092503786687311_3848091831649491545.jpg"
+    ],
+    "tags": [
+      "detail",
+      "sacred"
+    ]
+  },
+  {
+    "id": "archive-3844672839610055338",
+    "studio": "archive",
+    "name": "ARCHIVE · CARVED TEAK",
+    "caption": "Carved teak reference — frames, joinery, relief, overview. This is the craft I want the architect to treat as load-bearing, not decorative.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3844672839610055338_3844672641907328483.jpg",
+      "assets/reference/instagram/3844672839610055338_3844672654230178063.jpg",
+      "assets/reference/instagram/3844672839610055338_3844672657233290164.jpg",
+      "assets/reference/instagram/3844672839610055338_3844672661880610901.jpg",
+      "assets/reference/instagram/3844672839610055338_3844672665227672664.jpg"
+    ],
+    "tags": [
+      "detail",
+      "bedroom"
+    ]
+  },
+  {
+    "id": "archive-3838194746040827447",
+    "studio": "archive",
+    "name": "ARCHIVE · STRUCTURE",
+    "caption": "Structural form, material, and detail study — the bones of the house, before it gets dressed.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3838194746040827447_3838193967938721525.jpg",
+      "assets/reference/instagram/3838194746040827447_3838193975379365966.jpg",
+      "assets/reference/instagram/3838194746040827447_3838193978936137852.jpg"
+    ],
+    "tags": [
+      "detail"
+    ]
+  },
+  {
+    "id": "archive-3816236472630793011",
+    "studio": "archive",
+    "name": "ARCHIVE · HERITAGE EXTERIOR",
+    "caption": "Heritage architecture — a single image that's been sitting at the top of my reference pile since the start.",
+    "url": "",
+    "images": [
+      "assets/reference/instagram/3816236472630793011.jpg"
+    ],
+    "tags": [
+      "outdoor",
+      "detail"
+    ]
+  },
+  {
+    "id": "archive-pinterest",
+    "studio": "pinterest",
+    "name": "PINTEREST · SAVED PINS",
+    "caption": "A small set of Pinterest saves — colour palette, heritage detail, spatial composition. Loose fragments that still hold the mood.",
+    "url": "",
+    "images": [
+      "assets/reference/photos/pinterest_20125529581068327.jpg",
+      "assets/reference/photos/pinterest_5207355815655764_3945723378.jpg",
+      "assets/reference/photos/pinterest_650066527507147364_46576708.jpg",
+      "assets/reference/photos/pinterest_650066527507147493.jpg",
+      "assets/reference/photos/pinterest_650066527507228898_2429493123.png",
+      "assets/reference/photos/pinterest_650066527507305132.jpg",
+      "assets/reference/photos/pinterest_9640586698113200.jpg"
+    ],
+    "tags": [
+      "detail",
+      "living"
+    ]
+  },
+  {
+    "id": "archive-videos",
+    "studio": "archive",
+    "name": "ARCHIVE · MOOD VIDEOS",
+    "caption": "Short videos from the archive — walkthroughs, craft process, atmosphere. The moving pieces of the mood.",
+    "url": "",
+    "images": [
+      "assets/reference/videos/3738003682785775691.mp4",
+      "assets/reference/videos/3761770839394616373.mp4",
+      "assets/reference/videos/3764325214889773147.mp4",
+      "assets/reference/videos/3795171405785233762.mp4",
+      "assets/reference/videos/3806293978992113971.mp4",
+      "assets/reference/videos/3818447825076693082.mp4",
+      "assets/reference/videos/3840339047722350508.mp4",
+      "assets/reference/videos/3847557390145907839.mp4"
+    ],
+    "tags": [
+      "detail",
+      "living"
+    ]
+  },
+  {
+    "id": "DWjM2n0mFJC",
+    "studio": "studiocontext.architects",
+    "name": "Studio Context",
+    "caption": "Aadhya — Foyer. A quiet pause before the home unfolds. Styling by @fyminnaif @nimithaharith. Decor from @rarelilyofficial. Photography by @phosartstudio.",
+    "url": "https://www.instagram.com/p/DWjM2n0mFJC/",
+    "images": [
+      "assets/reference/instagram/3864989435382223426_3864988363702941392.jpg",
+      "assets/reference/instagram/3864989435382223426_3864988372653614995.jpg"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DWkvO0vk1-j",
+    "studio": "kebani_thedesignstudio",
+    "name": "KEBANI · The Design Studio",
+    "caption": "Not just a lobby. A first impression that lasts. A clubhouse lobby layered with warm teak wood finishes and subtle groove detailing, balanced with full-body tiles from floor to half-wall — durability for a high-traffic space without losing warmth.",
+    "url": "https://www.instagram.com/p/DWkvO0vk1-j/",
+    "images": [
+      "assets/reference/instagram/3865422107082186659_3864820075954642665.jpg",
+      "assets/reference/instagram/3865422107082186659_3864820075963027443.jpg",
+      "assets/reference/instagram/3865422107082186659_3864820075971465090.jpg",
+      "assets/reference/instagram/3865422107082186659_3864820076097275874.jpg",
+      "assets/reference/instagram/3865422107082186659_3864820076239868238.jpg",
+      "assets/reference/instagram/3865422107082186659_3864820076315349217.jpg"
+    ],
+    "tags": [
+      "living",
+      "detail"
+    ]
+  },
+  {
+    "id": "DWs_BdDDAY9",
+    "studio": "snippetsbysnigdha",
+    "name": "Snigdha Cheemakurthy",
+    "caption": "Lowkey best place in the house 🪔 — a small puja corner where calm, spiritual and traditional converge.",
+    "url": "https://www.instagram.com/reel/DWs_BdDDAY9/",
+    "images": [
+      "assets/reference/instagram/3867743356843722301.mp4",
+      "assets/reference/instagram/3867743356843722301.mp4"
+    ],
+    "tags": [
+      "sacred",
+      "detail"
+    ]
+  },
+  {
+    "id": "DTXRt9IgrCK",
+    "studio": "ikbdesignstudiobytabrezkhan",
+    "name": "Tabrez Khan · IKB Design Studio",
+    "caption": "Tulsi Ka Jharokha. Balcony vibes — a threshold moment between the street and the home, framed for the Tulsi.",
+    "url": "https://www.instagram.com/reel/DTXRt9IgrCK/",
+    "images": [
+      "assets/reference/instagram/3807589934773219466.mp4",
+      "assets/reference/instagram/3807589934773219466.mp4"
+    ],
+    "tags": [
+      "outdoor",
+      "sacred"
+    ]
+  },
+  {
+    "id": "DV2jU3rjxv7",
+    "studio": "akash_roofing_solution",
+    "name": "Akash Roofing",
+    "caption": "Jaali brick + MS fabrication + toughened glass skylight. Patterned natural light all day, excellent ventilation, reduced heat gain — a quietly engineered piece of ornament.",
+    "url": "https://www.instagram.com/reel/DV2jU3rjxv7/",
+    "images": [
+      "assets/reference/instagram/3852421897066060795.mp4",
+      "assets/reference/instagram/3852421897066060795.mp4"
+    ],
+    "tags": [
+      "detail",
+      "outdoor"
+    ]
+  },
+  {
+    "id": "DW6ndNBiA7-",
+    "studio": "indiadesignworld",
+    "name": "India Design World",
+    "caption": "Apartment in Bengaluru by Simplecede — Indo-modern with curves, warm veneers, and vibrant accents blending ethnic charm with contemporary minimalism.",
+    "url": "https://www.instagram.com/p/DW6ndNBiA7-/",
+    "images": [
+      "assets/reference/instagram/DW6ndNBiA7-.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DW37xnckd46",
+    "studio": "dna__architects",
+    "name": "DNA Architects",
+    "caption": "Residential project in Bangalore — a 3,300 sq.ft home with dining and modern interiors.",
+    "url": "https://www.instagram.com/p/DW37xnckd46/",
+    "images": [
+      "assets/reference/instagram/DW37xnckd46.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DXQngU6Edog",
+    "studio": "studio_colourblind",
+    "name": "Studio Colourblind",
+    "caption": "Residence in Mumbai designed by @ve7design. Documented by Studio Colourblind.",
+    "url": "https://www.instagram.com/p/DXQngU6Edog/",
+    "images": [
+      "assets/reference/instagram/DXQngU6Edog.jpg"
+    ],
+    "tags": [
+      "living"
+    ]
+  },
+  {
+    "id": "DXTwzE2lJIz",
+    "studio": "mosaic.studio",
+    "name": "Mosaic Studio",
+    "caption": "A warm take on timeless design. Earthy tones, soft patterns, and layered materials create a bathroom that feels both classic and alive.",
+    "url": "https://www.instagram.com/p/DXTwzE2lJIz/",
+    "images": [
+      "assets/reference/instagram/DXTwzE2lJIz.jpg"
+    ],
+    "tags": [
+      "bath"
+    ]
+  }
+];
+
+
+/* ═════ TAG DEFINITIONS ═════ */
+const TAG_LABELS = {
+  all: 'All',
+  living: 'Living & Dining',
+  bedroom: 'Bedroom',
+  kitchen: 'Kitchen',
+  sacred: 'Foyer & Sacred',
+  outdoor: 'Courtyard & Green',
+  bath: 'Bath',
+  detail: 'Details & Materials',
+  workspace: 'Workspace'
+};
+const TAG_ORDER = ['all','living','bedroom','kitchen','sacred','outdoor','bath','detail','workspace'];
+
+/* ═════ STATS ═════ */
+const totalPosts = POSTS.length;
+const totalImages = POSTS.reduce((s,p)=>s+p.images.length,0);
+const studios = new Set(POSTS.map(p=>p.studio));
+document.getElementById('heroPosts').textContent = `${totalPosts} Posts`;
+document.getElementById('heroImages').textContent = `${totalImages} Images`;
+document.getElementById('heroStudios').textContent = `${studios.size} Studios`;
+
+/* ═════ FILTER BAR ═════ */
+const filterBar = document.getElementById('filterBar');
+const counts = {};
+TAG_ORDER.forEach(t => counts[t] = 0);
+counts.all = totalPosts;
+POSTS.forEach(p => p.tags.forEach(t => { if (counts[t] !== undefined) counts[t]++; }));
+
+TAG_ORDER.forEach((tag) => {
+  if (tag !== 'all' && counts[tag] === 0) return;
+  const btn = document.createElement('button');
+  btn.className = 'filter-pill' + (tag === 'all' ? ' active' : '');
+  btn.dataset.tag = tag;
+  btn.innerHTML = `${TAG_LABELS[tag]} <span class="count">${counts[tag]}</span>`;
+  btn.addEventListener('click', () => setFilter(tag));
+  filterBar.appendChild(btn);
+});
+
+/* ═════ RENDER CARDS ═════ */
+const board = document.getElementById('board');
+POSTS.forEach((post, idx) => {
+  const card = document.createElement('button');
+  card.className = 'card';
+  card.dataset.idx = idx;
+  card.dataset.tags = post.tags.join(' ');
+  card.setAttribute('data-hover','');
+  const cover = post.images[0];
+  const isVideo = cover.endsWith('.mp4');
+  const mediaHTML = isVideo
+    ? `<video src="${cover}" muted playsinline preload="metadata"></video><div class="video-play"><div><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>`
+    : `<img src="${cover}" loading="lazy" alt="${post.caption.replace(/"/g,'&quot;').slice(0,120)}">`;
+  const countBadge = post.images.length > 1
+    ? `<div class="card-count"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="13" height="13" rx="1"/><path d="M4 16V5a1 1 0 011-1h11"/></svg>${post.images.length}</div>`
+    : '';
+  card.innerHTML = `
+    <div class="card-media">
+      ${countBadge}
+      ${mediaHTML}
+    </div>
+    <div class="card-caption">
+      <div class="card-studio">${post.studio === 'archive' || post.studio === 'pinterest' ? post.name : '@'+post.studio}</div>
+      <div class="card-desc">${post.caption}</div>
+    </div>`;
+  card.addEventListener('click', () => openLightbox(idx));
+  board.appendChild(card);
+});
+
+/* ═════ FILTERING ═════ */
+function setFilter(tag) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.tag === tag));
+  document.querySelectorAll('.card').forEach(c => {
+    const match = tag === 'all' || c.dataset.tags.split(' ').includes(tag);
+    c.classList.toggle('hidden', !match);
+  });
+}
+
+/* ═════ LIGHTBOX ═════ */
+const lb = document.getElementById('lightbox');
+const lbStage = document.getElementById('lbStage');
+const lbCounter = document.getElementById('lbCounter');
+const lbStudio = document.getElementById('lbStudioLine');
+const lbName = document.getElementById('lbName');
+const lbHandle = document.getElementById('lbHandle');
+const lbCaption = document.getElementById('lbCaption');
+const lbLink = document.getElementById('lbLink');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+const lbClose = document.getElementById('lbClose');
+const lbThumbs = document.getElementById('lbThumbs');
+
+let lbPostIdx = 0;
+let lbImgIdx = 0;
+
+function openLightbox(idx) {
+  lbPostIdx = idx;
+  lbImgIdx = 0;
+  document.body.classList.add('lb-open');
+  lb.classList.add('open');
+  lb.setAttribute('aria-hidden','false');
+  renderLB();
+}
+function closeLightbox() {
+  lb.classList.remove('open');
+  lb.setAttribute('aria-hidden','true');
+  document.body.classList.remove('lb-open');
+  lbStage.querySelectorAll('img, video').forEach(el => el.remove());
+}
+function renderLB() {
+  const post = POSTS[lbPostIdx];
+  const src = post.images[lbImgIdx];
+  const isVideo = src.endsWith('.mp4');
+
+  // clear stage media (keep nav buttons + counter)
+  lbStage.querySelectorAll('img, video').forEach(el => el.remove());
+  let media;
+  if (isVideo) {
+    media = document.createElement('video');
+    media.src = src;
+    media.controls = true;
+    media.autoplay = true;
+    media.playsInline = true;
+  } else {
+    media = document.createElement('img');
+    media.src = src;
+    media.alt = post.caption;
+  }
+  lbStage.appendChild(media);
+
+  lbCounter.textContent = post.images.length > 1 ? `${lbImgIdx+1} / ${post.images.length}` : '';
+  lbCounter.style.display = post.images.length > 1 ? 'block' : 'none';
+  lbPrev.classList.toggle('hidden', post.images.length <= 1);
+  lbNext.classList.toggle('hidden', post.images.length <= 1);
+
+  const isArchive = post.studio === 'archive' || post.studio === 'pinterest';
+  lbStudio.textContent = isArchive ? post.name : `@${post.studio}`;
+  lbName.textContent = (post.name || post.studio).toUpperCase();
+  lbHandle.textContent = isArchive ? (post.studio === 'pinterest' ? 'From Pinterest saves' : 'From the archive') : `@${post.studio}`;
+  lbCaption.textContent = post.caption;
+  if (post.url) {
+    lbLink.href = post.url;
+    lbLink.style.display = '';
+  } else {
+    lbLink.removeAttribute('href');
+    lbLink.style.display = 'none';
+  }
+
+  // thumbs
+  lbThumbs.innerHTML = '';
+  if (post.images.length > 1) {
+    post.images.forEach((src, i) => {
+      const t = document.createElement('button');
+      t.className = 'lb-thumb' + (i === lbImgIdx ? ' active' : '');
+      if (src.endsWith('.mp4')) {
+        t.style.background = 'var(--smoke)';
+        t.innerHTML = '<svg viewBox="0 0 24 24" fill="#C6922A" style="width:14px;height:14px;margin:17px"><path d="M8 5v14l11-7z"/></svg>';
+      } else {
+        t.style.backgroundImage = `url("${src}")`;
+      }
+      t.setAttribute('data-hover','');
+      t.addEventListener('click', () => { lbImgIdx = i; renderLB(); });
+      lbThumbs.appendChild(t);
+    });
+  }
+}
+function nextImg() {
+  const len = POSTS[lbPostIdx].images.length;
+  lbImgIdx = (lbImgIdx + 1) % len;
+  renderLB();
+}
+function prevImg() {
+  const len = POSTS[lbPostIdx].images.length;
+  lbImgIdx = (lbImgIdx - 1 + len) % len;
+  renderLB();
+}
+lbNext.addEventListener('click', nextImg);
+lbPrev.addEventListener('click', prevImg);
+lbClose.addEventListener('click', closeLightbox);
+lb.addEventListener('click', (e) => { if (e.target === lb || e.target.classList.contains('lb-body')) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextImg();
+  if (e.key === 'ArrowLeft') prevImg();
+});
+
+/* ═════ CUSTOM CURSOR ═════ */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+document.addEventListener('mousemove', (e) => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+});
+(function loop(){
+  rx += (mx - rx) * 0.18;
+  ry += (my - ry) * 0.18;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(loop);
+})();
+document.addEventListener('mouseover', (e) => {
+  if (e.target.closest('[data-hover], button, a, .card, .lb-thumb, .filter-pill')) ring.classList.add('hover');
+});
+document.addEventListener('mouseout', (e) => {
+  if (e.target.closest('[data-hover], button, a, .card, .lb-thumb, .filter-pill')) ring.classList.remove('hover');
+});
+</script>
+
+<script type="module">
+  const tx = (src) => Babel.transform(src, {
+    presets: [['react', { runtime: 'automatic' }]],
+    sourceType: 'module',
+  }).code;
+  const toBlob = (code) => URL.createObjectURL(new Blob([code], { type: 'application/javascript' }));
+
+  const blindsSrc = await fetch('./assets/js/GradientBlinds.jsx').then((r) => r.text());
+  const blindsUrl = toBlob(tx(blindsSrc));
+
+  const [{ default: React }, { createRoot }, { default: GradientBlinds }] = await Promise.all([
+    import('react'),
+    import('react-dom/client'),
+    import(blindsUrl),
+  ]);
+
+  createRoot(document.getElementById('rasanaiBlindsRoot')).render(
+    React.createElement(GradientBlinds, {
+      color1: '#EAB308',
+      color2: '#0A0706',
+      angle: 0,
+      blindCount: 10,
+      blindMinWidth: 0.58,
+      noiseIntensity: 0.45,
+      spotlight: 0.28,
+      mouseDampening: 0.94,
+    })
+  );
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manai — Wishlist</title>
+<meta name="description" content="Floor-by-floor procurement tracker for Manai — Neo-Deccan Heritage, Chettinad-rooted, liveable today.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:wght@400;500&family=Noto+Serif+Tamil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/manai.css">
+<style>
+/* ═══ Wishlist page — scoped overrides ═══ */
+body { background: var(--ink); }
+
+.wish-page-header {
+  padding: 140px 40px 40px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.wish-page-header .hero-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  font-size: clamp(3.6rem, 8.5vw, 6.2rem);
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.wish-page-header h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+  letter-spacing: 0.22em;
+  color: var(--vellum);
+  margin-bottom: 14px;
+}
+.wish-page-header .wish-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.wish-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(198,146,42,0.25);
+  padding-bottom: 3px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.wish-back:hover { color: var(--gold-pale); border-color: var(--gold-pale); }
+.wish-back svg { width: 14px; height: 10px; }
+
+/* ═══ Floor-tab navigation (sticky tracker) ═══ */
+.wish-floors-wrap {
+  position: sticky;
+  top: 64px;
+  z-index: 30;
+  background: linear-gradient(180deg, rgba(14,12,10,0.96) 0%, rgba(14,12,10,0.92) 70%, rgba(14,12,10,0.75) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(198,146,42,0.14);
+  border-bottom: 1px solid rgba(198,146,42,0.14);
+  margin-top: 32px;
+}
+.wish-floors {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.wish-floors::-webkit-scrollbar { display: none; }
+
+.wish-floor-overline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  padding-right: 16px;
+  margin-right: 6px;
+  border-right: 1px solid rgba(198,146,42,0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wish-floor-tab {
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(198,146,42,0.24);
+  color: var(--vellum);
+  padding: 9px 16px;
+  border-radius: 2px;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  transition: border-color .3s, color .3s, background .3s;
+  flex-shrink: 0;
+}
+.wish-floor-tab:hover {
+  border-color: rgba(198,146,42,0.55);
+  color: var(--gold-pale);
+}
+.wish-floor-tab.active {
+  background: rgba(198,146,42,0.12);
+  border-color: var(--gold);
+  color: var(--gold-pale);
+}
+.wish-floor-tab .ft-label { font-weight: 500; }
+.wish-floor-tab .ft-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.wish-floor-tab.active .ft-sub { color: var(--gold); }
+.wish-floor-tab .ft-count {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  background: rgba(198,146,42,0.1);
+  border: 1px solid rgba(198,146,42,0.3);
+  padding: 2px 7px;
+  border-radius: 2px;
+  min-width: 26px;
+  text-align: center;
+}
+.wish-floor-tab.active .ft-count {
+  background: rgba(198,146,42,0.28);
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .wish-floors { padding: 12px 20px; }
+  .wish-floor-overline { font-size: 0.7rem; padding-right: 12px; }
+  .wish-floor-tab { padding: 8px 12px; font-size: 0.85rem; }
+  .wish-floor-tab .ft-sub { display: none; }
+}
+
+/* ═══ Floor containers + empty-state skeletons ═══ */
+.wish-floor { display: none; }
+.wish-floor.is-active { display: block; }
+
+.wish-floor-intro {
+  max-width: 1280px;
+  margin: 48px auto 8px;
+  padding: 0 40px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.wish-floor-intro .fi-name {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--vellum);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.18em;
+}
+.wish-floor-intro .fi-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 540px;
+}
+
+.wish-floor-empty {
+  max-width: 1280px;
+  margin: 24px auto 64px;
+  padding: 64px 40px;
+}
+.wish-floor-empty-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.wish-floor-empty-header .fe-plan {
+  width: 56px; height: 56px;
+  border: 1px solid rgba(198,146,42,0.35);
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.wish-floor-empty-header .fe-text { display: flex; flex-direction: column; gap: 6px; }
+.wish-floor-empty-header .fe-title {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--vellum);
+  font-size: 1.35rem;
+  letter-spacing: 0.14em;
+}
+.wish-floor-empty-header .fe-meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+}
+
+.wish-room-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) { .wish-room-skeleton-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .wish-room-skeleton-grid { grid-template-columns: 1fr; } }
+
+.wish-room-skeleton {
+  border: 1px solid rgba(198,146,42,0.18);
+  background:
+    repeating-linear-gradient(45deg, rgba(155,134,70,0.04) 0 2px, transparent 2px 10px),
+    #141210;
+  padding: 22px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 2px;
+  position: relative;
+  transition: border-color .3s, transform .3s;
+}
+.wish-room-skeleton:hover {
+  border-color: rgba(198,146,42,0.4);
+  transform: translateY(-2px);
+}
+.wish-room-skeleton .rs-num {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+}
+.wish-room-skeleton .rs-name {
+  font-family: 'EB Garamond', serif;
+  color: var(--vellum);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+}
+.wish-room-skeleton .rs-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.wish-room-skeleton .rs-status {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.wish-room-skeleton .rs-status::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(198,146,42,0.4);
+}
+.wish-room-skeleton.is-future .rs-status::before { background: rgba(192,64,48,0.5); }
+.wish-room-skeleton.is-planned .rs-status::before { background: #86b293; }
+
+.wish-floor-empty-hint {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px dashed rgba(198,146,42,0.2);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.98rem;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+/* Section heading */
+.wish-section { padding: 48px 40px 16px; max-width: 1280px; margin: 0 auto; }
+.wish-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.wish-section-overline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+.wish-section-title {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--vellum);
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  letter-spacing: 0.14em;
+}
+.wish-section-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 760px;
+  margin: 6px 0 28px;
+  line-height: 1.55;
+}
+.wish-section-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(198,146,42,0.5) 0%, rgba(198,146,42,0.05) 100%);
+  margin-bottom: 28px;
+}
+
+/* Card grid */
+.wish-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding-bottom: 32px;
+}
+@media (max-width: 1024px) { .wish-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .wish-grid { grid-template-columns: 1fr; } }
+
+.wish-card {
+  background: var(--ink-2, #141210);
+  border: 1px solid rgba(198,146,42,0.18);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color .35s, transform .35s;
+  position: relative;
+}
+.wish-card:hover {
+  border-color: rgba(198,146,42,0.45);
+  transform: translateY(-2px);
+}
+
+.wish-img-wrap {
+  aspect-ratio: 4 / 3;
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(198,146,42,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.wish-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .7s ease;
+}
+.wish-card:hover .wish-img { transform: scale(1.03); }
+
+/* Placeholder box (for items without sourced images yet) */
+.wish-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(198,146,42,0.10), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(192,64,48,0.08), transparent 55%),
+    repeating-linear-gradient(45deg, rgba(155,134,70,0.05) 0 2px, transparent 2px 8px),
+    #1a1612;
+  position: relative;
+}
+.wish-ph::after {
+  content: "";
+  position: absolute; inset: 10px;
+  border: 1px solid rgba(198,146,42,0.22);
+  pointer-events: none;
+}
+.wish-ph-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: rgba(242,232,213,0.55);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 0 24px;
+  z-index: 1;
+}
+.wish-ph-label::before {
+  content: "◆ ";
+  color: var(--gold);
+}
+
+/* Card body */
+.wish-body {
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+}
+.wish-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.wish-title {
+  font-family: 'EB Garamond', serif;
+  font-weight: 500;
+  font-size: 1.12rem;
+  color: var(--vellum);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+.wish-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--muted);
+  line-height: 1.55;
+  flex: 1;
+}
+.wish-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(198,146,42,0.15);
+  margin-top: 6px;
+}
+.wish-link {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  border-bottom: 1px dotted transparent;
+  transition: border-color .3s, color .3s;
+}
+.wish-link:hover { color: var(--gold-pale); border-bottom-color: var(--gold-pale); }
+.wish-link .arr { margin-left: 4px; font-size: 0.85em; }
+
+/* Tier pills */
+.tier {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 4px 9px;
+  border: 1px solid;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.tier-essential  { color: var(--gold);      border-color: rgba(198,146,42,0.45);   background: rgba(198,146,42,0.06); }
+.tier-signature  { color: #86b293;          border-color: rgba(60,99,69,0.55);     background: rgba(60,99,69,0.10); }
+.tier-soul       { color: #8fa0d6;          border-color: rgba(31,44,97,0.75);     background: rgba(31,44,97,0.18); }
+
+/* Close blocks (priority order + house rules) */
+.wish-close {
+  max-width: 1100px;
+  margin: 56px auto 0;
+  padding: 48px 40px;
+  border-top: 1px solid rgba(198,146,42,0.2);
+}
+.wish-close h3 {
+  font-family: 'Cinzel Decorative', serif;
+  color: var(--vellum);
+  font-size: 1.25rem;
+  letter-spacing: 0.16em;
+  margin-bottom: 18px;
+}
+.wish-phases {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 28px;
+  row-gap: 10px;
+  font-family: 'EB Garamond', serif;
+  font-size: 1rem;
+  color: var(--vellum);
+  margin-bottom: 40px;
+}
+.wish-phases .ph-no {
+  color: var(--gold);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  padding-top: 2px;
+}
+.wish-phases .ph-txt { color: var(--vellum); }
+.wish-phases .ph-txt em {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.wish-avoid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 36px;
+  font-family: 'EB Garamond', serif;
+  color: var(--vellum);
+  font-size: 0.98rem;
+}
+@media (max-width: 700px) { .wish-avoid { grid-template-columns: 1fr; } }
+.wish-avoid li { padding-left: 22px; position: relative; line-height: 1.55; }
+.wish-avoid li::before {
+  content: "✕";
+  position: absolute; left: 0; top: 0;
+  color: #C04030;
+  font-size: 0.85em;
+}
+
+.wish-footer-note {
+  text-align: center;
+  margin: 56px auto 0;
+  padding: 32px 20px 80px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  border-top: 1px solid rgba(198,146,42,0.1);
+  max-width: 900px;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-brand">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;">
+      <svg class="nav-monogram" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <polygon points="18,1 33.6,9.5 33.6,26.5 18,35 2.4,26.5 2.4,9.5"
+                 stroke="var(--gold)" stroke-width="1" fill="none"/>
+        <text x="18" y="22" text-anchor="middle" fill="var(--gold)"
+              font-family="'Cinzel Decorative', serif" font-size="14" font-weight="700">M</text>
+      </svg>
+      <span class="nav-brand-text">MANAI</span>
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a class="nav-link" href="index.html#vision">The House</a></li>
+    <li><a class="nav-link" href="index.html#floor-plans">Plans</a></li>
+    <li><a class="nav-link" href="index.html#structural">Structure</a></li>
+    <li><a class="nav-link nav-link-accent" href="specs.html">Specs ↗</a></li>
+    <li><a class="nav-link nav-link-accent" href="inspiration.html">Rasanai ↗</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#vision" onclick="closeMobileMenu()">The House</a>
+  <a href="index.html#floor-plans" onclick="closeMobileMenu()">Plans</a>
+  <a href="index.html#structural" onclick="closeMobileMenu()">Structure</a>
+  <a href="specs.html" class="mobile-accent">Specs ↗</a>
+  <a href="inspiration.html" class="mobile-accent">Rasanai ↗</a>
+</div>
+
+<main>
+
+  <header class="wish-page-header">
+    <p class="hero-tamil">விருப்பப்பட்டியல்</p>
+    <h1>WISHLIST</h1>
+    <p class="wish-sub">Floor-by-floor procurement tracker — Ground, First (Parents'), Second (Private), and the future Third. Neo-Deccan, Chettinad-rooted, liveable today.</p>
+    <a class="wish-back" href="index.html">
+      <svg viewBox="0 0 14 10"><path d="M5 1 L1 5 L5 9 M1 5 L13 5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+      Back to the brief
+    </a>
+  </header>
+
+  <!-- ═════════════════════════════════════════════════
+       FLOOR NAVIGATION — sticky tracker
+       ═════════════════════════════════════════════════ -->
+  <div class="wish-floors-wrap">
+    <nav class="wish-floors" role="tablist" aria-label="Floor tracker">
+      <span class="wish-floor-overline">Floors</span>
+      <button class="wish-floor-tab" data-floor="gf" role="tab" aria-selected="false">
+        <span class="ft-label">Ground</span><span class="ft-sub">Parking &amp; Entry</span><span class="ft-count" data-count-for="gf">0</span>
+      </button>
+      <button class="wish-floor-tab" data-floor="1f" role="tab" aria-selected="false">
+        <span class="ft-label">First</span><span class="ft-sub">Parents &amp; Living</span><span class="ft-count" data-count-for="1f">0</span>
+      </button>
+      <button class="wish-floor-tab active" data-floor="2f" role="tab" aria-selected="true">
+        <span class="ft-label">Second</span><span class="ft-sub">Private Floor</span><span class="ft-count" data-count-for="2f">0</span>
+      </button>
+      <button class="wish-floor-tab" data-floor="3f" role="tab" aria-selected="false">
+        <span class="ft-label">Third</span><span class="ft-sub">Future Build</span><span class="ft-count" data-count-for="3f">0</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════
+       GROUND FLOOR — parking, entry, utility, pooja
+       ═════════════════════════════════════════════════ -->
+  <div class="wish-floor" data-floor="gf" role="tabpanel">
+    <div class="wish-floor-intro">
+      <h2 class="fi-name">Ground Floor</h2>
+      <p class="fi-tag">Arrival sequence — parking, entry threshold, utility, and the pooja room that sets the tone.</p>
+    </div>
+    <!-- GF · 1. ENTRY & THRESHOLD -->
+    <section class="wish-section" id="entry-gf">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 01</span>
+        <h2 class="wish-section-title">Entry &amp; Threshold</h2>
+      </div>
+      <p class="wish-section-desc">The first impression — carved teak door, kolam thinnai step, brass at eye level. A threshold that announces the house before anyone steps in.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928211359.jpg" alt="Hand-carved teak entrance door" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Hand-carved teak entrance door</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Commissioned Burma teak, Chettinad nine-panel layout, lotus + peacock relief, brass studs, heritage lock escutcheon.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/tiles-reference.png" alt="Athangudi tile reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Athangudi thinnai step</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Handmade Athangudi tile for the raised entry step — oxide red field with creme ivory kolam motif border.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3864989435382223426_3864988372653614995.jpg" alt="Brass numeral plate & name etching" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass numeral plate &amp; name etching</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Cast brass, Cinzel-style numerals, etched family name and Tamil <em>மனை</em> line, mounted on teak backer beside the door.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337268311427362.jpg" alt="Kolam coir doormat" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Kolam coir doormat</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Natural coir base, hand-stencilled white kolam pattern — the welcome drawn underfoot, replaced each year.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.jaypore.com/" target="_blank" rel="noopener">Jaypore <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226931705217.jpg" alt="Heritage brass bell & cord pull" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Heritage brass bell &amp; cord pull</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">A doorbell that actually rings — cast brass temple-bell form, red cotton cord, mounted low to touch on arrival.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- GF · 2. POOJA ROOM -->
+    <section class="wish-section" id="pooja">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 02</span>
+        <h2 class="wish-section-title">Pooja Room</h2>
+      </div>
+      <p class="wish-section-desc">Small, still, and bright. White marble floor, teak altar niche, stained-glass filter above — the quietest space in the house, reached within twenty steps of the front door.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3870788962990803349_3870788953092204170.jpg" alt="Commissioned teak altar niche" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Commissioned teak altar niche</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Burma teak, stepped <em>gopuram</em> top, small brass-plate shelves for idols and lamps, concealed warm LED strip behind the cornice.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830542362169.jpg" alt="Kuthu vilakku — standing brass lamp" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Kuthu vilakku — standing brass lamp</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Traditional five-wick brass standing lamp, about 3.5 ft tall — lit at dawn and dusk, the heartbeat of the pooja room.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://swamimalaibronze.com/" target="_blank" rel="noopener">Swamimalai Bronze <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830684883817.jpg" alt="Pair of brass deepams" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Pair of brass deepams</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Two pedestal oil lamps flanking the altar — cast brass, lotus base, daily-wicked and polished monthly.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://swamimalaibronze.com/" target="_blank" rel="noopener">Swamimalai Bronze <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3858678691388473727_3858678563822293285.webp" alt="White marble floor" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">White marble floor</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Single-slab Makrana or Vietnam white — cool underfoot, spec-decided, continues 6 inches up the skirting for easy daily wipe.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/stained-glass-door-ref.png" alt="Stained glass reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Stained-glass transom above altar</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Commissioned transom — indigo, gold, oxide red leadlight, lotus and peacock motifs, lit by the east window.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830550858256.jpg" alt="Tanjore Ganesha — gold leaf" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Tanjore Ganesha — gold leaf</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">24-carat gold-leaf Tanjore panel, ~18 × 24", seated Ganesha with raised gesso, framed in carved teak.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.kalakshetra.in/" target="_blank" rel="noopener">Kalakshetra <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3870788962990803349_3870788953226429198.jpg" alt="Brass kumbham water pot" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass kumbham water pot</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Hand-beaten brass <em>kumbham</em> for festival days — coconut and mango-leaf crown on top, stored on the altar plinth otherwise.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- GF · 3. PARKING & UTILITY -->
+    <section class="wish-section" id="parking-utility">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 03</span>
+        <h2 class="wish-section-title">Parking &amp; Utility</h2>
+      </div>
+      <p class="wish-section-desc">Working surfaces — oxide-red slab for two scooters and a car, a tucked-in wash point, brass hooks for everyday tools. Built for monsoon, not showroom.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337269024493714.jpg" alt="Oxide-red IPS parking slab" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Oxide-red IPS parking slab</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Traditional red-oxide IPS — hand-polished, no tile grid, generous bay marking with brass studs for wheel guides.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3875629220408091347_3875611034660950009.jpg" alt="Brass wall-hook row" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass wall-hook row</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Row of six cast-brass hooks on teak batten — brooms, buckets, umbrella, car wash mitt — practical tools out of sight of the entry.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3865510420711557274_3865509693552893122.jpg" alt="Stone wash-point sink" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Stone wash-point sink</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Single-piece stone basin set into Kadappa counter, brass pull-out tap, floor drain — for feet, groceries, and monsoon mops.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.artize.com/" target="_blank" rel="noopener">Artize <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3871602942970219514_3871601721797516413.jpg" alt="Teak utility shelving" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Teak utility shelving</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Floor-to-ceiling teak shelving in the utility corner — gas cylinder bay, bulk storage, a small stool for the househelp.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- GF · 4. LIFT & STAIRWELL -->
+    <section class="wish-section" id="lift-stairwell">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 04</span>
+        <h2 class="wish-section-title">Lift &amp; Stairwell</h2>
+      </div>
+      <p class="wish-section-desc">Four feet by five, three floors up. The cab is teak, the stair rises in Athangudi risers, the landings glow with brass — vertical circulation as a small Chettinad gallery.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-p1.jpg" alt="Johnson Sukranti lift reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Johnson Sukranti 4' × 5' lift cab</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Decided — teak cab with SS hairline trim, serves G to 2F with provision for 3F, heritage-style COP.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-teak-p7.jpg" alt="Teak finish reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Teak stair balustrade</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Hand-turned teak balusters, continuous handrail, carved newel posts at each landing — the balustrade reads as joinery, not hardware.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/tiles-reference.png" alt="Athangudi tile reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Athangudi stair risers</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Patterned Athangudi tile on every riser — three repeating motifs rotating up the stair, so each step tells a slightly different story.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-p4.jpg" alt="Heritage brass landing lantern" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Heritage brass landing lantern</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">One lantern per landing — brass frame, coloured glass panels (indigo / ochre / green), 2700K bulb, cast shadows at dusk.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════
+       FIRST FLOOR — parents, living, dining, kitchen
+       ═════════════════════════════════════════════════ -->
+  <div class="wish-floor" data-floor="1f" role="tabpanel">
+    <div class="wish-floor-intro">
+      <h2 class="fi-name">First Floor</h2>
+      <p class="fi-tag">Shared living — parents' quarters, the stained-glass living-dining, kitchen, and open sit-out.</p>
+    </div>
+    <!-- 1F · 1. LIVING ROOM -->
+    <section class="wish-section" id="living-1f">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 01</span>
+        <h2 class="wish-section-title">Living Room</h2>
+      </div>
+      <p class="wish-section-desc">The stained-glass ceiling room — oonjal at the heart, low teak seating all around, Athangudi underfoot. Where the house gathers.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874423651375282110_3874422202930079534.jpg" alt="Oonjal swing plank" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Oonjal swing plank</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Solid Burma teak, 5' × 2' plank, lotus relief carving on the underside, brass ring anchors. The heart of the room.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944625783529.jpg" alt="Oonjal seat cushion & bolsters" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Oonjal seat cushion &amp; bolsters</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Ivory handloom cotton, hand-quilted kantha stitch, oxide-red piping, two cylindrical bolsters to match.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.saritahanda.com/" target="_blank" rel="noopener">Sarita Handa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928206625.jpg" alt="Oonjal ropes & ceiling mount" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Oonjal ropes &amp; ceiling mount</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Twisted cotton rope in natural, cast brass ceiling hooks on a teak ceiling rose, rated for 250 kg dynamic load.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-teak-p12.jpg" alt="Low teak seating reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Low teak diwan &amp; seating</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">L-shaped low teak diwan wrapping two walls, 14" seat height, cane webbing back panels, loose cotton seat cushions.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928368814.jpg" alt="Floor cushion & bolster set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Floor cushion &amp; bolster set</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Six square floor cushions, four bolsters — block-printed cotton in madder, indigo, ivory. For extra seating when family visits.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.saritahanda.com/" target="_blank" rel="noopener">Sarita Handa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3872245543436054825_3872242461879882869.jpg" alt="Hand-woven dhurrie rug" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Hand-woven dhurrie rug</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">8' × 10' flat-weave dhurrie in ivory, madder red and indigo — geometric temple-gopuram border, natural dyes throughout.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.jaipurrugs.com/" target="_blank" rel="noopener">Jaipur Rugs <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/stained-glass-door-ref.png" alt="Stained glass ceiling reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Stained-glass ceiling panel</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Custom 6' × 6' stained-glass ceiling — peacock and lotus motif in teal, saffron, deep ruby and chartreuse, backlit for evenings.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830091305679907.jpg" alt="Brass ceiling lantern cluster" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass ceiling lantern cluster</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Three hand-spun brass lanterns hung at staggered heights, warm 2700K filament lamps — flanking the stained-glass ceiling.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 1F · 2. DINING -->
+    <section class="wish-section" id="dining-1f">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 02</span>
+        <h2 class="wish-section-title">Dining</h2>
+      </div>
+      <p class="wish-section-desc">The long teak table — a brass chandelier overhead, cane-back chairs, linen runner. Where meals stretch into conversation.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-teak-p15.jpg" alt="Burma teak reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Burma teak dining table for 8</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Solid Burma teak, 8' × 3'6", live-edge detail along the long side, tapered square legs, hand-rubbed oil finish — seats eight comfortably.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110911208233359.jpg" alt="Cane-back dining chairs × 8" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Cane-back dining chairs × 8</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Teak frame, hand-woven cane back and seat, curved top rail, brass ferrules — comfortable for long dinners.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://gulmoharlane.com/" target="_blank" rel="noopener">Gulmohar Lane <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830091054208906.jpg" alt="Over-table brass chandelier" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Over-table brass chandelier</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Hand-spun brass linear pendant, 6' long, seven down-lights on a single bar, dimmable — sits 32" above the table.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.klovestudio.com/" target="_blank" rel="noopener">K'Love Studio <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3819324594709421002_3819323112249438846.jpg" alt="Teak & brass sideboard" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Teak &amp; brass sideboard</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Low 7' teak sideboard, three drawers with brass cup-pulls, open shelf below for serving platters — matched grain with the dining table.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3819324594709421002_3819323118851315098.jpg" alt="Linen table runner & napkin set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Linen table runner &amp; napkin set</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Hand-loomed linen runner in madder red, eight matching napkins with hand-stitched edges, rotated with indigo and ivory sets.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.jaypore.com/" target="_blank" rel="noopener">Jaypore <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110928388103597.jpg" alt="Brass water jug & tumblers × 8" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass water jug &amp; tumblers × 8</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Hand-beaten brass water jug with a long neck, eight matching tumblers — keeps water cool, becomes more beautiful with use.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 1F · 3. PARENTS' MASTER BEDROOM -->
+    <section class="wish-section" id="parents-bedroom">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 03</span>
+        <h2 class="wish-section-title">Parents' Master Bedroom</h2>
+      </div>
+      <p class="wish-section-desc">Simpler than the 2F master — warm teak, cotton layers, heritage brass lamps, a single Tanjore painting above the bed.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-teak-p7.jpg" alt="Solid teak reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Solid teak platform bed</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Low-profile solid teak platform, simple panelled headboard, no canopy — chosen for ease of access over ornament.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3873626449005563566_3873626293136832165.jpg" alt="Hästens natural mattress" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Hästens natural mattress</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">King size, horsehair + cotton + wool, medium firmness tuned for the parents' preference, handmade in Sweden.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.hastens.com/" target="_blank" rel="noopener">Hästens <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3856303796411439952_3856301982164248329.jpg" alt="Carved teak wardrobe" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Carved teak wardrobe</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Two-door solid teak wardrobe, hand-carved floral panel, inner hanging + shelves + pull-out tray, inset mirror on one door.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830091054208906.jpg" alt="Teak bedside tables × 2" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Teak bedside tables × 2</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Pair of compact teak bedsides, single drawer with brass cup-pull, open shelf below — sized for a reading lamp and a glass of water.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928211359.jpg" alt="Organic cotton bedding set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Organic cotton bedding set</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Three sets — ivory, madder red, indigo stripe — GOTS-certified cotton sateen, 300 TC, fitted sheets, duvet covers, four pillow cases each.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.jaypore.com/" target="_blank" rel="noopener">Jaypore <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928206625.jpg" alt="Brass bedside oil lamps × 2" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass bedside oil lamps × 2</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Pair of cast brass oil-lamp-form table lamps — converted to warm LED, soft cotton shades, dimmer controlled from the bed.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898847453953271.jpg" alt="Tanjore painting — Lakshmi" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Tanjore painting — Lakshmi</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Classical Tanjore of Lakshmi seated on lotus, 22-carat gold leaf, semi-precious stones, teak frame — the single icon in this room.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://kalakshetra.in/" target="_blank" rel="noopener">Kalakshetra <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 1F · 4. KITCHEN -->
+    <section class="wish-section" id="kitchen">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 04</span>
+        <h2 class="wish-section-title">Kitchen</h2>
+      </div>
+      <p class="wish-section-desc">Working kitchen — Kadappa black stone counter, brass fittings, open teak shelving for the brass and copper that earns a place on display.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110924470646042.jpg" alt="Kadappa black-stone counter" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Kadappa black-stone counter</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Honed Kadappa black stone, L-shaped run, 20 mm thickness, mitre-edge for a monolithic look — matches the 2F master bath spec.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110928388103597.jpg" alt="Open teak shelving" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Open teak shelving</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Three long teak shelves with brass brackets, spaced for brass vessels and copper pots — the working heirlooms on display.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3819324594709421002_3819323112249438846.jpg" alt="Brass-finish pull-out tap" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass-finish pull-out tap</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Brushed brass kitchen mixer with pull-out spray head, ceramic cartridge, matching brass soap dispenser alongside.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.artize.com/" target="_blank" rel="noopener">Artize <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226931705217.jpg" alt="Built-in RO water purifier" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Built-in RO water purifier</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Under-counter RO + UV + mineral-add, 10 L storage, separate brass drinking-water tap on the counter — invisible, reliable.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110937749845029.jpg" alt="Copper-bottom cooking collection" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Copper-bottom cooking collection</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Heirloom copper kadai, urli, biryani handi, milk pan — re-tinned yearly, used every day, shown on the open shelving.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3874398561827891949.jpg" alt="Brass dabba & masala jar set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass dabba &amp; masala jar set</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Nested brass dabbas, round masala jars with snug lids, hand-stamped Tamil labels on brass tags — the pantry that stays out.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 1F · 5. PARENTS' BATHROOM -->
+    <section class="wish-section" id="parents-bath">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 05</span>
+        <h2 class="wish-section-title">Parents' Bathroom</h2>
+      </div>
+      <p class="wish-section-desc">Warm Zellige walls, brass fittings, a stone counter basin — safe, accessible, still beautiful.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3410505784193939426.jpg" alt="Zellige tile wall set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Zellige tile wall set</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Hand-cut Zellige tiles in warm terracotta with ivory mix — running-bond layout, brass trim at all edges, sealed matte.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/DXTwzE2lJIz.jpg" alt="Brass rain shower & handset" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass rain shower &amp; handset</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Brushed brass 10" ceiling rain head, matching handset on slider rail, thermostatic mixer — grab-bar compatible rail height.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.artize.com/" target="_blank" rel="noopener">Artize <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/DXJekSKk08c.jpg" alt="Kadappa stone counter basin" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Kadappa stone counter basin</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Carved from a single block of Kadappa, honed finish, integrated drain, sits on a teak counter with brass towel rail below.</p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3410505784193939426.jpg" alt="Brass-framed mirror" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass-framed mirror</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Hand-hammered brass frame, 30" round, soft warm-LED back-lighting for evening use, mounted over the counter basin.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://no-mad.in/" target="_blank" rel="noopener">No-Mad <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 1F · 6. PARENTS' SIT-OUT -->
+    <section class="wish-section" id="parents-sitout">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 06</span>
+        <h2 class="wish-section-title">Parents' Sit-out</h2>
+      </div>
+      <p class="wish-section-desc">Balcony sit-out for morning coffee, evening tea — planter's chairs, areca palms, a brass lantern above.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3856303796411439952_3856302002749860601.jpg" alt="Planter's chair pair" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Planter's chair pair</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Matched pair of teak planter's chairs with extended arm rests and hand-woven cane seat &amp; back — for the long afternoon.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3858678691388473727_3858678563822293285.webp" alt="Round teak side table" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Round teak side table</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">18" round teak side table between the planter's chairs — sized for a filter coffee dabara and a small brass vase.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/plants-plan-ref.png" alt="Plants plan reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Areca palm &amp; banana planters × 4</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Four terracotta planters — two areca palms, one banana, one tulsi at the corner — layered height, green screening from the street.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://orangetree.in/" target="_blank" rel="noopener">Orange Tree <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3758248305793575116_3758248278320929754.webp" alt="Brass ceiling lantern" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass ceiling lantern</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Single hand-spun brass lantern over the sit-out, warm 2700K lamp — the light that invites the evening chat.</p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════
+       SECOND FLOOR — the private floor (current wishlist content)
+       ═════════════════════════════════════════════════ -->
+  <div class="wish-floor is-active" data-floor="2f" role="tabpanel">
+    <div class="wish-floor-intro">
+      <h2 class="fi-name">Second Floor · Private</h2>
+      <p class="fi-tag">Master bedroom, lounge, dressing, toilet, patio, sit-out &amp; workstation — the soul of the brief.</p>
+    </div>
+
+  <!-- ═════════════════════════════════════════════════
+       1. LOUNGE — SCREENING & SIT
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="lounge">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 01</span>
+      <h2 class="wish-section-title">Lounge &middot; Screening &amp; Sit</h2>
+    </div>
+    <p class="wish-section-desc">13' × 9'4". The screening room, reading nook, and evening drinks corner — low seating, carved teak, Athangudi accents, Atmos audio kept invisible.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <!-- Samsung The Frame 65" -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Samsung The Frame lifestyle image -->
+          <img class="wish-img" src="assets/reference/instagram/3550999762961337542_3550999753196849763.jpg" alt="Samsung The Frame 65&quot; (LS03D, 2024)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Samsung The Frame 65" (LS03D, 2024)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Matte anti-glare panel that shows art when off — wrap it in a hand-carved teak surround to hide the "TV-ness" completely.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.samsung.com/in/lifestyle-tvs/the-frame/" target="_blank" rel="noopener">Samsung India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Carved Teak TV Surround -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/johnson-sukranti-teak-p12.jpg" alt="Hand-carved teak panel — reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Hand-carved teak TV surround</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Commissioned frame with lotus/peacock jali detail — hides the screen as a carved niche when off.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Sonos Arc Ultra -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Sonos Arc Ultra product image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226923286029.jpg" alt="Sonos Arc Ultra + Sub 4 + Era 300 rears" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Sonos Arc Ultra + Sub 4 + Era 300 rears</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Atmos surround — recess the Arc behind a perforated teak jali panel so tech disappears, sound doesn't.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.sonos.com/en-in/shop/arc-ultra" target="_blank" rel="noopener">Sonos <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Low Teak Console -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/johnson-sukranti-p1.jpg" alt="Heritage teak sideboard — reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Low teak console (under-TV)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Solid teak sideboard with peacock jali carving, brass inlay handles, oxide-red lacquered interior.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Daybed Sofa -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Low daybed with bolsters image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944432850337.jpg" alt="Low daybed sofa" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Low daybed sofa</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Generous, floor-close — cream linen base with kalamkari indigo bolsters and mustard accents.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.saritahanda.com/" target="_blank" rel="noopener">Sarita Handa <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Planter's Chairs -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Planter's chair image -->
+          <img class="wish-img" src="assets/reference/instagram/3878030541707591605_3878029659610873357.jpg" alt="Planter's chairs (pair)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Planter's chairs (pair)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Vintage Bombay fornicators in teak + cane — colonial silhouette, Chennai-appropriate bones.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.orangetree.in/" target="_blank" rel="noopener">Orange Tree <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Chettinad gadi + bolsters -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Chettinad floor cushions image -->
+          <img class="wish-img" src="assets/reference/instagram/3870788962990803349_3870788953125774973.jpg" alt="Chettinad gadi + bolsters" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Chettinad gadi + bolsters</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Floor seating set — ajrakh indigo and mustard, for reading by the patio doors.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://no-mad.in/" target="_blank" rel="noopener">No-Mad 97%India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Brass coffee table -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Hammered brass coffee table image -->
+          <img class="wish-img" src="assets/stained-glass-door-ref.png" alt="Hammered brass round coffee table" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Hammered brass round coffee table</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Moradabadi hammered brass top on a carved teak base — anchor of the seating pit.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://ptal.in/" target="_blank" rel="noopener">P-Tal <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Athangudi tile stools -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/tiles-reference.png" alt="Athangudi tile patterns — reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Octagonal Athangudi-tile stools (pair)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Side tables / extra seats, tiled tops in oxide red + ochre + cream geometry.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings &amp; Tiles <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Lounge rug — Jaipur Manchaha -->
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Jaipur Rugs Manchaha image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944432897778.jpg" alt="Jaipur Rugs — Manchaha 8'×10'" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Jaipur Rugs — Manchaha 8'×10'</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Hand-knotted wool in oxide red, indigo and ochre — artisan-designed, one-of-a-kind.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.jaipurrugs.com/collection/manchaha" target="_blank" rel="noopener">Jaipur Rugs <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       2. MASTER BEDROOM
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="bedroom">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 02</span>
+      <h2 class="wish-section-title">Master Bedroom</h2>
+    </div>
+    <p class="wish-section-desc">9'9" × 14'3". Teak four-poster anchor, modern mattress hidden beneath heritage form, handwoven cottons, nothing synthetic.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/johnson-sukranti-teak-p7.jpg" alt="Carved teak four-poster reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Carved Burma teak four-poster</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Low-profile, minimal canopy, brass corner caps, carved lotus headboard — commissioned.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: mattress product image -->
+          <img class="wish-img" src="assets/reference/instagram/3873626449005563566_3873625739723586210.jpg" alt="Hästens 2000T mattress" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Hästens 2000T mattress</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Natural materials, hand-built — hidden inside the teak frame. Alt: Saatva Classic or Sleep Company Elev8.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.hastens.com/int/products/beds/2000t/" target="_blank" rel="noopener">Hästens <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Maku handwoven cotton sheets image -->
+          <img class="wish-img" src="assets/reference/instagram/3856303796411439952_3856302002749860601.jpg" alt="Maku Textiles handwoven sheets" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Maku Textiles handwoven sheets</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Bengal cotton in indigo + ivory — the only bedding that feels right against teak.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://makutextiles.com/" target="_blank" rel="noopener">Maku Textiles <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Chamee & Palak razai image -->
+          <img class="wish-img" src="assets/reference/instagram/3865510420711557274_3865509695868674851.jpg" alt="Chamee & Palak indigo razai" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Chamee &amp; Palak indigo razai</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Block-printed Jaipur razai — winter warmth, summer throw.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.chameeandpalak.com/" target="_blank" rel="noopener">Chamee &amp; Palak <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/stained-glass-door-ref.png" alt="Stained glass panel — reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Teak + stained-glass nightstands (pair)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Brass pulls, peacock/lotus stained-glass front panel, ~18" wide.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Jaipur Raw wool dhurrie image -->
+          <img class="wish-img" src="assets/reference/instagram/3874423651375282110_3874422190019997125.jpg" alt="Jaipur Rugs — Raw dhurrie 9'×12'" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Jaipur Rugs — Raw dhurrie 9'×12'</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Under-bed ivory + ochre flatweave wool — calm base under the four-poster.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.jaipurrugs.com/" target="_blank" rel="noopener">Jaipur Rugs <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Teak blanket chest / pathaayam image -->
+          <img class="wish-img" src="assets/reference/instagram/3867710394606118240_3867709165264124995.jpg" alt="Teak blanket chest (pathaayam)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Teak blanket chest (pathaayam)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Low chest at foot of bed — linen storage that reads like heirloom.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://beyonddesigns.in/" target="_blank" rel="noopener">Beyond Designs <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Good Earth Nilaya table lamps image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944625801235.jpg" alt="Good Earth Nilaya brass lamps (pair)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Good Earth Nilaya brass lamps (pair)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Bedside — brass body, block-print cotton shades in indigo or sepia.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       3. DRESSING
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="dressing">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 03</span>
+      <h2 class="wish-section-title">Dressing</h2>
+    </div>
+    <p class="wish-section-desc">9'9" × 7'7". Built-in teak, brass pulls, one great mirror, zero laminate — a small room that should feel disproportionately rich.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/johnson-sukranti-p2.jpg" alt="Heritage teak wardrobe reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Built-in teak wardrobes (full-height)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Solid teak veneer, Chettinad brass pulls, mirror-front central bay — commission locally in Chennai.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass cabinet pulls image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944667731370.jpg" alt="Chettinad brass cabinet pulls (set)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Chettinad brass cabinet pulls (set)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Hand-cast brass pulls — the small metal that makes the big wood sing.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://antarang.co.in/" target="_blank" rel="noopener">Antarang <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Vintage rosewood dressing mirror image -->
+          <img class="wish-img" src="assets/reference/instagram/DXTwzE2lJIz.jpg" alt="Vintage rosewood dressing mirror" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Vintage rosewood dressing mirror</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Antique, full-length, carved frame — source Pycrofts Road or Jew Town Kochi.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.jaypore.com/" target="_blank" rel="noopener">Jaypore <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass hook teak hangers image -->
+          <img class="wish-img" src="assets/reference/instagram/3867710394606118240_3867709167830439830.jpg" alt="Brass-hook teak hangers" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Brass-hook teak hangers</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Matching teak + brass — the inside of the wardrobe should reward opening it.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Klove Studio brass pendant image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830550858256.jpg" alt="Klove Studio brass pendant" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Klove Studio brass pendant</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Hand-blown glass + brass, centered over the dressing island — warm 2700K.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://klovestudio.com/" target="_blank" rel="noopener">Klove Studio <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Ivory + indigo cotton dhurrie image -->
+          <img class="wish-img" src="assets/reference/instagram/3873626449005563566_3873626263164303604.jpg" alt="Ivory + indigo stripe dhurrie" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Ivory + indigo stripe dhurrie</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Soft underfoot, handwoven — keeps the room quiet on hard Athangudi floor.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.shyamahuja.com/" target="_blank" rel="noopener">Shyam Ahuja <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       4. TOILET — heritage meets smart
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="toilet">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 04</span>
+      <h2 class="wish-section-title">Toilet</h2>
+    </div>
+    <p class="wish-section-desc">5'10" × 7'9". Where modern plumbing tech hides inside heritage ceramic and brass — nothing screams "smart toilet," everything works like one.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Toto Washlet S7A image -->
+          <img class="wish-img" src="assets/reference/instagram/DXJekSKk08c.jpg" alt="Toto Washlet S7A bidet seat" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Toto Washlet S7A bidet seat</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Heated, auto-open, rimless — smart tech inside a restrained ceramic form.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://in.toto.com/products/washlet" target="_blank" rel="noopener">Toto India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Duravit ME wall-hung WC image -->
+          <img class="wish-img" src="assets/reference/instagram/3410505784193939426.jpg" alt="Duravit ME by Starck wall-hung WC" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Duravit ME by Starck wall-hung WC</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Soft, quiet shape — pairs with Toto Washlet and a concealed Geberit cistern.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.duravit.in/" target="_blank" rel="noopener">Duravit India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Geberit Sigma70 brushed brass flush plate image -->
+          <img class="wish-img" src="assets/reference/instagram/DXTwzE2lJIz.jpg" alt="Geberit Sigma70 flush plate (brushed brass)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Geberit Sigma70 flush plate (brushed brass)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">One of the few metal details on the wall — brass, not chrome, no exceptions.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.geberit.in/products/bathroom-products/actuator-plates/sigma70/" target="_blank" rel="noopener">Geberit India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Hammered brass vessel basin image -->
+          <img class="wish-img" src="assets/reference/instagram/DXJekSKk08c.jpg" alt="Hammered brass vessel basin" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Hammered brass vessel basin</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Moradabadi brass basin on a teak + Athangudi counter — the basin is the art.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://ptal.in/" target="_blank" rel="noopener">P-Tal <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/tiles-reference.png" alt="Athangudi tile reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Athangudi tile counter + floor</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Oxide red + ochre + cream geometry — floor and vanity counter in the same family.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Jaquar Artize antique brass tap image -->
+          <img class="wish-img" src="assets/reference/instagram/3874111675351707351_3874110941818264781.jpg" alt="Jaquar Artize tapware — antique brass" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Jaquar Artize tapware — antique brass</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Aspen / Tiaara range — basin + shower + rain head, all antique brass finish.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.artize.com/" target="_blank" rel="noopener">Artize by Jaquar <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/stained-glass-door-ref.png" alt="Stained glass clerestory — reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Stained-glass clerestory (peacock motif)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Small coloured-glass window above the shower — light patterns on the tile at sunset.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="inspiration.html" target="_blank" rel="noopener">Reference archive <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass round mirror image -->
+          <img class="wish-img" src="assets/reference/instagram/3410505784193939426.jpg" alt="Brass round mirror — etched" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Brass round mirror — etched</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Above the vanity — brass frame with a hand-etched border, no bevel.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.freedomtree.in/" target="_blank" rel="noopener">Freedom Tree <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       5. PATIO + SIT-OUT
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="patio">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 05</span>
+      <h2 class="wish-section-title">Patio &amp; Sit-out</h2>
+    </div>
+    <p class="wish-section-desc">Open patio + 9'6" × 9'4" sit-out. The soul of the floor — a swing, plants, Kota stone underfoot, evening brass glow.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Kota stone / red oxide floor image -->
+          <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337267959137748.jpg" alt="Kota stone / red oxide patio floor" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Kota stone / red oxide patio floor</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Leather-finish Kota or polished red oxide — both age beautifully with monsoon.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Oonjal swing image -->
+          <img class="wish-img" src="assets/reference/instagram/3758248305793575116_3758248278807431847.webp" alt="Carved teak oonjal (Chettinad swing)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Carved teak oonjal (Chettinad swing)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Brass chains, carved panels — this single piece defines the entire floor.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya / Karaikudi <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Thinnai daybed image -->
+          <img class="wish-img" src="assets/reference/instagram/3758248305793575116_3758248278111215110.webp" alt="Thinnai daybed bench" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Thinnai daybed bench</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Wall-run teak bench with dhurrie cushion + indigo kantha throw.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.gulmoharlane.com/" target="_blank" rel="noopener">Gulmohar Lane <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Planter's chair outdoor image -->
+          <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337268873499918.jpg" alt="Planter's chairs (outdoor pair)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Planter's chairs (outdoor pair)</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Second pair, teak + cane — for morning coffee on the open patio.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.orangetree.in/" target="_blank" rel="noopener">Orange Tree <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/plants-plan-ref.png" alt="Plants plan reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Terracotta pots + plants (set of 8)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Frangipani, jasmine, tulsi, curry leaf, champa, areca, money plant — Villianur terracotta.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.bergsterracotta.com/" target="_blank" rel="noopener">Bergs Potter / Villianur <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass urli image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830676502924.jpg" alt="Brass urli (pair, different sizes)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Brass urli (pair, different sizes)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Classic Kerala urli — water + marigold / jasmine floats, Thursdays and festivals.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://ptal.in/" target="_blank" rel="noopener">P-Tal <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Oorjaa bamboo pendant image -->
+          <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830091054144945.jpg" alt="Oorjaa bamboo pendant" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Oorjaa bamboo pendant</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Lantern above the oonjal — warm amber glow in evenings.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass wall sconce image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944625801235.jpg" alt="Anemos brass wall sconces (set of 4)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Anemos brass wall sconces (set of 4)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Ship-lantern style along the parapet — IP44, weather-resistant brass.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://anemos.in/" target="_blank" rel="noopener">Anemos <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       6. WORKSTATION
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="workstation">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Room 06</span>
+      <h2 class="wish-section-title">Workstation</h2>
+    </div>
+    <p class="wish-section-desc">6'4" × 4'3". Small, focused — one slab desk, one good chair, one brass lamp, and the rest stays out of sight.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <img class="wish-img" src="assets/johnson-sukranti-teak-p15.jpg" alt="Teak slab reference" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Solid teak slab desk</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Single live-edge teak slab on brass hairpin or turned teak legs — commission.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://beyonddesigns.in/" target="_blank" rel="noopener">Beyond Designs <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Phantom Hands PJ chair image -->
+          <img class="wish-img" src="assets/reference/instagram/DXJekSKk08c.jpg" alt="Phantom Hands — Pierre Jeanneret repro" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Phantom Hands — Pierre Jeanneret repro</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">The PJ Chandigarh chair — Indian modernist, perfectly on-theme, legitimately comfortable.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Paul Matter Tango brass lamp image -->
+          <img class="wish-img" src="assets/reference/instagram/3550999762961337542_3550999753197020143.jpg" alt="Paul Matter — Tango task lamp" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Paul Matter — Tango task lamp</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Indian-designed brass lamp with a sculptural swing arm — a desk object worth framing.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://paulmatter.com/" target="_blank" rel="noopener">Paul Matter <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Apple Studio Display image -->
+          <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830091213536319.jpg" alt="Apple Studio Display" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Apple Studio Display</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Aluminium + dark bezel — sits on a small teak riser, all cables routed through a brass conduit.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.apple.com/in/shop/buy-mac/studio-display" target="_blank" rel="noopener">Apple India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Floating teak shelf image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898847403633683.jpg" alt="Floating teak shelf + Swamimalai Nataraja" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Floating teak shelf + Swamimalai Nataraja</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Above the desk — one shelf, a small panchaloha bronze, four books. That's it.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://swamimalaibronze.com/" target="_blank" rel="noopener">Swamimalai Bronze <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       7. LIGHTING (whole floor)
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="lighting">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Across the floor</span>
+      <h2 class="wish-section-title">Lighting</h2>
+    </div>
+    <p class="wish-section-desc">The single biggest lever for Chettinad mood. Warm 2700K everywhere, brass plates only, dimmable throughout, smart control kept invisible.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Oorjaa brass cluster image -->
+          <img class="wish-img" src="assets/reference/instagram/3758248305793575116_3758248278320929754.webp" alt="Oorjaa bamboo + brass cluster" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Oorjaa bamboo + brass cluster</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Lounge centre — a constellation of amber spheres over the seating pit.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Paul Matter Solace image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944432876873.jpg" alt="Paul Matter — Solace pendant" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Paul Matter — Solace pendant</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Brass bowl — soft downlight over the bed centreline.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://paulmatter.com/" target="_blank" rel="noopener">Paul Matter <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Klove tripod floor lamp image -->
+          <img class="wish-img" src="assets/reference/instagram/3758248305793575116_3758248278312546444.webp" alt="Klove Studio brass tripod floor lamp" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Klove Studio brass tripod floor lamp</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Brass legs, linen shade — anchors the daybed corner.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://klovestudio.com/" target="_blank" rel="noopener">Klove Studio <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Anemos stair sconce image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830559237994.jpg" alt="Anemos vintage stair sconces" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Anemos vintage stair sconces</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Staircase + corridor — brass lanterns that throw a soft wash up the teak treads.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://anemos.in/" target="_blank" rel="noopener">Anemos <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Schneider Zencelo brass plate image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524227015518463.jpg" alt="Schneider Zencelo brass plates (full set)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Schneider Zencelo brass plates (full set)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Every switch, every socket — brushed brass, no white plastic anywhere on this floor.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.se.com/in/en/product-range/60450-zencelo/" target="_blank" rel="noopener">Schneider India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Lutron Caseta bridge image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226931705217.jpg" alt="Lutron Caseta — smart dimming" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Lutron Caseta — smart dimming</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Invisible smart layer behind the brass plates — Apple Home + scheduled scenes.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.casetawireless.com/" target="_blank" rel="noopener">Lutron Caseta <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       8. TEXTILES (across floor)
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="textiles">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Across the floor</span>
+      <h2 class="wish-section-title">Textiles</h2>
+    </div>
+    <p class="wish-section-desc">Handloom only. Natural fibres only. Zero polyester. Repeat palette across rooms for quiet coherence.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Anavila linen curtain image -->
+          <img class="wish-img" src="assets/johnson-sukranti-teak-p7.jpg" alt="Raw linen curtains — ivory + indigo" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Raw linen curtains — ivory + indigo</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Floor-kissing handloom linen, cream primary with indigo feature panels.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.anavila.co/" target="_blank" rel="noopener">Anavila <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Brass curtain finials image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944432897778.jpg" alt="Teak curtain rods + brass finials" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Teak curtain rods + brass finials</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Cannot overstate — brass finials change everything. Commissioned to match pulls.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Kalamkari cushion image -->
+          <img class="wish-img" src="assets/reference/instagram/3856303796411439952_3856301996936538061.jpg" alt="Kalamkari + ajrakh cushion set" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Kalamkari + ajrakh cushion set</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Mixed sizes, never matchy — indigo, rust, ochre, cream. One silk-velvet bolster per room as punctuation.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.goodearth.in/" target="_blank" rel="noopener">Good Earth <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Kantha throw image -->
+          <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928368814.jpg" alt="Bengal kantha throws" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Bengal kantha throws</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Draped over the daybed, the thinnai, the foot of the bed — soft, irregular, hand-stitched.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.chameeandpalak.com/" target="_blank" rel="noopener">Chamee &amp; Palak <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       9. ART, BRASS & CERAMICS
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="art">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Soul layer</span>
+      <h2 class="wish-section-title">Art, Brass &amp; Ceramics</h2>
+    </div>
+    <p class="wish-section-desc">The layer that makes the floor yours. One bronze. One painting. A few terracottas. Not a gallery — a considered few.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Tanjore painting image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830676612363.jpg" alt="Tanjore painting — small, single" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Tanjore painting — small, single</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Heavy gold leaf, traditional subject — one piece only on the lounge wall.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://kalakshetra.in/" target="_blank" rel="noopener">Kalakshetra Chennai <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Ravi Varma oleograph image -->
+          <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830676612363.jpg" alt="Raja Ravi Varma oleograph" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Raja Ravi Varma oleograph</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Vintage, sourced — the cultural reference point of domestic South Indian walls.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://saffronart.com/" target="_blank" rel="noopener">Saffronart <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Swamimalai Nataraja image -->
+          <img class="wish-img" src="assets/reference/instagram/3870788962990803349_3870788953083842727.jpg" alt="Swamimalai panchaloha Nataraja" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Swamimalai panchaloha Nataraja</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Traditional lost-wax bronze — one only, on the workstation shelf or lounge niche.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://swamimalaibronze.com/" target="_blank" rel="noopener">Swamimalai Bronze <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Ayyanar terracotta horses image -->
+          <img class="wish-img" src="assets/reference/instagram/3698830107915181365_3698830090928211359.jpg" alt="Ayyanar terracotta horses (pair)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Ayyanar terracotta horses (pair)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc">Flanking the patio doorway — Villianur-sourced, keeper of thresholds.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://ikaiasai.com/" target="_blank" rel="noopener">Ikai Asai <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Madurai Sungudi textile framed image -->
+          <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944625785353.jpg" alt="Framed Madurai Sungudi textile" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Framed Madurai Sungudi textile</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Single large vintage Sungudi — lounge accent wall, teak box frame, no glare glass.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.jaypore.com/" target="_blank" rel="noopener">Jaypore <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Coffee table book stack image -->
+          <img class="wish-img" src="assets/reference/instagram/3819324594709421002_3819323112249438846.jpg" alt="Coffee-table book stack (6 titles)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Coffee-table book stack (6 titles)</span>
+            <span class="tier tier-soul">Soul-layer</span>
+          </div>
+          <p class="wish-desc"><em>The Bangala</em>, <em>Tamil Houses</em>, <em>Karaikudi Mansions</em>, <em>Good Earth 25</em>, <em>India Modern (Henry Wilson)</em>, <em>The Ultimate Book of Chettinad</em>.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.amazon.in/s?k=chettinad+architecture" target="_blank" rel="noopener">Amazon India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ═════════════════════════════════════════════════
+       10. TECH (invisible)
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-section" id="tech">
+    <div class="wish-section-header">
+      <span class="wish-section-overline">Across the floor</span>
+      <h2 class="wish-section-title">Tech (kept invisible)</h2>
+    </div>
+    <p class="wish-section-desc">The modern layer — air, Wi-Fi, AC, fans, purifier. Chosen for performance, hidden or dressed to disappear into the heritage shell.</p>
+    <div class="wish-section-rule"></div>
+
+    <div class="wish-grid">
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Daikin ducted AC image -->
+          <img class="wish-img" src="assets/reference/instagram/3550999762961337542_3550999753196849763.jpg" alt="Daikin ducted inverter AC" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Daikin ducted inverter AC</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Concealed ducts — cassette hidden behind carved teak screen. No plastic wall units.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.daikinindia.com/" target="_blank" rel="noopener">Daikin India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Fanzart Iris teak fan image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226923286029.jpg" alt="Fanzart Iris — teak blade fan" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Fanzart Iris — teak blade fan</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">The fan is heritage-visible, so it matters — teak blades, brass hub, BLDC motor.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.fanzart.com/" target="_blank" rel="noopener">Fanzart <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Dyson Big Quiet image -->
+          <img class="wish-img" src="assets/reference/instagram/3550999762961337542_3550999753197020143.jpg" alt="Dyson Big+Quiet air purifier" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Dyson Big+Quiet air purifier</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Chennai air demands this — tuck in lounge corner behind the daybed.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.dyson.in/air-treatment/purifiers" target="_blank" rel="noopener">Dyson India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Eero 7 Max image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524227015518463.jpg" alt="Eero 7 Max mesh Wi-Fi" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Eero 7 Max mesh Wi-Fi</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Hide inside a carved teak speaker box — coverage without aesthetic cost.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://eero.com/" target="_blank" rel="noopener">Eero <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Apple TV 4K image -->
+          <img class="wish-img" src="assets/reference/instagram/3505524235001653983_3505524226931705217.jpg" alt="Apple TV 4K (3rd gen)" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Apple TV 4K (3rd gen)</span>
+            <span class="tier tier-essential">Essential</span>
+          </div>
+          <p class="wish-desc">Single streaming source — tucked behind the Frame, controlled via Siri Remote.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.apple.com/in/apple-tv-4k/" target="_blank" rel="noopener">Apple India <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="wish-card">
+        <div class="wish-img-wrap">
+          <!-- SWAP: Sonos Move 2 image -->
+          <img class="wish-img" src="assets/reference/instagram/3550999762961337542_3550999753196849763.jpg" alt="Sonos Move 2" loading="lazy">
+        </div>
+        <div class="wish-body">
+          <div class="wish-row">
+            <span class="wish-title">Sonos Move 2</span>
+            <span class="tier tier-signature">Signature</span>
+          </div>
+          <p class="wish-desc">Lives on the oonjal armrest — music in the patio, carry to the bedroom after dinner.</p>
+          <div class="wish-meta">
+            <a class="wish-link" href="https://www.sonos.com/en-in/shop/move-2" target="_blank" rel="noopener">Sonos <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  </div><!-- /2F floor container -->
+
+  <!-- ═════════════════════════════════════════════════
+       THIRD FLOOR — future build (foundation ready)
+       ═════════════════════════════════════════════════ -->
+  <div class="wish-floor" data-floor="3f" role="tabpanel">
+    <div class="wish-floor-intro">
+      <h2 class="fi-name">Third Floor</h2>
+      <p class="fi-tag">Future build — foundation engineered for G+3. Roof terrace, prayer pavilion, and a flexible room held open for later years.</p>
+    </div>
+    <!-- 3F · 1. OPEN TERRACE -->
+    <section class="wish-section" id="terrace-3f">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 01</span>
+        <h2 class="wish-section-title">Open Terrace</h2>
+      </div>
+      <p class="wish-section-desc">The roof — pergola shade, oxide-tiled floor, a ring of planters. Future-held — sourced after G+2 is lived-in for one monsoon.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3856303796411439952_3856301996936538061.jpg" alt="Teak + MS pergola frame" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Teak + MS pergola frame</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Weathering-steel MS posts, teak cross-members, bougainvillea trained over the top — dappled afternoon shade. <em>Future — after one monsoon lived.</em></p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337268907065884.jpg" alt="Chettinad oxide-red terrace tile" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Chettinad oxide-red terrace tile</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Traditional oxide-red IPS tile, heat-reflective, ages beautifully with monsoon — anti-skid finish at the edges. <em>Future — laid with the G+3 slab.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.bharatfloorings.com/" target="_blank" rel="noopener">Bharat Floorings <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/plants-plan-ref.png" alt="Plants plan reference" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Planter wall — six pots</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">Six large terracotta planters along the parapet — frangipani, curry leaf, hibiscus, guava, papaya, tulsi. <em>Future — planted once the slab is cured.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://orangetree.in/" target="_blank" rel="noopener">Orange Tree <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3877337287009683642_3877337269058034530.jpg" alt="Rope-swung teak terrace bench" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Rope-swung teak terrace bench</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">A mini oonjal for the roof — 1.5m teak plank, twisted cotton rope, hung from the pergola beam. <em>Future — the reward after the long build.</em></p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/plants-plan-ref.png" alt="Brass garden lantern string" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass garden lantern string</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">A festoon of ten small brass lanterns along the pergola edge — warm 2700K, weatherproofed, on a dusk sensor. <em>Future — switched on the first Diwali after G+3.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://oorjaalight.com/" target="_blank" rel="noopener">Oorjaa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 3F · 2. PRAYER PAVILION -->
+    <section class="wish-section" id="prayer-pavilion-3f">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 02</span>
+        <h2 class="wish-section-title">Prayer Pavilion</h2>
+      </div>
+      <p class="wish-section-desc">A sky-lit corner of the terrace — peacock jali screen, stone meditation bench, brass diyas at dawn.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830559237994.jpg" alt="Peacock jali screen in teak" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Peacock jali screen in teak</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Commissioned 6' × 7' pierced teak screen — peacock + lotus motif, casting shadows that move through the day. <em>Future — carved once the pavilion walls are ready.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3819324594709421002_3819323118851315098.jpg" alt="Kadappa stone meditation bench" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Kadappa stone meditation bench</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">Single slab of honed Kadappa, 4' long, 14" high — cool to the touch at dawn, warm by noon. <em>Future — placed once the pavilion is built.</em></p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830676646575.jpg" alt="Brass diya holder row × 5" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Brass diya holder row × 5</span>
+              <span class="tier tier-soul">Soul</span>
+            </div>
+            <p class="wish-desc">Five cast brass diya holders in graduated heights, lit for morning prayer and festival evenings. <em>Future — cast closer to the pavilion's opening puja.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://swamimalaibronze.com/" target="_blank" rel="noopener">Swamimalai Bronze <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898830684883817.jpg" alt="Stained-glass sky panel" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Stained-glass sky panel</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">A 4' × 4' stained-glass skylight — saffron and indigo rays radiating from a central sun, dropping colour onto the stone bench at midday. <em>Future — set into the pavilion roof.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.baayadesign.com/" target="_blank" rel="noopener">Baaya Design <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- 3F · 3. FLEX ROOM -->
+    <section class="wish-section" id="flex-room-3f">
+      <div class="wish-section-header">
+        <span class="wish-section-overline">Room 03</span>
+        <h2 class="wish-section-title">Flex Room <span style="opacity:.55; font-weight:400;">&middot; held open</span></h2>
+      </div>
+      <p class="wish-section-desc">Guest / studio / library — not decided. Held honestly empty until the family knows what it will become.</p>
+      <div class="wish-section-rule"></div>
+
+      <div class="wish-grid">
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3805384969640653812_3805384944667731370.jpg" alt="Space held open" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Space held open</span>
+              <span class="tier tier-signature">Signature</span>
+            </div>
+            <p class="wish-desc">No vendor, no spec, no rush. Furniture decided when the need is real — guest bedroom, studio, library, or home office. <em>Future — the house will tell us.</em></p>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/johnson-sukranti-teak-p7.jpg" alt="Low teak bookshelf" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Low teak bookshelf</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">If the room becomes a library — modular low teak bookshelf, three bays, brass toe-kick, sized for art books and novels. <em>Future — if and when.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://phantomhands.in/" target="_blank" rel="noopener">Phantom Hands <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="wish-card">
+          <div class="wish-img-wrap">
+            <img class="wish-img" src="assets/reference/instagram/3637898858367343358_3637898847453953271.jpg" alt="Floor cushion set" loading="lazy">
+          </div>
+          <div class="wish-body">
+            <div class="wish-row">
+              <span class="wish-title">Floor cushion set</span>
+              <span class="tier tier-essential">Essential</span>
+            </div>
+            <p class="wish-desc">A modest set of block-printed floor cushions — the flex-room's only certainty: wherever the room lands, extra seating fits. <em>Future — once use is known.</em></p>
+            <div class="wish-meta">
+              <a class="wish-link" href="https://www.saritahanda.com/" target="_blank" rel="noopener">Sarita Handa <span class="arr">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════
+       CLOSE: PRIORITY + HOUSE RULES (across all floors)
+       ═════════════════════════════════════════════════ -->
+  <section class="wish-close">
+    <h3>Priority build order</h3>
+    <div class="wish-phases">
+      <span class="ph-no">PHASE 1</span><span class="ph-txt">Shell &mdash; Athangudi flooring, lime wash, stained-glass windows, teak doors + frames, <em>oonjal install</em>, wiring with brass plates.</span>
+      <span class="ph-no">PHASE 2</span><span class="ph-txt">Built-ins &mdash; teak wardrobes (dressing), TV wall teak surround, bathroom vanity + tiles.</span>
+      <span class="ph-no">PHASE 3</span><span class="ph-txt">Big pieces &mdash; bed, sofa/daybed, planter's chairs, coffee + side tables.</span>
+      <span class="ph-no">PHASE 4</span><span class="ph-txt">Textiles + rugs &mdash; curtains, bedding, rugs, bolsters.</span>
+      <span class="ph-no">PHASE 5</span><span class="ph-txt">Lighting &mdash; Oorjaa, Klove, Paul Matter, Anemos, Good Earth lamps.</span>
+      <span class="ph-no">PHASE 6</span><span class="ph-txt">Soul layer &mdash; Tanjore, bronzes, terracotta, brass urli, plants, books.</span>
+    </div>
+
+    <h3>House rules — what to avoid</h3>
+    <ul class="wish-avoid">
+      <li>Chrome fittings, stark white grout, cool grey tiles</li>
+      <li>Laminate wardrobes or MDF anywhere visible</li>
+      <li>Fake "carved" MDF panels — commission real teak or skip</li>
+      <li>Glossy reflective finishes — everything matte, oiled, or waxed</li>
+      <li>More than one gold/brass tone per room — pick warm brass, stick to it</li>
+      <li>Polyester textiles, synthetic velvets (one silk-velvet bolster ok)</li>
+      <li>Cool-grey Inter-style typography in any built signage</li>
+      <li>Wall-mounted plastic AC units visible in any room</li>
+    </ul>
+  </section>
+
+  <p class="wish-footer-note">This is a living list — edit, re-price, swap vendors freely. Every choice bends toward warmth, craft, and a floor that still feels yours in twenty years.</p>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-monogram">
+    <svg width="80" height="80" viewBox="0 0 80 80">
+      <polygon points="40,4 72,22 72,58 40,76 8,58 8,22" stroke="var(--gold)" stroke-width="1" fill="none"/>
+      <text x="40" y="52" text-anchor="middle" fill="var(--gold)" font-family="'Cinzel Decorative', serif" font-size="32" font-weight="700">M</text>
+    </svg>
+  </div>
+  <div class="footer-columns">
+    <div class="footer-left">
+      <p class="footer-brand">MANAI</p>
+      <p class="footer-tamil">மனை</p>
+      <p class="footer-location">Old Washermanpet, Chennai</p>
+    </div>
+    <div class="footer-center">
+      <p>880 sq.ft Plot · G+2 Built</p>
+      <p>Foundation: G+3 · 2,772 sq.ft</p>
+      <p>Neo-Deccan Heritage</p>
+    </div>
+    <div class="footer-right">
+      <p>Architect: Manivalluvan &amp; Associates</p>
+      <p>Structural: NJ Associates (Job 215/25)</p>
+      <p>Aesthetic: Neo-Deccan Heritage</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Wishlist · A living procurement companion to the Manai brief</p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg width="36" height="36" viewBox="0 0 36 36">
+      <line x1="8" y1="8" x2="28" y2="28"/><line x1="28" y1="8" x2="8" y2="28"/>
+    </svg>
+  </button>
+  <button class="lightbox-arrow prev" onclick="navigateLightbox(-1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M20 4 L6 20 L20 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+  <div id="lightboxContent"></div>
+  <button class="lightbox-arrow next" onclick="navigateLightbox(1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M4 4 L18 20 L4 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+</div>
+
+<script src="assets/js/manai.js"></script>
+<script>
+/* ─── Wishlist floor tracker ─── */
+(function() {
+  var floors = document.querySelectorAll('.wish-floor');
+  var tabs = document.querySelectorAll('.wish-floor-tab');
+  if (!floors.length || !tabs.length) return;
+
+  /* Count items (cards) per floor — updates tab badges */
+  floors.forEach(function(floor) {
+    var key = floor.getAttribute('data-floor');
+    var count = floor.querySelectorAll('.wish-card').length;
+    if (count === 0) {
+      count = floor.querySelectorAll('.wish-room-skeleton').length;
+    }
+    var badge = document.querySelector('[data-count-for="' + key + '"]');
+    if (badge) badge.textContent = count;
+  });
+
+  function setFloor(key) {
+    floors.forEach(function(f) {
+      f.classList.toggle('is-active', f.getAttribute('data-floor') === key);
+    });
+    tabs.forEach(function(t) {
+      var active = t.getAttribute('data-floor') === key;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (history.replaceState) {
+      history.replaceState(null, '', '#floor-' + key);
+    }
+  }
+
+  tabs.forEach(function(t) {
+    t.addEventListener('click', function() {
+      setFloor(t.getAttribute('data-floor'));
+      window.scrollTo({ top: document.querySelector('.wish-floors-wrap').offsetTop - 60, behavior: 'smooth' });
+    });
+  });
+
+  /* Deep-link: #floor-1f etc. */
+  var hash = (window.location.hash || '').replace('#floor-', '');
+  if (hash && document.querySelector('.wish-floor[data-floor="' + hash + '"]')) {
+    setFloor(hash);
+  }
+})();
+</script>
+</body>
+</html>

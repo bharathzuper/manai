@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manai — Specs</title>
+<meta name="description" content="Detailed specifications and material preferences for Manai — a companion document to the design brief.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:wght@400;500&family=Noto+Serif+Tamil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/manai.css">
+<style>
+/* Specs page — minor overrides */
+body { background: var(--ink); }
+.specs-page-header {
+  padding: 140px 40px 40px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.specs-page-header .hero-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+  font-size: clamp(4rem, 10vw, 7rem);
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.specs-page-header h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
+  letter-spacing: 0.22em;
+  color: var(--vellum);
+  margin-bottom: 14px;
+}
+.specs-page-header .specs-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.specs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(198,146,42,0.25);
+  padding-bottom: 3px;
+  transition: color 0.3s, border-color 0.3s;
+}
+.specs-back:hover { color: var(--gold-pale); border-color: var(--gold-pale); }
+.specs-back svg { width: 14px; height: 10px; }
+/* kill the huge top padding on preferences section inside this page */
+#preferences .section-header { padding-top: 0; }
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav class="nav" id="mainNav">
+  <div class="nav-brand">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;">
+      <svg class="nav-monogram" width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <polygon points="18,1 33.6,9.5 33.6,26.5 18,35 2.4,26.5 2.4,9.5"
+                 stroke="var(--gold)" stroke-width="1" fill="none"/>
+        <text x="18" y="22" text-anchor="middle" fill="var(--gold)"
+              font-family="'Cinzel Decorative', serif" font-size="14" font-weight="700">M</text>
+      </svg>
+      <span class="nav-brand-text">MANAI</span>
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a class="nav-link" href="index.html#vision">The House</a></li>
+    <li><a class="nav-link" href="index.html#floor-plans">Plans</a></li>
+    <li><a class="nav-link" href="index.html#structural">Structure</a></li>
+    <li><a class="nav-link" href="index.html#narrative">Rooms</a></li>
+    <li><a class="nav-link nav-link-accent" href="wishlist.html">Wishlist ↗</a></li>
+    <li><a class="nav-link nav-link-accent" href="inspiration.html">Rasanai ↗</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#vision" onclick="closeMobileMenu()">The House</a>
+  <a href="index.html#floor-plans" onclick="closeMobileMenu()">Plans</a>
+  <a href="index.html#structural" onclick="closeMobileMenu()">Structure</a>
+  <a href="index.html#narrative" onclick="closeMobileMenu()">Rooms</a>
+  <a href="wishlist.html" class="mobile-accent">Wishlist ↗</a>
+  <a href="inspiration.html" class="mobile-accent">Rasanai ↗</a>
+</div>
+
+<main>
+  <header class="specs-page-header">
+    <p class="hero-tamil">விவரம்</p>
+    <h1>SPECS</h1>
+    <p class="specs-sub">Materials, finishes, and decided preferences — a companion to the Manai brief.</p>
+    <a class="specs-back" href="index.html">
+      <svg viewBox="0 0 14 10"><path d="M5 1 L1 5 L5 9 M1 5 L13 5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+      Back to the brief
+    </a>
+  </header>
+
+  <!-- shared frieze pattern def used by prefs frieze -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <pattern id="friezeP" x="0" y="0" width="60" height="40" patternUnits="userSpaceOnUse">
+        <path d="M30 0 L60 20 L30 40 L0 20 Z" stroke="var(--gold-pale)" stroke-width="0.5" fill="none"/>
+        <circle cx="30" cy="20" r="6" stroke="var(--gold-pale)" stroke-width="0.3" fill="none"/>
+      </pattern>
+    </defs>
+  </svg>
+
+<section id="preferences">
+  <div class="section-header reveal-slow">
+    <p class="section-overline">Manai · Specs</p>
+    <h2 class="section-title">Materials &amp; Preferences</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="frieze">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+
+  <div class="prefs-section">
+    <div class="prefs-grid">
+
+      <!-- COLOR PALETTE -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Colour Preferences</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <p class="pref-subhead">Primary Palette — Neo-Heritage Indian</p>
+            <div class="pref-row">
+              <span class="pref-label">Rust Terracotta</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#A56A54;display:inline-block;flex-shrink:0;"></span>#A56A54</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Deep Indigo</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#1F2C61;display:inline-block;flex-shrink:0;"></span>#1F2C61</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Ochre Gold</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#D2A747;display:inline-block;flex-shrink:0;"></span>#D2A747</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Forest Green</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#3C6345;display:inline-block;flex-shrink:0;"></span>#3C6345</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Creme Ivory</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#F5FDE1;display:inline-block;flex-shrink:0;"></span>#F5FDE1</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Natural Teak</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#9B8646;display:inline-block;flex-shrink:0;"></span>#9B8646</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-label">Rich Oxide Red</span>
+              <span class="pref-value decided" style="display:flex;align-items:center;gap:8px;"><span style="width:14px;height:14px;border-radius:2px;background:#C04030;display:inline-block;flex-shrink:0;"></span>#C04030</span>
+            </div>
+
+            <p class="pref-subhead">Material Textures</p>
+            <div class="pref-row"><span class="pref-label">Patterns</span><span class="pref-value decided">Traditional (Athangudi tiles)</span></div>
+            <div class="pref-row"><span class="pref-label">Fabrics</span><span class="pref-value decided">Natural — cotton, jute, linen</span></div>
+            <div class="pref-row"><span class="pref-label">Wood</span><span class="pref-value decided">Hand-carved teak</span></div>
+            <div class="pref-row"><span class="pref-label">Decor</span><span class="pref-value decided">Clay pottery, brass, plants</span></div>
+          </div>
+          <div>
+            <img src="assets/color-palette.png" alt="Neo-Heritage Indian Interior Palette — Chettinad & Eco-Style Inspiration" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/color-palette.png','image')">
+          </div>
+        </div>
+        <p class="pref-note">This is our broad colour direction — Chettinad & eco-heritage inspired. Creme Ivory as the neutral base (lime wash walls), with terracotta, indigo, green, and gold as accents placed strategically. Oxide red for Chettinad tile flooring and accents. The design team can adjust shades but should stay within this warm, earthy, heritage family. No cool greys, no stark whites, no synthetic-feeling colours.</p>
+      </div>
+
+      <!-- FLOORING & TILES -->
+      <div class="pref-card reveal-up">
+        <h3>Flooring & Tiles</h3>
+        <p class="pref-subhead">Ground Floor</p>
+        <div class="pref-row"><span class="pref-label">Parking Area</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Common Areas</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">First Floor</p>
+        <div class="pref-row"><span class="pref-label">Living + Dining</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Kitchen</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Bedrooms</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Bathrooms</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Sit-out / Balcony</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Second Floor</p>
+        <div class="pref-row"><span class="pref-label">Master Bedroom</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Lounge / Screening Room</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Master Bathroom</span><span class="pref-value decided">Black Kadappa stone + Zellige tiles</span></div>
+        <div class="pref-row"><span class="pref-label">Pooja Room</span><span class="pref-value decided">White marble</span></div>
+        <div class="pref-row"><span class="pref-label">Patio</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Staircase</p>
+        <div class="pref-row"><span class="pref-label">Staircase Treads</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Staircase Railing</span><span class="pref-value">To be discussed</span></div>
+        <div style="margin-top:16px;">
+          <img src="assets/tiles-reference.png" alt="Athangudi tile patterns — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/tiles-reference.png','image')">
+        </div>
+        <p class="pref-note">Leaning towards Athangudi tiles or similar handcrafted heritage tiles — open to whatever the interior designer suggests. Avoid generic vitrified tiles. The tile patterns above are the kind of direction we like.</p>
+      </div>
+
+      <!-- WOODWORK & DOORS -->
+      <div class="pref-card reveal-up">
+        <h3>Woodwork & Doors</h3>
+        <div class="pref-row"><span class="pref-label">Primary Wood Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Entrance Door</span><span class="pref-value decided">Carved teak — heritage style</span></div>
+        <div class="pref-row"><span class="pref-label">Internal Doors Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Window Frames</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Built-in Wardrobes</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">TV Units / Shelving</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Shoe Rack / Storage</span><span class="pref-value decided">Heritage-style cabinet (see ref below)</span></div>
+        <div class="pref-row"><span class="pref-label">Kitchen Cabinets</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Wood Finish</span><span class="pref-value">To be discussed</span></div>
+        <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <img src="assets/stained-glass-door-ref.png" alt="Stained glass panel doors with transom — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/stained-glass-door-ref.png','image')">
+          <img src="assets/shoe-rack-ref.png" alt="Heritage-style painted shoe cabinet — reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/shoe-rack-ref.png','image')">
+        </div>
+        <p class="pref-note">Carved teak is required for all main door and window frames. Internal doors can be simpler but should still feel heritage. No laminate or veneer-only look. We also want stained glass panels in select doors and windows — colourful heritage-style glass work with floral/geometric patterns, similar to Chettinad mansion doors (see left reference). Transom windows (arched glass above doors) are preferred for main entrances and key thresholds. Shoe rack should be a heritage-style painted wood cabinet with hand-painted panels — functional storage that doubles as an art piece (see right reference).</p>
+      </div>
+
+      <!-- KITCHEN -->
+      <div class="pref-card reveal-up">
+        <h3>Kitchen</h3>
+        <div class="pref-row"><span class="pref-label">Layout</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Modular or Carpenter-built?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Countertop Material</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Backsplash</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Wet Kitchen + Dry Kitchen?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Chimney / Hob Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Water Purifier Provision</span><span class="pref-value">Yes — built-in</span></div>
+        <div class="pref-row"><span class="pref-label">Dishwasher Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Pantry / Storage</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Kitchen should be functional with modern fittings but with heritage aesthetics — patterned tile backsplash, brass fixtures where possible.</p>
+      </div>
+
+      <!-- BATHROOMS -->
+      <div class="pref-card reveal-up">
+        <h3>Bathrooms & Fixtures</h3>
+        <p class="pref-subhead">General</p>
+        <div class="pref-row"><span class="pref-label">Preferred Brands</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Western WC in All?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Concealed Plumbing</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Geyser Type</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">First Floor Bathrooms</p>
+        <div class="pref-row"><span class="pref-label">Wall Tiles</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Floor Tiles</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Vanity Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Shower Type</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-subhead">Master Bathroom (2nd Floor)</p>
+        <div class="pref-row"><span class="pref-label">Floor</span><span class="pref-value decided">Black Kadappa stone</span></div>
+        <div class="pref-row"><span class="pref-label">Walls</span><span class="pref-value decided">Zellige tiles</span></div>
+        <div class="pref-row"><span class="pref-label">Bathtub?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Rain Shower</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Overall Feel</span><span class="pref-value decided">Spa-like, premium</span></div>
+        <p class="pref-note">Master bathroom is a priority space. Other bathrooms should be well-designed but can be simpler.</p>
+      </div>
+
+      <!-- LIGHTING -->
+      <div class="pref-card reveal-up">
+        <h3>Lighting</h3>
+        <div class="pref-row"><span class="pref-label">Chandeliers</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Cove / Concealed Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Staircase Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Pooja Room Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Screening Room</span><span class="pref-value decided">Mood / dimmable lighting</span></div>
+        <div class="pref-row"><span class="pref-label">Natural Light Priority</span><span class="pref-value decided">Living, Dining, Sit-outs</span></div>
+        <div class="pref-row"><span class="pref-label">Exterior / Facade Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Fixture Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Lighting is critical to the heritage feel. Open to brass hanging lamps, lantern-style fixtures, and traditional designs. No generic LED downlight-only approach.</p>
+      </div>
+
+      <!-- CEILING TREATMENTS -->
+      <div class="pref-card reveal-up">
+        <h3>Ceiling Treatments</h3>
+        <div class="pref-row"><span class="pref-label">Stained Glass Ceiling</span><span class="pref-value decided">Living + Dining area (1st floor)</span></div>
+        <div class="pref-row"><span class="pref-label">Other Stained Glass Locations</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">False Ceiling — Where?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exposed Wooden Beams</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Double-height Spaces</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Ceiling Fans Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Stained glass ceiling in living/dining is a must. Other locations open to discussion. Ceiling treatment should complement the heritage aesthetic — no plain gypsum everywhere.</p>
+      </div>
+
+      <!-- ELECTRICAL & SMART HOME -->
+      <div class="pref-card reveal-up">
+        <h3>Electrical & Smart Home</h3>
+        <div class="pref-row"><span class="pref-label">Smart Switches</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Automated Curtains</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Home Theater Pre-wiring</span><span class="pref-value decided">2nd floor lounge</span></div>
+        <div class="pref-row"><span class="pref-label">Hi-Fi / Speaker Pre-wiring</span><span class="pref-value decided">2nd floor lounge</span></div>
+        <div class="pref-row"><span class="pref-label">LAN / Internet Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">USB Charging Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">EV Charging (Parking)</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Solar Panel Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Inverter / Battery Backup</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Generator Provision</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Switch Board Style</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Pre-wiring for all AV and smart home capability is essential even if not installed immediately. Future-proof the electrical layout.</p>
+      </div>
+
+      <!-- VENTILATION & CLIMATE -->
+      <div class="pref-card reveal-up">
+        <h3>Ventilation & Climate</h3>
+        <div class="pref-row"><span class="pref-label">AC in All Rooms?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">AC Type</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">AC Outdoor Unit Placement</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Cross-ventilation Priority</span><span class="pref-value decided">All rooms where possible</span></div>
+        <div class="pref-row"><span class="pref-label">Ceiling Fan Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exhaust Fans</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Jali Screens for Ventilation</span><span class="pref-value decided">Yes — key requirement</span></div>
+        <p class="pref-note">Chennai climate means cross-ventilation and natural airflow are critical. Jali screens serve both the heritage aesthetic and ventilation purpose. AC provisions should be hidden/integrated, not afterthought split-unit mounting.</p>
+      </div>
+
+      <!-- SAFETY & SECURITY -->
+      <div class="pref-card reveal-up">
+        <h3>Safety & Security</h3>
+        <div class="pref-row"><span class="pref-label">CCTV Camera Points</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Video Door Phone</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Intercom System</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Window Grills</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Gate Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Fire Safety</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Lightning Arrester</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Terrace Safety Railing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">If window grills are needed, they should be designed as heritage-style jali or wrought iron patterns — not standard MS grills. Security should be integrated, not visible as an afterthought.</p>
+      </div>
+
+      <!-- PLANTS & GREENERY -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Plants & Greenery</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <p class="pref-subhead">Outside / Street Front</p>
+            <div class="pref-row"><span class="pref-label">Tabebuia Rosea (Pink Trumpet Tree)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Bougainvillea — pink, compound wall</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Canna Lily in terracotta pots (gate entrance)</span><span class="pref-value decided">2 pots</span></div>
+
+            <p class="pref-subhead">Ground Floor — Parking Area</p>
+            <div class="pref-row"><span class="pref-label">Ixora Coccinea (border along parking)</span><span class="pref-value decided">6</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca — ground filler between pots</span><span class="pref-value decided">4 pots</span></div>
+
+            <p class="pref-subhead">First Floor — Parents' Sit-out</p>
+            <div class="pref-row"><span class="pref-label">Plumeria / Frangipani (large pot)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Adenium / Desert Rose</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Jasmine on small trellis</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Tradescantia — hanging (ceiling)</span><span class="pref-value decided">2 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Pothos — hanging (ceiling)</span><span class="pref-value decided">2 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Tulsi (near kitchen or sit-out)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Curry Leaf</span><span class="pref-value decided">1</span></div>
+
+            <p class="pref-subhead">Second Floor — My Sit-out</p>
+            <div class="pref-row"><span class="pref-label">Strelitzia / Bird of Paradise (corner)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Bougainvillea on teak trellis (wall)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Areca Palm (floor entrance)</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca in long planter (railing)</span><span class="pref-value decided">3 pots</span></div>
+            <div class="pref-row"><span class="pref-label">Lemongrass</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Tulsi</span><span class="pref-value decided">1</span></div>
+
+            <p class="pref-subhead">Terrace</p>
+            <div class="pref-row"><span class="pref-label">Dwarf Bougainvillea in large urns — pink</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Dwarf Bougainvillea in large urns — white</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Crossandra / Firecracker Flower</span><span class="pref-value decided">4</span></div>
+            <div class="pref-row"><span class="pref-label">Pentas — pink</span><span class="pref-value decided">4</span></div>
+            <div class="pref-row"><span class="pref-label">Lantana</span><span class="pref-value decided">3</span></div>
+            <div class="pref-row"><span class="pref-label">Thunbergia Grandiflora on parapet trellis</span><span class="pref-value decided">2</span></div>
+            <div class="pref-row"><span class="pref-label">Moringa / Drumstick in large container</span><span class="pref-value decided">1</span></div>
+            <div class="pref-row"><span class="pref-label">Portulaca — ground filler</span><span class="pref-value decided">6 pots</span></div>
+          </div>
+          <div>
+            <img src="assets/plants-plan-ref.png" alt="Floor-by-floor plant plan — nursery reference" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;margin-bottom:24px;" onclick="openLightbox('assets/plants-plan-ref.png','image')">
+
+            <p class="pref-subhead">Total Count</p>
+            <div class="pref-row"><span class="pref-label">Trees</span><span class="pref-value highlight">1</span></div>
+            <div class="pref-row"><span class="pref-label">Large shrubs / feature plants</span><span class="pref-value highlight">9</span></div>
+            <div class="pref-row"><span class="pref-label">Climbers</span><span class="pref-value highlight">5</span></div>
+            <div class="pref-row"><span class="pref-label">Fragrant / kitchen plants</span><span class="pref-value highlight">4</span></div>
+            <div class="pref-row"><span class="pref-label">Hanging pots</span><span class="pref-value highlight">4</span></div>
+            <div class="pref-row"><span class="pref-label">Filler / ground cover pots</span><span class="pref-value highlight">13</span></div>
+            <div class="pref-row" style="border-top:1px solid var(--gold);padding-top:12px;margin-top:4px;"><span class="pref-label" style="color:var(--gold);font-size:1.1rem;">Total Plants</span><span class="pref-value highlight" style="font-size:1.1rem;">36</span></div>
+
+            <p class="pref-subhead" style="margin-top:24px;">Infrastructure Needed</p>
+            <div class="pref-row"><span class="pref-label">Water outlets — all balconies & terrace</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Drainage provisions</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Trellis mounting points (walls)</span><span class="pref-value decided">Yes</span></div>
+            <div class="pref-row"><span class="pref-label">Ceiling hooks for hanging pots</span><span class="pref-value decided">Yes — 1st floor sit-out</span></div>
+            <div class="pref-row"><span class="pref-label">Drip irrigation / auto-watering</span><span class="pref-value">To be discussed</span></div>
+          </div>
+        </div>
+        <p class="pref-note">Plants are a serious part of the design, not decoration. The house should feel green and alive at every level. Everything listed above is available in Chennai — single nursery visit to Vandalur. The architect needs to provision water outlets, drainage, trellis mounting points, and ceiling hooks at all outdoor and semi-outdoor spaces during construction.</p>
+      </div>
+
+      <!-- ART & CRAFT INTEGRATION -->
+      <div class="pref-card reveal-up">
+        <h3>Art & Craft Integration</h3>
+        <div class="pref-row"><span class="pref-label">3D Relief Murals</span><span class="pref-value decided">Feature walls — locations TBD</span></div>
+        <div class="pref-row"><span class="pref-label">Traditional Paintings</span><span class="pref-value decided">Every floor — integrated</span></div>
+        <div class="pref-row"><span class="pref-label">Peacock Motifs</span><span class="pref-value decided">Recurring theme — all floors</span></div>
+        <div class="pref-row"><span class="pref-label">Mughal Arches</span><span class="pref-value decided">Key thresholds & doorways</span></div>
+        <div class="pref-row"><span class="pref-label">Carved Teak Elements</span><span class="pref-value decided">Doors, windows, frames</span></div>
+        <div class="pref-row"><span class="pref-label">Stained Glass</span><span class="pref-value decided">Ceilings & select windows</span></div>
+        <div class="pref-row"><span class="pref-label">Zellige Tile Work</span><span class="pref-value decided">All bathrooms</span></div>
+        <div class="pref-row"><span class="pref-label">Corridor / Entrance Art</span><span class="pref-value decided">Yes — not bare walls</span></div>
+        <div class="pref-row"><span class="pref-label">Artisan Sourcing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">Art is a core requirement, not an afterthought. Every surface is an opportunity. The design team should plan art placement as part of the architecture, not leave blank walls for later.</p>
+      </div>
+
+      <!-- LIFT -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Lift / Elevator</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <div class="pref-row"><span class="pref-label">Shaft Size</span><span class="pref-value decided">4' × 5'</span></div>
+            <div class="pref-row"><span class="pref-label">Floors Served</span><span class="pref-value decided">G to 2nd (provision for 3rd)</span></div>
+            <div class="pref-row"><span class="pref-label">Brand</span><span class="pref-value decided">Johnson Lifts</span></div>
+            <div class="pref-row"><span class="pref-label">Model</span><span class="pref-value decided">Sukranti</span></div>
+            <div class="pref-row"><span class="pref-label">Cabin Finish</span><span class="pref-value decided">Teak Wood & SS Hairline</span></div>
+            <div class="pref-row"><span class="pref-label">Door Style</span><span class="pref-value">To be discussed</span></div>
+            <div class="pref-row"><span class="pref-label">Display Panel</span><span class="pref-value">To be discussed</span></div>
+            <p class="pref-note">Lift is required — primarily for parents' convenience. We are planning Johnson Lifts Sukranti model with a Teak Wood + SS Hairline cabin finish to match the heritage aesthetic of the house. <a href="assets/johnson-sukranti-brochure.pdf" download style="color:var(--gold);">↓ Download full Sukranti brochure (PDF)</a></p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <img src="assets/johnson-sukranti-p1.jpg" alt="Johnson Sukranti — Cover" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-p1.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p7.jpg" alt="Johnson Sukranti — Teak & SS Hairline finish" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p7.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p15.jpg" alt="Johnson Sukranti — Finish options" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p15.jpg','image')">
+            <img src="assets/johnson-sukranti-teak-p12.jpg" alt="Johnson Sukranti — Display options" style="width:100%;border:1px solid rgba(198,146,42,0.2);border-radius:2px;cursor:pointer;" onclick="openLightbox('assets/johnson-sukranti-teak-p12.jpg','image')">
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- EXTERIOR & FACADE -->
+      <div class="pref-card reveal-up">
+        <h3>Exterior & Facade</h3>
+        <div class="pref-row"><span class="pref-label">Facade Style</span><span class="pref-value decided">Neo-Deccan Heritage</span></div>
+        <div class="pref-row"><span class="pref-label">Facade Material</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Facade Colour</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Balcony Railing Style</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Name Board Design</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Main Gate Design</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Compound Wall</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Exterior Lighting</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Weatherproofing</span><span class="pref-value">To be discussed</span></div>
+        <p class="pref-note">The facade is the first impression. It should unmistakably communicate the heritage intent — no generic modern elevation with decorative elements stuck on.</p>
+      </div>
+
+      <!-- BUDGET & TIMELINE (full width) -->
+      <div class="pref-card full-width reveal-up">
+        <h3>Budget & Timeline</h3>
+        <div class="pref-row"><span class="pref-label">Overall Budget Range</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Construction Start Target</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Expected Completion</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Priority if Budget Constrained</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">Phased Construction?</span><span class="pref-value">To be discussed</span></div>
+        <div class="pref-row"><span class="pref-label">3rd Floor — When?</span><span class="pref-value decided">Future — foundation ready now</span></div>
+        <p class="pref-note">Budget and timeline to be discussed in person. The intent is to build once and build right — quality of craftsmanship is more important than speed. We are willing to phase certain finishes if needed, but the structure and core design must be complete.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="frieze" style="margin-bottom: 48px;">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+      <rect width="1200" height="40" fill="url(#friezeP)"/>
+    </svg>
+  </div>
+  <div class="footer-columns">
+    <div class="footer-left">
+      <p class="footer-brand">MANAI</p>
+      <p class="footer-tamil">மனை</p>
+      <p class="footer-location">Old Washermanpet, Chennai</p>
+    </div>
+    <div class="footer-center">
+      <p>880 sq.ft Plot · G+2 Built</p>
+      <p>Foundation: G+3 · 2,772 sq.ft</p>
+      <p>Neo-Deccan Heritage</p>
+    </div>
+    <div class="footer-right">
+      <p>Architect: Manivalluvan &amp; Associates</p>
+      <p>Structural: NJ Associates (Job 215/25)</p>
+      <p>Aesthetic: Neo-Deccan Heritage</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Specs · A companion to the Manai brief</p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">
+    <svg width="36" height="36" viewBox="0 0 36 36">
+      <line x1="8" y1="8" x2="28" y2="28"/><line x1="28" y1="8" x2="8" y2="28"/>
+    </svg>
+  </button>
+  <button class="lightbox-arrow prev" onclick="navigateLightbox(-1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M20 4 L6 20 L20 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+  <div id="lightboxContent"></div>
+  <button class="lightbox-arrow next" onclick="navigateLightbox(1)">
+    <svg width="24" height="40" viewBox="0 0 24 40"><path d="M4 4 L18 20 L4 36" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg>
+  </button>
+</div>
+
+<script src="assets/js/manai.js"></script>
+</body>
+</html>

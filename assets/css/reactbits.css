@@ -1,0 +1,69 @@
+/* ═══════════════════════════════════════════════════════════
+   REACTBITS — shared animations & decorative effects
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes rb-split-in {
+  0%   { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  60%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes rb-blur-in {
+  0%   { opacity: 0; filter: blur(14px); letter-spacing: 0.3em; }
+  100% { opacity: 1; filter: blur(0); letter-spacing: 0; }
+}
+
+@keyframes rb-shiny-sweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.rb-shiny {
+  display: inline-block;
+  background: linear-gradient(
+    100deg,
+    var(--gold) 0%,
+    var(--gold) 40%,
+    #fff6d0 50%,
+    var(--gold) 60%,
+    var(--gold) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation-name: rb-shiny-sweep;
+  animation-duration: 4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* ────────────────────────────────────────────────────
+   TiltedCard — applied via vanilla JS in manai.js
+   ──────────────────────────────────────────────────── */
+.rb-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+.rb-tilt-inner {
+  transform-style: preserve-3d;
+}
+.rb-tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--rb-mx, 50%) var(--rb-my, 50%),
+    rgba(255, 246, 208, 0.22),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  mix-blend-mode: screen;
+  border-radius: inherit;
+}
+.rb-tilt:hover .rb-tilt-glare {
+  opacity: 1;
+}
